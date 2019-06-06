@@ -1,0 +1,23 @@
+{
+  "name": "nfse",
+  "version": "1.0.0",
+  "description": "Geração de nota fiscal de serviço",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nfse",
+    "nota",
+    "fiscal",
+    "serviço"
+  ],
+  "author": "Ryzzan Salman",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "pem": "^1.14.2",
+    "xml-crypto": "^1.4.0",
+    "xsd-schema-validator": "^0.6.0"
+  }
+}
