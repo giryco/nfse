@@ -1,4 +1,5 @@
 const abrasf100 = {
+    consultarLoteRpsEnvio: "ConsultarLoteRpsEnvio",
     enviarLoteRpsEnvio: "EnviarLoteRpsEnvio",
     loteRps: "LoteRps",
     numeroLote: "NumeroLote",

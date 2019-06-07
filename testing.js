@@ -248,4 +248,19 @@ const enviarLoteRpsCatalao = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsCatalao);
+const consultarLoteRpsNotaCarioca = {
+    "config": {
+		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
+        "senhaDoCertificado": "12345678",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3304557",
+        "acao": "consultarLoteRps"
+	},
+	"prestador": {
+		"cpfCnpj": "10393366000121",
+        "inscricaoMunicipal": "04386965"
+	},
+    "protocolo": "15574151741610"
+};
+
+nfse.nfse(enviarLoteRpsNotaCarioca);

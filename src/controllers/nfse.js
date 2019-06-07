@@ -13,6 +13,7 @@ const abrasf201Controller = require('./xml-creator/abrasf-2.01');
 const abrasf202Controller = require('./xml-creator/abrasf-2.02');
 const abrasf204Controller = require('./xml-creator/abrasf-2.04');
 const saopaulo100Controller = require('./xml-creator/sao-paulo-1.00');
+const sendNfselController = require('./send-nfse');
 
 const nfse = (newObject) => {
     object = newObject;
@@ -77,6 +78,10 @@ const findModelByKeywordAsync = async (cityCode) => {
 
 const setModelToSendAsync = async (city, model) => {
     await setModelToSend(city, model);
+}
+
+const sendNfselControllerAsync = async (city, model) => {
+    await sendNfselController.webServiceRequest()
 }
 
 module.exports = {
