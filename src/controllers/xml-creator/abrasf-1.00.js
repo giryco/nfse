@@ -77,6 +77,17 @@ const createXml = async (object, particularitiesObject) => {
 
                                     createSignature(xml, cert, 'LoteRps')
                                         .then(xmlSignature => {
+                                            validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                                if (err) {
+                                                    console.error(err);
+                                                    resolve(err);
+                                                }
+        
+                                                if (!validatorResult.valid) {
+                                                    console.error(validatorResult);
+                                                    resolve(validatorResult);
+                                                }
+                                            })
                                             try {
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
@@ -117,42 +128,34 @@ const createXml = async (object, particularitiesObject) => {
                                 resolve(err);
                             }
 
-                            let xml = '<CancelarNfseEnvio xmlns:ns3="http://www.ginfes.com.br/servico_cancelar_nfse_envio" xmlns:ns4="http://www.ginfes.com.br/tipos">';
-                            xml += '<Prestador>';
-                            xml += '<Cnpj>' + object.prestador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</Cnpj>';
+                            let xmlNotSigned = `<${particularitiesObject['tags']['cancelarNfseEnvioAlterada'] ? particularitiesObject['tags']['cancelarNfseEnvioAlterada'] : particularitiesObject['tags']['cancelarNfseEnvio']}>`;
+                            xml += '<InfPedidoCancelamento Id="Cancelamento_NF' + object.numeroNfse + '">';
+                            xml += '<IdentificacaoNfse>';
+                            xml += '<Numero>' + object.numeroNfse + '</Numero>';
+                            xml += '<Cnpj>' + object.prestador.cnpj.replace(/\.|\/|\-|\s/g, '') + '</Cnpj>';
                             if (object.prestador.inscricaoMunicipal || object.prestador.inscricaoMunicipal != '') {
                                 xml += '<InscricaoMunicipal>' + object.prestador.inscricaoMunicipal + '</InscricaoMunicipal>';
                             }
-                            xml += '</Prestador>';
-                            xml += '<NumeroNfse>' + object.numeroNfse + '</NumeroNfse>';
-                            xml += '</CancelarNfseEnvio>';
+                            xml += '<CodigoMunicipio>' + object.config.codigoMunicipio + '</CodigoMunicipio>';
+                            xml += '</IdentificacaoNfse>';
+                            xml += '<CodigoCancelamento>' + object.codigoCancelamento + '</CodigoCancelamento>';
+                            xml += '</InfPedidoCancelamento>';
+                            xmlNotSigned += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
 
-                            createSignature(xml, cert, 'CancelarNfseEnvio', true).then(xmlSignature => {
+                            createSignature(xmlNotSigned, cert, 'CancelarNfseEnvio', true).then(xmlSignature => {
                                 validator.validateXML(xmlSignature, __dirname + '/../../../../resources/xsd/ginfes/schemas_v202/servico_cancelar_nfse_envio_v02.xsd', function (err, validatorResult) {
-                                    if (err) {
-                                        console.error(err);
-                                        resolve(err);
-                                    }
+                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
-                                    if (!validatorResult.valid) {
-                                        console.error(validatorResult);
-                                        resolve(validatorResult);
+                                    if (particularitiesObject['isSigned']['consultarLoteRps']) {
+                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
                                     }
-
-                                    let xml = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
-                                    xml += '<soap:Header/>';
-                                    xml += '<soap:Body>';
-                                    xml += '<ns1:CancelarNfse xmlns:ns1="' + particularitiesObject['urlXmlns'] + '">';
-                                    xml += '<arg0>';
-                                    xml += xmlSignature;
-                                    xml += '</arg0>';
-                                    xml += '</ns1:CancelarNfse>';
-                                    xml += '</soap:Body>';
-                                    xml += '</soap:Envelope>';
 
                                     const result = {
                                         url: particularitiesObject['webserviceUrl'],
                                         soapEnvelop: xml
+                                    }
+                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarLoteRps']) {
+                                        result['soapAction'] = particularitiesObject['soapActions']['consultarLoteRps'];
                                     }
 
                                     resolve(result);
@@ -178,44 +181,36 @@ const createXml = async (object, particularitiesObject) => {
                                 resolve(err);
                             }
 
-                            let xml = '<ConsultarLoteRpsEnvio>';
-                            xml += '<Prestador>';
-                            xml += '<Cnpj>' + object.prestador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</Cnpj>';
+                            let xmlNotSigned = `<${particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] ? particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] : particularitiesObject['tags']['consultarLoteRpsEnvio']}>`;
+                            xmlNotSigned += `<${particularitiesObject['tags']['prestadorAlterada'] ? particularitiesObject['tags']['prestadorAlterada'] : particularitiesObject['tags']['prestador']}>`;
+                            xmlNotSigned += `<${particularitiesObject['tags']['cnpjAlterada'] ? particularitiesObject['tags']['cnpjAlterada'] : particularitiesObject['tags']['cnpj']}>${object.prestador.cpfCnpj.replace(/\.|\/|\-|\s/g, '')}</${particularitiesObject['tags']['cnpj']}>`;
                             if (object.prestador.inscricaoMunicipal || object.prestador.inscricaoMunicipal != '') {
-                                xml += '<InscricaoMunicipal>' + object.prestador.inscricaoMunicipal + '</InscricaoMunicipal>';
+                                xmlNotSigned += `<${particularitiesObject['tags']['inscricaoMunicipalAlterada'] ? particularitiesObject['tags']['inscricaoMunicipalAlterada'] : particularitiesObject['tags']['inscricaoMunicipal']}>${object.prestador.inscricaoMunicipal}</${particularitiesObject['tags']['inscricaoMunicipal']}>`;
                             }
-                            xml += '</Prestador>';
-                            xml += '<Protocolo>' + object.protocolo + '</Protocolo>';
-                            xml += '</ConsultarLoteRpsEnvio>';
+                            xmlNotSigned += '</Prestador>';
+                            xmlNotSigned += '<Protocolo>' + object.protocolo + '</Protocolo>';
+                            xmlNotSigned += `</${particularitiesObject['tags']['consultarLoteRpsEnvio']}>`;
 
-                            createSignature(xml, cert, 'ConsultarLoteRpsEnvio').then(xmlSignature => {
-                                let xml = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
-                                xml += '<soap:Body>';
-                                xml += '<ns1:ConsultarLoteRpsV3 xmlns:ns1="' + particularitiesObject['urlXmlns'] + '">';
-                                xml += '<arg0>';
-                                xml += '<ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd">';
-                                xml += '<versaoDados>3</versaoDados>';
-                                xml += '</ns2:cabecalho>';
-                                xml += '</arg0>';
-                                xml += '<arg1>';
-                                xml += xmlSignature;
-                                xml += '</arg1>';
-                                xml += '</ns1:ConsultarLoteRpsV3>';
-                                xml += '</soap:Body>';
-                                xml += '</soap:Envelope>';
+                            createSignature(xmlNotSigned, cert, 'ConsultarLoteRpsEnvio')
+                                .then(xmlSignature => {
+                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
-                                const result = {
-                                    url: particularitiesObject['webserviceUrl'],
-                                    soapEnvelop: xml
-                                }
-                                if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
-                                    result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
-                                }
+                                    if (particularitiesObject['isSigned']['consultarLoteRps']) {
+                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
+                                    }
 
-                                resolve(result);
-                            }).catch(err => {
-                                console.error(err);
-                            });
+                                    const result = {
+                                        url: particularitiesObject['webserviceUrl'],
+                                        soapEnvelop: xml
+                                    }
+                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarLoteRps']) {
+                                        result['soapAction'] = particularitiesObject['soapActions']['consultarLoteRps'];
+                                    }
+
+                                    resolve(result);
+                                }).catch(err => {
+                                    console.error(err);
+                                });
                         });
                     } catch (error) {
                         reject(error);
@@ -422,7 +417,7 @@ const createXml = async (object, particularitiesObject) => {
                                         url: particularitiesObject['webserviceUrl'],
                                         soapEnvelop: xml
                                     }
-                                    console.log(437);
+                                    
                                     resolve(result);
                                 });
                             }).catch(err => {
@@ -569,11 +564,11 @@ function addSignedXml(object, cert, particularitiesObject) {
                     if (r.tomador.cpfCnpj) {
                         xmlToBeSigned += `<${particularitiesObject['tags']['cpfCnpjAlterada'] ? particularitiesObject['tags']['cpfCnpjAlterada'] : particularitiesObject['tags']['cpfCnpj']}>`;
                         if (r.tomador.cpfCnpj.replace(/[^\d]+/g, '').length === 11) {
-                            xmlToBeSigned += '<Cpf>' + r.tomador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</Cpf>';
+                            xmlToBeSigned += `<${particularitiesObject['tags']['cpfAlterada'] ? particularitiesObject['tags']['cpfAlterada'] : particularitiesObject['tags']['cpf']}>` + r.tomador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + `</${particularitiesObject['tags']['cpf']}>`;
                         }
 
                         if (r.tomador.cpfCnpj.replace(/[^\d]+/g, '').length === 14) {
-                            xmlToBeSigned += '<Cnpj>' + r.tomador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</Cnpj>';
+                            xmlToBeSigned += `<${particularitiesObject['tags']['cnpjAlterada'] ? particularitiesObject['tags']['cnpjAlterada'] : particularitiesObject['tags']['cnpj']}>` + r.tomador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + `</${particularitiesObject['tags']['cnpj']}>`;
                         }
                         xmlToBeSigned += `</${particularitiesObject['tags']['cpfCnpj']}>`;
                     }

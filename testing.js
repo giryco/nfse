@@ -2,7 +2,7 @@ const nfse = require('./');
 
 const enviarLoteRpsGinfesItu = {
     "config": {
-        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-itu.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
         "senhaDoCertificado": "brmed2018",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",
@@ -63,7 +63,7 @@ const enviarLoteRpsGinfesItu = {
 
 const enviarLoteRpsNotaCarioca = {
     "config": {
-        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-rio-de-janeiro.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
@@ -91,19 +91,19 @@ const enviarLoteRpsNotaCarioca = {
             "issRetido": 2,
             "valorIss": 2.10,
             "baseCalculo": 105.00,
-            "aliquota": 0.0200,
+            "aliquota": 0.05,
             "valorLiquidoNfse": 105.00,
             "itemListaServico": "1701",
-            "codigoTributacaoMunicipio": "17.01.01 ",
-            "discriminacao": "assessoria ou consultoria de qualquer natureza, não especificada",
+            "codigoTributacaoMunicipio": " 170101",
+            "discriminacao":  "assessoria ou consultoria de qualquer natureza, não especificada",
             "codigoMunicipio": "3304557"
         },
         "prestador": {
-            "cpfCnpj": "10393366000121",
-            "inscricaoMunicipal": "04386965"
+	    "cpfCnpj": "10393366000121",
+	    "inscricaoMunicipal": "04386965"
         },
         "tomador": {
-            "cpfCnpj": "33423401000103",
+            "cnpjCpf": "33423401000103",
             "inscricaoMunicipal": "00475076",
             "razaoSocial": "ABC AGENCIA BRASILEIRA DE COMERCIO E TURISMO LTDA",
             "endereco": {
@@ -124,7 +124,7 @@ const enviarLoteRpsNotaCarioca = {
 
 const enviarLoteRpsPortoAlegre = {
     "config": {
-        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-porto-alegre.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-porto-alegre.pfx",
         "senhaDoCertificado": "Endpoa@20!8",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "4314902",
@@ -185,7 +185,7 @@ const enviarLoteRpsPortoAlegre = {
 
 const enviarLoteRpsCatalao = {
     "config": {
-        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-catalao2.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-catalao2.pfx",
         "senhaDoCertificado": "502874",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "5205109",
@@ -248,9 +248,24 @@ const enviarLoteRpsCatalao = {
     }]
 };
 
+const consultarLoteRpsGinfesItu = {
+    "config": {
+		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3523909",
+        "acao": "consultarLoteRps"
+	},
+	"prestador": {
+		"cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099"
+	},
+    "protocolo": "9522475"
+};
+
 const consultarLoteRpsNotaCarioca = {
     "config": {
-		"diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-rio-de-janeiro.pfx",
+		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
@@ -260,7 +275,7 @@ const consultarLoteRpsNotaCarioca = {
 		"cpfCnpj": "10393366000121",
         "inscricaoMunicipal": "04386965"
 	},
-    "protocolo": "00000000000000000000000000000000000000000002310275"
+    "protocolo": "00000000000000000000000000000000000000000002310413"
 };
 
-nfse.nfse(consultarLoteRpsNotaCarioca);
+nfse.nfse(consultarLoteRpsGinfesItu);

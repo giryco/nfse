@@ -3,22 +3,33 @@ const abrasf100Model = require('../models/abrasf-1.00');
 const abrasf201Model = require('../models/abrasf-2.01');
 
 // Global constants
-const particularitiesObject = {};
+const particularitiesObject = {
+    isSigned: {}
+};
 
 const setParticularities = (object, city, model) => {
     switch (city.nfseKeyword) {
         case 'ginfes': console.log(10);
             object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl';
             object.config.producaoHomologacao === 'producao' ? particularitiesObject['urlXmlns'] = 'http://producao.ginfes.com.br' : particularitiesObject['urlXmlns'] = 'http://homologacao.ginfes.com.br';
-            particularitiesObject['envelopment'] = '<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns1:RecepcionarLoteRpsV3 xmlns:ns1=\"http://homologacao.ginfes.com.br\"><arg0><ns2:cabecalho versao=\"3\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\"><versaoDados>3</versaoDados></ns2:cabecalho></arg0><arg1>__xml__</arg1></ns1:RecepcionarLoteRpsV3></soap:Body></soap:Envelope>';
+            if (object.config.acao === 'enviarLoteRps') {
+                particularitiesObject['envelopment'] = '<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns1:RecepcionarLoteRpsV3 xmlns:ns1=\"http://homologacao.ginfes.com.br\"><arg0><ns2:cabecalho versao=\"3\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\"><versaoDados>3</versaoDados></ns2:cabecalho></arg0><arg1>__xml__</arg1></ns1:RecepcionarLoteRpsV3></soap:Body></soap:Envelope>';
+                addPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns3:');
+                doNotAddPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns4:');
+            }
+            if (object.config.acao === 'consultarLoteRps') { console.log(20);
+                particularitiesObject['envelopment'] = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns1:ConsultarLoteRpsV3 xmlns:ns1="' + particularitiesObject['urlXmlns'] + '"><arg0><ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd"><versaoDados>3</versaoDados></ns2:cabecalho></arg0><arg1>__xml__</arg1></ns1:ConsultarLoteRpsV3></soap:Body></soap:Envelope>';
+                addPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns3:');
+                doNotAddPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns4:');
+            }
+            
             particularitiesObject['nfseKeyword'] = 'ginfes';
             particularitiesObject['xsds'] = {
                 enviarLoteRps: '/../../../resources/xsd/ginfes/servico_enviar_lote_rps_envio_v03.xsd',
                 consultarLoteRps: '/../../../resources/xsd/ginfes/servico_consultar_lote_rps_envio_v03.xsd'
             }
             particularitiesObject['tags'] = abrasf100Model.abrasf100;
-            addPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns3:');
-            doNotAddPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns4:');
+            
             particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns:ns3="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
             particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']}  xmlns:ns3="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
             particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue"`;
@@ -27,7 +38,12 @@ const setParticularities = (object, city, model) => {
 
         case 'riodejaneiro':
             object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl';
-            particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:not=\"http://notacarioca.rio.gov.br/\"><soapenv:Header/><soapenv:Body><not:RecepcionarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+            if (object.config.acao === 'enviarLoteRps') {
+                particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:not=\"http://notacarioca.rio.gov.br/\"><soapenv:Header/><soapenv:Body><not:RecepcionarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+            }
+            if (object.config.acao === 'consultarLoteRps') {
+                particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://notacarioca.rio.gov.br/"><soapenv:Header/><soapenv:Body><not:ConsultarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+            }
             particularitiesObject['nfseKeyword'] = 'riodejaneiro';
             particularitiesObject['xsds'] = {
                 enviarLoteRps: '/../../../resources/xsd/rio-de-janeiro/tipos_nfse_v01.xsd',
@@ -39,6 +55,7 @@ const setParticularities = (object, city, model) => {
             }
             particularitiesObject['tags'] = abrasf100Model.abrasf100;
             particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
+            particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
             particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue"`;
             particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd" Id="_uniqueValue"`;
             break;

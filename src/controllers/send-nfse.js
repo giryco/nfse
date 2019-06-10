@@ -48,7 +48,7 @@ function webServiceRequest(xmlData, object) {
                         } else {
                             reject(result);
                         }
-                    } console.log(options, 51);
+                    }
                     resolve(response);
                 });
             } catch (error) {

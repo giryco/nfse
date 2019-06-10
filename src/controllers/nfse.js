@@ -64,7 +64,8 @@ const setModelToSend = (city, model) => {
                 .then(res => {
                     sendNfselController.webServiceRequest(res, object)
                         .then(resSentXml => {
-                            console.log(resSentXml.body, 67);
+                            console.log(resSentXml.request.body, 67);
+                            console.log(resSentXml.body, 68);
                         })
                         .catch(rejSentXml => {
                             console.error(rejSentXml, 70);
@@ -80,7 +81,8 @@ const setModelToSend = (city, model) => {
                 .then(res => {
                     sendNfselController.webServiceRequest(res, object)
                         .then(resSentXml => {
-                            console.log(resSentXml, 83);
+                            console.log(resSentXml.request.body, 84);
+                            console.log(resSentXml.body, 84);
                         })
                         .catch(rejSentXml => {
                             console.error(rejSentXml, 86);
