@@ -58,12 +58,40 @@ const findModelByKeyword = (nfseKeyword) => {
 
 
 const setModelToSend = (city, model) => {
-    if (model.model === 'abrasf1.00') {
-        abrasf100Controller.setRequirements(object, city, model);
-    }
+    try {
+        if (model.model === 'abrasf1.00') {
+            abrasf100Controller.setRequirements(object, city, model)
+                .then(res => {
+                    sendNfselController.webServiceRequest(res, object)
+                        .then(resSentXml => {
+                            console.log(resSentXml.body, 67);
+                        })
+                        .catch(rejSentXml => {
+                            console.error(rejSentXml, 70);
+                        })
+                })
+                .catch(rej => {
+                    console.error(rej);
+                })
+        }
 
-    if (model.model === 'abrasf2.01') {
-        abrasf201Controller.setRequirements(object, city, model);
+        if (model.model === 'abrasf2.01') {
+            abrasf201Controller.setRequirements(object, city, model)
+                .then(res => {
+                    sendNfselController.webServiceRequest(res, object)
+                        .then(resSentXml => {
+                            console.log(resSentXml, 83);
+                        })
+                        .catch(rejSentXml => {
+                            console.error(rejSentXml, 86);
+                        })
+                })
+                .catch(rej => {
+                    console.error(rej);
+                })
+        }
+    } catch (error) {
+        reject(error);
     }
 }
 

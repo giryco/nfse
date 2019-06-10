@@ -1,7 +1,14 @@
 // Vendors
 const request = require('request');
+const fs = require('fs');
 
-function webServiceRequest(xmlEnveloped, url, soapAction = null, certificatePath, certificatePassword) {
+function webServiceRequest(xmlData, object) {
+    const xmlEnveloped = xmlData.soapEnvelop;
+    const url = xmlData.url;
+    const soapAction = xmlData.soapAction;
+    const certificatePath = object.config.diretorioDoCertificado;
+    const certificatePassword = object.config.senhaDoCertificado;
+
     try {
         return new Promise((resolve, reject) => {
             try {
@@ -41,7 +48,7 @@ function webServiceRequest(xmlEnveloped, url, soapAction = null, certificatePath
                         } else {
                             reject(result);
                         }
-                    }
+                    } console.log(options, 51);
                     resolve(response);
                 });
             } catch (error) {

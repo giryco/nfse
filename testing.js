@@ -2,7 +2,7 @@ const nfse = require('./');
 
 const enviarLoteRpsGinfesItu = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-itu.pfx",
         "senhaDoCertificado": "brmed2018",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",
@@ -63,7 +63,7 @@ const enviarLoteRpsGinfesItu = {
 
 const enviarLoteRpsNotaCarioca = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
+        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-rio-de-janeiro.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
@@ -124,7 +124,7 @@ const enviarLoteRpsNotaCarioca = {
 
 const enviarLoteRpsPortoAlegre = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-porto-alegre.pfx",
+        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-porto-alegre.pfx",
         "senhaDoCertificado": "Endpoa@20!8",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "4314902",
@@ -185,7 +185,7 @@ const enviarLoteRpsPortoAlegre = {
 
 const enviarLoteRpsCatalao = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-catalao2.pfx",
+        "diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-catalao2.pfx",
         "senhaDoCertificado": "502874",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "5205109",
@@ -250,7 +250,7 @@ const enviarLoteRpsCatalao = {
 
 const consultarLoteRpsNotaCarioca = {
     "config": {
-		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
+		"diretorioDoCertificado": "/home/ryzzan/Downloads/pfx/client-rio-de-janeiro.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
@@ -260,7 +260,7 @@ const consultarLoteRpsNotaCarioca = {
 		"cpfCnpj": "10393366000121",
         "inscricaoMunicipal": "04386965"
 	},
-    "protocolo": "15574151741610"
+    "protocolo": "00000000000000000000000000000000000000000002310275"
 };
 
-nfse.nfse(enviarLoteRpsNotaCarioca);
+nfse.nfse(consultarLoteRpsNotaCarioca);

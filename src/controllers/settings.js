@@ -7,7 +7,7 @@ const particularitiesObject = {};
 
 const setParticularities = (object, city, model) => {
     switch (city.nfseKeyword) {
-        case 'ginfes':
+        case 'ginfes': console.log(10);
             object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl';
             object.config.producaoHomologacao === 'producao' ? particularitiesObject['urlXmlns'] = 'http://producao.ginfes.com.br' : particularitiesObject['urlXmlns'] = 'http://homologacao.ginfes.com.br';
             particularitiesObject['envelopment'] = '<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns1:RecepcionarLoteRpsV3 xmlns:ns1=\"http://homologacao.ginfes.com.br\"><arg0><ns2:cabecalho versao=\"3\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\"><versaoDados>3</versaoDados></ns2:cabecalho></arg0><arg1>__xml__</arg1></ns1:RecepcionarLoteRpsV3></soap:Body></soap:Envelope>';
