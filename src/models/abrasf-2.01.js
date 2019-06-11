@@ -1,5 +1,7 @@
 const abrasf201 = {
     enviarLoteRpsEnvio: "EnviarLoteRpsEnvio",
+    consultarLoteRpsEnvio: "ConsultarLoteRpsEnvio",
+    cancelarNfseEnvio: "CancelarNfseEnvio",
     loteRps: "LoteRps",
     numeroLote: "NumeroLote",
     cpfCnpj: "CpfCnpj",
@@ -75,7 +77,9 @@ const abrasf201 = {
     art: "Art",
     regimeEspecialTributacao: "RegimeEspecialTributacao",
     optanteSimplesNacional: "OptanteSimplesNacional",
-    incentivoFiscal: "IncentivoFiscal"
+    incentivoFiscal: "IncentivoFiscal",
+    numeroNfse: "NumeroNfse",
+    cnpj: "Cnpj"
 };
 
 module.exports = {

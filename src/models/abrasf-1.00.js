@@ -1,7 +1,8 @@
 const abrasf100 = {
     consultarLoteRpsEnvio: "ConsultarLoteRpsEnvio",
     enviarLoteRpsEnvio: "EnviarLoteRpsEnvio",
-    cancelarNfseEnvio: "EnviarLoteRpsEnvio",
+    cancelarNfseEnvio: "CancelarLoteRpsEnvio",
+    consultarNfseRpsEnvio: "ConsultarNfseRpsEnvio",
     loteRps: "LoteRps",
     numeroLote: "NumeroLote",
     cnpj: "Cnpj",
@@ -72,7 +73,12 @@ const abrasf100 = {
     inscricaoMunicipal: "InscricaoMunicipal",
     contrucaoCivil: "ContrucaoCivil",
     codigoObra: "CodigoObra",
-    art: "Art"
+    art: "Art",
+    protocolo: "Protocolo",
+    infPedidoCancelamento: "InfPedidoCancelamento",
+    pedido: "Pedido",
+    identificacaoNfse: "IdentificacaoNfse",
+    codigoCancelamento: "CodigoCancelamento"
 };
 
 module.exports = {

@@ -82,41 +82,41 @@ const enviarLoteRpsNotaCarioca = {
         "status": "1",
         "servico": {
             "valorServicos": 105.00,
-            "valorDeducoes": 0.00,
-            "valorPis": 0.00,
-            "valorCofins": 0.00,
-            "valorInss": 0.00,
-            "valorIr": 0.00,
-            "valorCsll": 0.00,
-            "issRetido": 2,
-            "valorIss": 2.10,
-            "baseCalculo": 105.00,
-            "aliquota": 0.05,
-            "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1701",
-            "codigoTributacaoMunicipio": " 170101",
-            "discriminacao":  "assessoria ou consultoria de qualquer natureza, não especificada",
-            "codigoMunicipio": "3304557"
+			"valorDeducoes": 0.00,
+			"valorPis": 0.00,
+			"valorCofins": 0.00,
+			"valorInss": 0.00,
+			"valorIr": 0.00,
+			"valorCsll": 0.00,
+			"issRetido": 2,
+			"valorIss": 2.10,
+			"baseCalculo": 105.00,
+			"aliquota": 0.05,
+			"valorLiquidoNfse": 105.00,
+			"itemListaServico": "0802",
+			"codigoTributacaoMunicipio": "461840200",
+			"discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
+			"codigoMunicipio": "3523909"
         },
         "prestador": {
-	    "cpfCnpj": "10393366000121",
-	    "inscricaoMunicipal": "04386965"
+            "cpfCnpj": "10393366000121",
+            "inscricaoMunicipal": "04386965"
         },
         "tomador": {
-            "cnpjCpf": "33423401000103",
-            "inscricaoMunicipal": "00475076",
-            "razaoSocial": "ABC AGENCIA BRASILEIRA DE COMERCIO E TURISMO LTDA",
+            "cnpjCpf": "00712712000214",
+            "inscricaoMunicipal": "04430182",
+            "razaoSocial": "2M EMPRESA DE TURISMO LTDA",
             "endereco": {
-                "endereco": "RUA DA AJUDA, SAL COB 01",
-                "numero": "35",
-                "bairro": "centro",
+                "endereco": "RUA VISC DE PIRAJA",
+                "numero": "437",
+                "bairro": "ipanema",
                 "codigoMunicipio": "3304557",
                 "uf": "rj",
-                "cep": "20040915"
+                "cep": "22410003"
             },
             "contato": {
-                "telefone": "02122422427",
-                "email": "robertamartins@mtravel.com.br"
+                "telefone": "2125210734",
+                "email": "dekolerj@gmail.com"
             }
         }
     }]
@@ -216,10 +216,10 @@ const enviarLoteRpsCatalao = {
             "baseCalculo": 105.00,
             "aliquota": 0.05,
             "valorLiquidoNfse": 105.00,
-            "itemListaServico": "0802",
-            "codigoTributacaoMunicipio": "461840200",
-            "discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
-            "codigoMunicipio": "3523909",
+            "itemListaServico": "6311",
+            "codigoTributacaoMunicipio": "6311900",
+            "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
+            "codigoMunicipio": "5205109",
             "codigoPais": "1058",
             "exigibilidadeIss": "1"
         },
@@ -275,7 +275,22 @@ const consultarLoteRpsNotaCarioca = {
 		"cpfCnpj": "10393366000121",
         "inscricaoMunicipal": "04386965"
 	},
-    "protocolo": "00000000000000000000000000000000000000000002310413"
+    "protocolo": "00000000000000000000000000000000000000000002310564"
 };
 
-nfse.nfse(consultarLoteRpsGinfesItu);
+const cancelarNfseGinfesItu = {
+    "config": {
+		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+		"senhaDoCertificado": "brmed2018",
+		"producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3523909",
+        "acao": "cancelarNfse"
+	},
+	"prestador": {
+		"cpfCnpj": "17845667000198",
+		"inscricaoMunicipal": "25099",
+	},
+	"numeroNfse": 417
+};
+
+nfse.nfse(enviarLoteRpsCatalao);

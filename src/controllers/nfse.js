@@ -2,6 +2,11 @@
 const cities = require('../../resources/json/cities');
 const nfseKeywordModelDictionary = require('../../resources/json/nfse-keyword-model-dictionary');
 
+// Global constants
+const regexLT = new RegExp('&lt;', 'g');
+const regexGT = new RegExp('&gt;', 'g');
+const regexQuot = new RegExp('&quot;', 'g');
+
 //Global variables
 var object = {};
 var city = {};
@@ -59,13 +64,18 @@ const findModelByKeyword = (nfseKeyword) => {
 
 const setModelToSend = (city, model) => {
     try {
+        // Bizarre exceptions: start
+        if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
+            model.model = 'abrasf2.01'; console.log(64);
+        }
+        // Bizarre exceptions: end
         if (model.model === 'abrasf1.00') {
             abrasf100Controller.setRequirements(object, city, model)
                 .then(res => {
                     sendNfselController.webServiceRequest(res, object)
                         .then(resSentXml => {
                             console.log(resSentXml.request.body, 67);
-                            console.log(resSentXml.body, 68);
+                            console.log(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
                         })
                         .catch(rejSentXml => {
                             console.error(rejSentXml, 70);
@@ -81,11 +91,10 @@ const setModelToSend = (city, model) => {
                 .then(res => {
                     sendNfselController.webServiceRequest(res, object)
                         .then(resSentXml => {
-                            console.log(resSentXml.request.body, 84);
-                            console.log(resSentXml.body, 84);
+                            console.log(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'), 94);
                         })
                         .catch(rejSentXml => {
-                            console.error(rejSentXml, 86);
+                            console.error(rejSentXml, 97);
                         })
                 })
                 .catch(rej => {
@@ -93,7 +102,7 @@ const setModelToSend = (city, model) => {
                 })
         }
     } catch (error) {
-        reject(error);
+        console.error(error);
     }
 }
 
@@ -108,10 +117,6 @@ const findModelByKeywordAsync = async (cityCode) => {
 
 const setModelToSendAsync = async (city, model) => {
     await setModelToSend(city, model);
-}
-
-const sendNfselControllerAsync = async (city, model) => {
-    await sendNfselController.webServiceRequest()
 }
 
 module.exports = {
