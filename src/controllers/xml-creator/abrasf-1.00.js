@@ -77,8 +77,8 @@ const createXml = async (object, particularitiesObject) => {
 
                                     createSignature(xml, cert, 'LoteRps')
                                         .then(xmlSignature => {
-                                            if (particularitiesObject['xsds']['enviarLoteRps']) {                                                
-                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                            if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) { console.log(__dirname + particularitiesObject['xsds']['enviarLoteRps'], 82);
                                                     if (err) {
                                                         console.error(err);
                                                         resolve(err);
@@ -211,7 +211,7 @@ const createXml = async (object, particularitiesObject) => {
                             createSignature(xmlNotSigned, cert, 'ConsultarLoteRpsEnvio')
                                 .then(xmlSignature => {
                                     if (particularitiesObject['xsds']['consultarLoteRps']) {
-                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
+                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarLoteRps'], function (err, validatorResult) {
                                             if (err) {
                                                 console.error(err);
                                                 resolve(err);
@@ -274,7 +274,7 @@ const createXml = async (object, particularitiesObject) => {
                             xml += '</ConsultarNfseRpsEnvio>';
 
                             createSignature(xml, cert, 'ConsultarNfseRpsEnvio', true).then(xmlSignature => {
-                                validator.validateXML(xmlSignature, __dirname + '/../../../../resources/xsd/ginfes/servico_consultar_nfse_rps_envio_v03.xsd', function (err, validatorResult) {
+                                validator.validateXML(xmlSignature, __dirname + '/../../../resources/xsd/ginfes/servico_consultar_nfse_rps_envio_v03.xsd', function (err, validatorResult) {
                                     if (err) {
                                         console.error(err);
                                         resolve(err);
@@ -338,7 +338,7 @@ const createXml = async (object, particularitiesObject) => {
                             xml += '</ConsultarSituacaoLoteRpsEnvio>';
 
                             createSignature(xml, cert, 'ConsultarSituacaoLoteRpsEnvio').then(xmlSignature => {
-                                validator.validateXML(xmlSignature, __dirname + '/../../../../resources/xsd/ginfes/servico_consultar_situacao_lote_rps_envio_v03.xsd', function (err, validatorResult) {
+                                validator.validateXML(xmlSignature, __dirname + '/../../../resources/xsd/ginfes/servico_consultar_situacao_lote_rps_envio_v03.xsd', function (err, validatorResult) {
                                     if (err) {
                                         console.error(err);
                                         resolve(err);
@@ -417,7 +417,7 @@ const createXml = async (object, particularitiesObject) => {
                             xml += '</ConsultarNfseEnvio>';
 
                             createSignature(xml, cert, 'ConsultarNfseEnvio').then(xmlSignature => {
-                                validator.validateXML(xmlSignature, __dirname + '/../../../../resources/xsd/ginfes/servico_consultar_nfse_envio_v03.xsd', function (err, validatorResult) {
+                                validator.validateXML(xmlSignature, __dirname + '/../../../resources/xsd/ginfes/servico_consultar_nfse_envio_v03.xsd', function (err, validatorResult) {
                                     if (err) {
                                         console.error(err);
                                         resolve(err);

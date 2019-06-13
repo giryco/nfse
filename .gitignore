@@ -88,4 +88,4 @@ typings/
 .dynamodb/
 
 #Testing directories
-resources/testing
+# resources/testing

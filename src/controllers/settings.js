@@ -87,8 +87,8 @@ const setParticularities = (object, city) => {
                 }
 
                 particularitiesObject['xsds'] = {
-                    enviarLoteRps: '/../../../resources/xsd/ginfes/servico_enviar_lote_rps_envio_v03.xsd',
-                    consultarLoteRps: '/../../../resources/xsd/ginfes/servico_consultar_lote_rps_envio_v03.xsd'
+                    enviarLoteRps: '/../../../resources/xsd/sao-jose-dos-pinhais/servico_enviar_lote_rps_envio_v03.xsd',
+                    consultarLoteRps: '/../../../resources/xsd/sao-jose-dos-pinhais/servico_consultar_lote_rps_envio_v03.xsd'
                 }
             } catch (error) {
                 console.error(error);
