@@ -15,10 +15,10 @@ const d = new Date();
 const timestamp = Date.now();
 const numeroLote = timestamp.toString().substring(4, 13) + (d.getYear() - 100);
 
-const setRequirements = (object, city, model) => {
+const setRequirements = (object, city) => {
     return new Promise((resolve, reject) => {
         try {
-            const particularitiesObject = settingsControllerAsync(object, city, model);
+            const particularitiesObject = settingsControllerAsync(object, city);
 
             createXml(object, particularitiesObject)
                 .then(res => {
@@ -141,7 +141,9 @@ const createXml = async (object, particularitiesObject) => {
                             }
                             xmlNotSigned += `<${particularitiesObject['tags']['codigoMunicipioAlterada'] ? particularitiesObject['tags']['codigoMunicipioAlterada'] : particularitiesObject['tags']['codigoMunicipio']}>${object.config.codigoMunicipio}</${particularitiesObject['tags']['codigoMunicipio']}>`;
                             xmlNotSigned += `</${particularitiesObject['tags']['identificacaoNfse']}>`;
-                            xmlNotSigned += `<${particularitiesObject['tags']['codigoCancelamentoAlterada'] ? particularitiesObject['tags']['codigoCancelamentoAlterada'] : particularitiesObject['tags']['codigoCancelamento']}>${object.codigoCancelamento}</${particularitiesObject['tags']['codigoCancelamento']}>`;
+                            if (object.codigoCancelamento) {
+                                xmlNotSigned += `<${particularitiesObject['tags']['codigoCancelamentoAlterada'] ? particularitiesObject['tags']['codigoCancelamentoAlterada'] : particularitiesObject['tags']['codigoCancelamento']}>${object.codigoCancelamento}</${particularitiesObject['tags']['codigoCancelamento']}>`;
+                            }
                             xmlNotSigned += `</${particularitiesObject['tags']['infPedidoCancelamento']}>`;
                             xmlNotSigned += `</${particularitiesObject['tags']['pedido']}>`;
                             xmlNotSigned += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
@@ -160,8 +162,11 @@ const createXml = async (object, particularitiesObject) => {
                                         }
                                     })
                                 }
-                                try {
-                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
+                                let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
+
+                                    if (particularitiesObject['isSigned']['cancelarNfse']) { console.log(198);
+                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
+                                    }
 
                                     const result = {
                                         url: particularitiesObject['webserviceUrl'],
@@ -172,9 +177,6 @@ const createXml = async (object, particularitiesObject) => {
                                     }
 
                                     resolve(result);
-                                } catch (error) {
-                                    console.error(error);
-                                }
                             }).catch(err => {
                                 console.error(err);
                             });
@@ -649,7 +651,7 @@ function addSignedXml(object, cert, particularitiesObject) {
 
             });
 
-            if (particularitiesObject['nfseKeyword'] === 'portoalegre') {
+            if (particularitiesObject['isSigned'] && particularitiesObject['isSigned']['infRps']) {
                 xmlToBeSignedArray.map((rps, index) => {
                     createSignature(rps, cert, 'InfRps')
                         .then(createdSignatureXml => {
@@ -688,7 +690,7 @@ function createSignature(xmlToBeSigned, cert, xmlElement, isEmptyUri = null) {
                         message: 'Erro na assinatura de nota',
                         error: xmlSignedError
                     }
-                    console.error(result, 684);
+                    console.error(xmlToBeSigned, 684);
                     reject(result);
                 });
         } catch (error) {
@@ -698,8 +700,8 @@ function createSignature(xmlToBeSigned, cert, xmlElement, isEmptyUri = null) {
     })
 }
 
-const settingsControllerAsync = (object, city, model) => {
-    return settingsController.setParticularities(object, city, model);
+const settingsControllerAsync = (object, city) => {
+    return settingsController.setParticularities(object, city);
 }
 
 module.exports = {

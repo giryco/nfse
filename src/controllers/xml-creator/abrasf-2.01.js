@@ -15,10 +15,10 @@ const d = new Date();
 const timestamp = Date.now();
 const numeroLote = timestamp.toString().substring(4, 13) + (d.getYear() - 100);
 
-const setRequirements = (object, city, model) => {
+const setRequirements = (object, city) => {
     return new Promise((resolve, reject) => {
         try {
-            const particularitiesObject = settingsControllerAsync(object, city, model);
+            const particularitiesObject = settingsControllerAsync(object, city);
 
             createXml(object, particularitiesObject)
                 .then(res => {
@@ -731,8 +731,8 @@ function createSignature(xmlToBeSigned, cert, xmlElement, isEmptyUri = null) {
     })
 }
 
-const settingsControllerAsync = (object, city, model) => {
-    return settingsController.setParticularities(object, city, model);
+const settingsControllerAsync = (object, city) => {
+    return settingsController.setParticularities(object, city);
 }
 
 module.exports = {

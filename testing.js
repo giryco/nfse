@@ -275,7 +275,7 @@ const consultarLoteRpsNotaCarioca = {
 		"cpfCnpj": "10393366000121",
         "inscricaoMunicipal": "04386965"
 	},
-    "protocolo": "00000000000000000000000000000000000000000002310564"
+    "protocolo": "00000000000000000000000000000000000000000002310676"
 };
 
 const cancelarNfseGinfesItu = {
@@ -293,4 +293,4 @@ const cancelarNfseGinfesItu = {
 	"numeroNfse": 417
 };
 
-nfse.nfse(enviarLoteRpsCatalao);
+nfse.nfse(enviarLoteRpsGinfesItu);
