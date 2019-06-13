@@ -78,15 +78,15 @@ const createXml = async (object, particularitiesObject) => {
                                     createSignature(xml, cert, 'LoteRps')
                                         .then(xmlSignature => {
                                             if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) { console.log(__dirname + particularitiesObject['xsds']['enviarLoteRps'], 82);
+                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
                                                     if (err) {
                                                         console.error(err);
-                                                        resolve(err);
+                                                        return resolve(err);
                                                     }
             
                                                     if (!validatorResult.valid) {
                                                         console.error(validatorResult);
-                                                        resolve(validatorResult);
+                                                        return resolve(validatorResult);
                                                     }
                                                 })
                                             }

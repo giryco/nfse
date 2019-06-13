@@ -22,10 +22,19 @@ const sendNfselController = require('./send-nfse');
 
 const nfse = (newObject) => {
     object = newObject;
-
-    findCityByCodeAsync(object.config.codigoMunicipio);
-    findModelByKeywordAsync(city.nfseKeyword);
-    setModelToSendAsync(city, model);
+    return new Promise((resolve, reject) => {
+        findCityByCodeAsync(object.config.codigoMunicipio);
+        findModelByKeywordAsync(city.nfseKeyword);
+        setModelToSend(city, model)
+            .then(res => {
+                console.log(res, 30);
+                resolve(res);
+            })
+            .catch(rej => {
+                console.error(rej);
+                reject(rej);
+            })
+    })
 }
 
 const findCityByCode = (cityCode) => {
@@ -63,47 +72,52 @@ const findModelByKeyword = (nfseKeyword) => {
 
 
 const setModelToSend = (city, model) => {
-    try {
-        // Bizarre exceptions: start
-        if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
-            model.model = 'abrasf2.01'; console.log(64);
-        }
-        // Bizarre exceptions: end
-        if (model.model === 'abrasf1.00') {
-            abrasf100Controller.setRequirements(object, city, model)
-                .then(res => {
-                    sendNfselController.webServiceRequest(res, object)
-                        .then(resSentXml => {
-                            console.log(resSentXml.request.body, 67);
-                            console.log(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
-                        })
-                        .catch(rejSentXml => {
-                            console.error(rejSentXml, 70);
-                        })
-                })
-                .catch(rej => {
-                    console.error(rej);
-                })
-        }
+    return new Promise((resolve, reject) => {
+        try {
+            // Bizarre exceptions: start
+            if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
+                model.model = 'abrasf2.01';
+                console.log(64);
+            }
+            // Bizarre exceptions: end
+            if (model.model === 'abrasf1.00') {
+                abrasf100Controller.setRequirements(object, city, model)
+                    .then(res => {
+                        sendNfselController.webServiceRequest(res, object)
+                            .then(resSentXml => {
+                                resolve(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
+                            })
+                            .catch(rejSentXml => {
+                                console.error(rejSentXml, 70);
+                                reject(rejSentXml);
+                            })
+                    })
+                    .catch(rej => {
+                        console.error(rej);
+                    })
+            }
 
-        if (model.model === 'abrasf2.01') {
-            abrasf201Controller.setRequirements(object, city, model)
-                .then(res => {
-                    sendNfselController.webServiceRequest(res, object)
-                        .then(resSentXml => {
-                            console.log(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'), 94);
-                        })
-                        .catch(rejSentXml => {
-                            console.error(rejSentXml, 97);
-                        })
-                })
-                .catch(rej => {
-                    console.error(rej);
-                })
+            if (model.model === 'abrasf2.01') {
+                abrasf201Controller.setRequirements(object, city, model)
+                    .then(res => {
+                        sendNfselController.webServiceRequest(res, object)
+                            .then(resSentXml => {
+                                resolve(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
+                            })
+                            .catch(rejSentXml => {
+                                console.error(rejSentXml, 97);
+                                reject(rejSentXml);
+                            })
+                    })
+                    .catch(rej => {
+                        reject(rej);
+                        console.error(rej);
+                    })
+            }
+        } catch (error) {
+            console.error(error);
         }
-    } catch (error) {
-        console.error(error);
-    }
+    });
 }
 
 
