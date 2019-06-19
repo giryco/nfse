@@ -1,5 +1,5 @@
 const nfse = require('../../../');
-const cancelarNfseNotaCarioca = {
+const cancelarNfseCatalao = {
     "config": {
 		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-catalao2.pfx",
         "senhaDoCertificado": "502874",
@@ -9,8 +9,10 @@ const cancelarNfseNotaCarioca = {
 	},
 	"prestador": {
 		"cpfCnpj": "10885840000132",
-        "inscricaoMunicipal": "110130"
+        "inscricaoMunicipal": "110130",
+        "codigoMunicipio": "5205109"
 	},
-	"numeroNfse": 417
+	"numeroNfse": 145331,
+    "codigoCancelamento": 1
 };
-nfse.nfse(cancelarNfseNotaCarioca);
+nfse.nfse(cancelarNfseCatalao);

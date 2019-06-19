@@ -31,10 +31,10 @@ const enviarLoteRpsPortoAlegre = {
             "baseCalculo": 105.00,
             "aliquota": 0.0200,
             "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1701",
-            "codigoTributacaoMunicipio": "17.01.01 ",
-            "discriminacao": "assessoria ou consultoria de qualquer natureza, não especificada",
-            "codigoMunicipio": "3304557"
+            "itemListaServico": "11.04",
+            "codigoTributacaoMunicipio": "110400100",
+            "discriminacao": "Carga, descarga e arrumação de bens de qualquer espécie",
+            "codigoMunicipio": "4314902"
         },
         "prestador": {
             "cpfCnpj": "26390085000317",
@@ -49,7 +49,7 @@ const enviarLoteRpsPortoAlegre = {
                 "numero": "35",
                 "bairro": "centro",
                 "codigoMunicipio": "3304557",
-                "uf": "rj",
+                "uf": "RJ",
                 "cep": "20040915"
             },
             "contato": {

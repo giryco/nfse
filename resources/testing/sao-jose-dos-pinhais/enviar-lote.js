@@ -31,8 +31,8 @@ const enviarLoteRpsSaoJoseDosPinhais = {
             "baseCalculo": 105.00,
             "aliquota": 0.0200,
             "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1701",
-            "codigoTributacaoMunicipio": "170101",
+            "itemListaServico": "5211",
+            "codigoTributacaoMunicipio": "521170101",
             "discriminacao": "assessoria ou consultoria de qualquer natureza, não especificada",
             "codigoMunicipio": "3304557"
         },

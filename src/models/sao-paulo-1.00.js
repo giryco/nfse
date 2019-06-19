@@ -1,9 +1,7 @@
 const saopaulo100 = {
-    pedidoCancelamentoNfe: 'PedidoCancelamentoNFe',
-    codigoVerificacao: 'CodigoVerificacao',
-    assinaturaCancelamento: 'AssinaturaCancelamento',
-    pedidoConsultaLote: 'PedidoConsultaLote',
     pedidoEnvioLoteRps: 'PedidoEnvioLoteRPS',
+    pedidoCancelamentoNfe: 'PedidoCancelamentoNFe',
+    pedidoConsultaLote: 'PedidoConsultaLote',
     cabecalho: 'Cabecalho',
     cpfCnpjRemetente: 'CPFCNPJRemetente',
     transacao: 'transacao',
@@ -62,7 +60,9 @@ const saopaulo100 = {
     numeroLote: 'NumeroLote',
     detalhe: 'Detalhe',
     chaveNfe: 'ChaveNFe',
-    numeroNfe: 'NumeroNFe'
+    numeroNfe: 'NumeroNFe',
+    codigoVerificacao: 'CodigoVerificacao',
+    assinaturaCancelamento: 'AssinaturaCancelamento'
 };
 
 module.exports = {

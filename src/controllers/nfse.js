@@ -27,8 +27,12 @@ const nfse = (newObject) => {
         findModelByKeywordAsync(city.nfseKeyword);
         setModelToSend(city, model)
             .then(res => {
-                console.log(res, 30);
-                resolve(res);
+                const result = {
+                    request: res.request,
+                    response: res.response
+                }
+                console.log(result, 30);
+                resolve(result.response);
             })
             .catch(rej => {
                 console.error(rej);
@@ -85,7 +89,11 @@ const setModelToSend = (city, model) => {
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
                             .then(resSentXml => {
-                                resolve(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
+                                const result = {
+                                    request: res,
+                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                };
+                                resolve(result);
                             })
                             .catch(rejSentXml => {
                                 console.error(rejSentXml, 70);
@@ -102,7 +110,11 @@ const setModelToSend = (city, model) => {
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
                             .then(resSentXml => {
-                                resolve(resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"'));
+                                const result = {
+                                    request: res,
+                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                };
+                                resolve(result);
                             })
                             .catch(rejSentXml => {
                                 console.error(rejSentXml, 97);
@@ -127,10 +139,6 @@ const findCityByCodeAsync = async (cityCode) => {
 
 const findModelByKeywordAsync = async (cityCode) => {
     await findModelByKeyword(cityCode);
-}
-
-const setModelToSendAsync = async (city, model) => {
-    await setModelToSend(city, model);
 }
 
 module.exports = {

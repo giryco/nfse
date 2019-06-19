@@ -30,10 +30,10 @@ const enviarLoteRpsCatalao = {
             "issRetido": 2,
             "valorIss": 2.10,
             "baseCalculo": 105.00,
-            "aliquota": 0.05,
+            "aliquota": 2,
             "valorLiquidoNfse": 105.00,
-            "itemListaServico": "6311",
-            "codigoTributacaoMunicipio": "6311900",
+            "itemListaServico": "1.01",
+            "codigoTributacaoMunicipio": "010101",
             "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
             "codigoMunicipio": "5205109",
             "codigoPais": "1058",
@@ -45,20 +45,19 @@ const enviarLoteRpsCatalao = {
             "inscricaoMunicipal": "110130"
         },
         "tomador": {
-            "cpfCnpj": "70523431000118",
-            "inscricaoMunicipal": "0743140200169",
-            "razaoSocial": "ALANA E JOSEFA CONSTRUCOES LTDA",
+            "cpfCnpj": "00712712000214",
+            "razaoSocial": "2M EMPRESA DE TURISMO LTDA",
             "endereco": {
-                "endereco": "Rua Manuel de Autoguia",
-                "numero": "791",
-                "bairro": "TATUAPE",
-                "codigoMunicipio": "3550308",
-                "uf": "SP",
-                "cep": "33130208"
+                "endereco": "RUA VISC DE PIRAJA",
+                "numero": "437",
+                "bairro": "ipanema",
+                "codigoMunicipio": "3304557",
+                "uf": "rj",
+                "cep": "22410003"
             },
             "contato": {
-                "telefone": "8232211212",
-                "email": "analu-melo@hotmail.com"
+                "telefone": "2125210734",
+                "email": "dekolerj@gmail.com"
             }
         }
     }]

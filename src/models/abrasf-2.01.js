@@ -12,7 +12,6 @@ const abrasf201 = {
     infDeclaracaoPrestacaoServico: "InfDeclaracaoPrestacaoServico",
     rps: "Rps",
     identificacaoRps: "IdentificacaoRps",
-    numero: "Numero",
     serie: "Serie",
     tipo: "Tipo",
     dataEmissao: "DataEmissao",
@@ -49,15 +48,12 @@ const abrasf201 = {
     numeroProcesso: "NumeroProcesso",
     prestador: "Prestador",
     cpfCnpj: "CpfCnpj",
-    inscricaoMunicipal: "InscricaoMunicipal",
     tomador: "Tomador",
     identificacaoTomador: "IdentificacaoTomador",
     cpfCnpj: "CpfCnpj",
-    inscricaoMunicipal: "InscricaoMunicipal",
     razaoSocial: "RazaoSocial",
     endereco: "Endereco",
     endereco: "Endereco",
-    numero: "Numero",
     complemento: "Complemento",
     bairro: "Bairro",
     codigoMunicipio: "CodigoMunicipio",
@@ -70,7 +66,6 @@ const abrasf201 = {
     intermediario: "Intermediario",
     identificacaoIntermediario: "IdentificacaoIntermediario",
     cpfCnpj: "CpfCnpj",
-    inscricaoMunicipal: "InscricaoMunicipal",
     razaoSocial: "RazaoSocial",
     construcaoCivil: "ConstrucaoCivil",
     codigoObra: "CodigoObra",
@@ -79,7 +74,12 @@ const abrasf201 = {
     optanteSimplesNacional: "OptanteSimplesNacional",
     incentivoFiscal: "IncentivoFiscal",
     numeroNfse: "NumeroNfse",
-    cnpj: "Cnpj"
+    cnpj: "Cnpj",
+    protocolo: "Protocolo",
+    pedido: "Pedido",
+    infPedidoCancelamento: "InfPedidoCancelamento",
+    identificacaoNfse: "IdentificacaoNfse",
+    codigoCancelamento: "CodigoCancelamento"
 };
 
 module.exports = {
