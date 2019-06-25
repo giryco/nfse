@@ -88,7 +88,6 @@ const createXml = async (object, particularitiesObject) => {
                                                         console.error(validatorResult);
                                                         return resolve(validatorResult);
                                                     }
-                                                    console.log(validatorResult.valid, 90);
                                                 })
                                             }
                                             try {
@@ -178,7 +177,7 @@ const createXml = async (object, particularitiesObject) => {
                                     if (particularitiesObject['isSigned']['cancelarNfse']) {
                                         xml = `<${particularitiesObject['tags']['cancelarNfseEnvioAlterada'] ? particularitiesObject['tags']['cancelarNfseEnvioAlterada'] : particularitiesObject['tags']['cancelarNfseEnvio']}>`;
                                         xml += xmlSignature;
-                                        xml += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`; console.log(xml, 181);
+                                        xml += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
 
                                         xml = particularitiesObject['envelopment'].replace('__xml__', xml);
                                     } else {
@@ -243,7 +242,6 @@ const createXml = async (object, particularitiesObject) => {
                                     let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
                                     if (particularitiesObject['isSigned']['consultarLoteRps']) {
-                                        console.log(198);
                                         xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
                                     }
 
@@ -703,7 +701,7 @@ function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUr
                 signatureId = null;
             }
 
-            if (!isEmptyUri) { console.log(706);
+            if (!isEmptyUri) {
                 isEmptyUri = null;
             }
             xmlSignatureController.addSignatureToXml(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri)
