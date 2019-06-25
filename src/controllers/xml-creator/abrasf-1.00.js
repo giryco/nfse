@@ -666,7 +666,7 @@ function addSignedXml(object, cert, particularitiesObject) {
                 xmlToBeSigned = xmlToBeSigned.replace(regexUnique, uniqueValue + index);
 
                 xmlToBeSignedArray.push(xmlToBeSigned);
-
+                xmlToBeSigned = '';
             });
 
             if (particularitiesObject['isSigned'] && particularitiesObject['isSigned']['infRps']) {

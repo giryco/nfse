@@ -93,7 +93,6 @@ const createXml = (object, particularitiesObject) => {
                                             }
 
                                             let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
-                                            console.log(xml, 79)
 
                                             if (!validatorResult.valid) {
                                                 console.error(validatorResult);
@@ -521,7 +520,7 @@ function addSignedXml(object, cert, particularitiesObject) {
         object.rps.forEach((r, index) => {
             let numeroRps = r.numero ? r.numero : timestamp + index;
             let serieRps = r.serie ? r.serie : 'RPS';
-            let baseCalculoRps = r.baseCalculo ? r.baseCalculo : (r.servico.valorServicos - r.servico.valorDeducoes);
+            // let baseCalculoRps = r.baseCalculo ? r.baseCalculo : (r.servico.valorServicos - r.servico.valorDeducoes);
             let prestadorCnpj;
             let prestadorIncricaoMunicipal;
             if (r.prestador) {
@@ -725,7 +724,7 @@ function addSignedXml(object, cert, particularitiesObject) {
             xmlToBeSigned = xmlToBeSigned.replace(regexUnique, uniqueValue + index);
 
             xmlToBeSignedArray.push(xmlToBeSigned);
-
+            xmlToBeSigned = '';
         });
 
         if (particularitiesObject['nfseKeyword'] === 'catalao') {
