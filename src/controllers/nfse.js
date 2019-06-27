@@ -20,6 +20,11 @@ const abrasf204Controller = require('./xml-creator/abrasf-2.04');
 const saopaulo100Controller = require('./xml-creator/sao-paulo-1.00');
 const sendNfselController = require('./send-nfse');
 
+/**
+ * A função nfse tem como parâmetro o objeto com os valores do xml que será montado e enviado para o webservice do município declarado também neste objeto
+ * Os detalhes de montagem deste objeto estão em nos arquivos de teste na pasta resource/testing deste mesmo projeto
+ * @param {Object} newObject 
+ */
 const nfse = (newObject) => {
     object = newObject;
     return new Promise((resolve, reject) => {
@@ -41,6 +46,11 @@ const nfse = (newObject) => {
     })
 }
 
+/**
+ * A função findCityByCode tem como parâmetro o código de município declarado no objeto recebido pela função nfse
+ * Esta função tem por objetivo encontrar informações necessárias para criação e envio da nota para o webservice correto e montagem da DANFE no arquivo cities.json da pasta resources/json deste projeto
+ * @param {String} cityCode 
+ */
 const findCityByCode = (cityCode) => {
     try {
         for (let i = 0; i < cities.length; i++) {
@@ -54,6 +64,11 @@ const findCityByCode = (cityCode) => {
     }
 }
 
+/**
+ * A função nfseKeyword tem como parâmetro a palavra chave (nfseKeyword) encontrada no município definido na função findCityByCode
+ * Esta função tem por objetivo determinar que modelo ABRASF (ou São Paulo) que deve ser seguido para a montagem do XML de acordo com o arquivo nfse-keyword-model-dictionary.json da pasta resources/json deste projeto
+ * @param {String} nfseKeyword 
+ */
 const findModelByKeyword = (nfseKeyword) => {
     try {
         for (let i = 0; i < nfseKeywordModelDictionary.length; i++) {
@@ -74,18 +89,22 @@ const findModelByKeyword = (nfseKeyword) => {
     }
 }
 
-
+/**
+ * A função setModelToSend tem como parâmetros o objeto city, definido na função findCityByCode, e o objeto model, definido na função findModelByKeyword
+ * Esta função tem por objetivo utilizar do modelo de XML definido na função findModelByKeyword de acordo com os arquivos presentes na pasta src/controllers/xml-creator consideradas as peculiariedades definidas no arquivo settings.js na pasta src/controllers e os modelos em src/models
+ * @param {Object} city 
+ * @param {Object} model 
+ */
 const setModelToSend = (city, model) => {
     return new Promise((resolve, reject) => {
         try {
-            // Bizarre exceptions: start
+            // Strange exceptions: start
             if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
                 model.model = 'abrasf2.01';
-                console.log(64);
             }
-            // Bizarre exceptions: end
+            // Strange exceptions: end
             if (model.model === 'abrasf1.00') {
-                abrasf100Controller.setRequirements(object, city, model)
+                abrasf100Controller.setRequirements(object, city)
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
                             .then(resSentXml => {
@@ -103,10 +122,27 @@ const setModelToSend = (city, model) => {
                     .catch(rej => {
                         console.error(rej);
                     })
-            }
-
-            if (model.model === 'abrasf2.01') {
-                abrasf201Controller.setRequirements(object, city, model)
+            } else if (model.model === 'abrasf2.01') {
+                abrasf201Controller.setRequirements(object, city)
+                    .then(res => {
+                        sendNfselController.webServiceRequest(res, object)
+                            .then(resSentXml => {
+                                const result = {
+                                    request: res,
+                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                };
+                                resolve(result);
+                            })
+                            .catch(rejSentXml => {
+                                reject(rejSentXml);
+                            })
+                    })
+                    .catch(rej => {
+                        reject(rej);
+                        console.error(rej);
+                    })
+            } else if (model.model === 'saopaulo1.00') {
+                saopaulo100Controller.setRequirements(object, city)
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
                             .then(resSentXml => {
@@ -125,6 +161,8 @@ const setModelToSend = (city, model) => {
                         reject(rej);
                         console.error(rej);
                     })
+            } else {
+                resolve({message: 'Nenhum modelo encontrado'})
             }
         } catch (error) {
             console.error(error);

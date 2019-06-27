@@ -39,7 +39,8 @@ const enviarLoteRpsGinfesItu = {
         },
         "prestador": {
             "cpfCnpj": "17845667000198",
-            "inscricaoMunicipal": "25099"
+            "inscricaoMunicipal": "25099",
+            "codigoMunicipio": "3523909"
         },
         "tomador": {
             "cpfCnpj": "70523431000118",

@@ -28,4 +28,12 @@
 }, {
     "model": "abrasf2.04",
     "filename": "abrasf2.04.xsd"
+}, {
+    "model": "saopaulo1.00",
+    "filename": "sao-paulo1.00.xsd",
+    "nfseKeyword": [
+        {
+            "name": "saopaulo"
+        }
+    ]
 }]

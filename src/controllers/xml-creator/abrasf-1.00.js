@@ -10,17 +10,16 @@ const xmlSignatureController = new XmlSignatureController();
 // Controllers
 const settingsController = require('../settings');
 
-//Global contants
-const d = new Date();
-const timestamp = Date.now();
-const numeroLote = timestamp.toString().substring(4, 13) + (d.getYear() - 100);
-
 const setRequirements = (object, city) => {
+    const d = new Date();
+    const timestamp = Date.now();
+    const numeroLote = timestamp.toString().substring(4, 13) + (d.getYear() - 100);
+
     return new Promise((resolve, reject) => {
         try {
             const particularitiesObject = settingsControllerAsync(object, city);
 
-            createXml(object, particularitiesObject)
+            createXml(object, particularitiesObject, numeroLote)
                 .then(res => {
                     resolve(res);
                 })
@@ -33,7 +32,7 @@ const setRequirements = (object, city) => {
     })
 }
 
-const createXml = async (object, particularitiesObject) => {
+const createXml = async (object, particularitiesObject, numeroLote) => {
     return new Promise((resolve, reject) => {
         try {
             const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
@@ -66,7 +65,7 @@ const createXml = async (object, particularitiesObject) => {
 
                             xml = xml.replace(regexUnique, uniqueValue);
 
-                            addSignedXml(object, cert, particularitiesObject)
+                            addSignedXml(object, cert, particularitiesObject, numeroLote)
                                 .then(signedXmlRes => {
                                     signedXmlRes.forEach(element => {
                                         xml += element;
@@ -77,19 +76,19 @@ const createXml = async (object, particularitiesObject) => {
 
                                     createSignature(xml, cert, 'LoteRps')
                                         .then(xmlSignature => {
-                                            if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                                    if (err) {
-                                                        console.error(err);
-                                                        return resolve(err);
-                                                    }
+                                            // if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                            //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                            //         if (err) {
+                                            //             console.error(err);
+                                            //             return resolve(err);
+                                            //         }
 
-                                                    if (!validatorResult.valid) {
-                                                        console.error(validatorResult);
-                                                        return resolve(validatorResult);
-                                                    }
-                                                })
-                                            }
+                                            //         if (!validatorResult.valid) {
+                                            //             console.error(validatorResult);
+                                            //             return resolve(validatorResult);
+                                            //         }
+                                            //     })
+                                            // }
                                             try {
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
@@ -141,9 +140,11 @@ const createXml = async (object, particularitiesObject) => {
                             if (object.prestador.inscricaoMunicipal && object.prestador.inscricaoMunicipal != '') {
                                 xmlNotSigned += `<${particularitiesObject['tags']['inscricaoMunicipalAlterada'] ? particularitiesObject['tags']['inscricaoMunicipalAlterada'] : particularitiesObject['tags']['inscricaoMunicipal']}>${object.prestador.inscricaoMunicipal}</${particularitiesObject['tags']['inscricaoMunicipal']}>`;
                             }
-                            xmlNotSigned += `<${particularitiesObject['tags']['codigoMunicipioAlterada'] ? particularitiesObject['tags']['codigoMunicipioAlterada'] : particularitiesObject['tags']['codigoMunicipio']}>${object.config.codigoMunicipio}</${particularitiesObject['tags']['codigoMunicipio']}>`;
+                            if (object.config.codigoMunicipio && object.config.codigoMunicipio != '') {
+                                xmlNotSigned += `<${particularitiesObject['tags']['codigoMunicipioAlterada'] ? particularitiesObject['tags']['codigoMunicipioAlterada'] : particularitiesObject['tags']['codigoMunicipio']}>${object.config.codigoMunicipio}</${particularitiesObject['tags']['codigoMunicipio']}>`;
+                            }
                             xmlNotSigned += `</${particularitiesObject['tags']['identificacaoNfse']}>`;
-                            if (object.codigoCancelamento) {
+                            if (object.codigoCancelamento && object.codigoCancelamento != '') {
                                 xmlNotSigned += `<${particularitiesObject['tags']['codigoCancelamentoAlterada'] ? particularitiesObject['tags']['codigoCancelamentoAlterada'] : particularitiesObject['tags']['codigoCancelamento']}>${object.codigoCancelamento}</${particularitiesObject['tags']['codigoCancelamento']}>`;
                             }
                             xmlNotSigned += `</${particularitiesObject['tags']['infPedidoCancelamento']}>`;
@@ -152,19 +153,19 @@ const createXml = async (object, particularitiesObject) => {
                             xmlNotSigned = xmlNotSigned.replace(regexUnique, uniqueValue);
                             createSignature(xmlNotSigned, cert, 'InfPedidoCancelamento', particularitiesObject['isSigned']['signatureId'], null)
                                 .then(xmlSignature => {
-                                    if (particularitiesObject['xsds']['cancelarNfse']) {
-                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
-                                            if (err) {
-                                                console.error(err);
-                                                resolve(err);
-                                            }
+                                    // if (particularitiesObject['xsds']['cancelarNfse']) {
+                                    //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
+                                    //         if (err) {
+                                    //             console.error(err);
+                                    //             resolve(err);
+                                    //         }
 
-                                            if (!validatorResult.valid) {
-                                                console.error(validatorResult);
-                                                resolve(validatorResult);
-                                            }
-                                        })
-                                    }
+                                    //         if (!validatorResult.valid) {
+                                    //             console.error(validatorResult);
+                                    //             resolve(validatorResult);
+                                    //         }
+                                    //     })
+                                    // }
 
                                     // This tag is here so the xml can be correctly signed
                                     let xml = `<${particularitiesObject['tags']['cancelarNfseEnvioAlterada'] ? particularitiesObject['tags']['cancelarNfseEnvioAlterada'] : particularitiesObject['tags']['cancelarNfseEnvio']}>`;
@@ -489,8 +490,10 @@ module.exports = {
     createXml
 }
 
-function addSignedXml(object, cert, particularitiesObject) {
+function addSignedXml(object, cert, particularitiesObject, numeroLote) {
     return new Promise((resolve, reject) => {
+        const timestamp = Date.now();
+
         try {
             let uniqueValue = numeroLote;
             let regexUnique = new RegExp('_uniqueValue', 'g');
@@ -500,14 +503,13 @@ function addSignedXml(object, cert, particularitiesObject) {
             object.rps.forEach((r, index) => {
                 let numeroRps = r.numero ? r.numero : timestamp + index;
                 let serieRps = r.serie ? r.serie : 'RPS';
-                let baseCalculoRps = r.baseCalculo ? r.baseCalculo : (r.servico.valorServicos - r.servico.valorDeducoes);
                 let prestadorCnpj;
                 let prestadorIncricaoMunicipal;
                 if (r.prestador) {
-                    if (r.prestador.cpfCnpj) {
+                    if (r.prestador.cpfCnpj && r.prestador.cpfCnpj != '') {
                         prestadorCnpj = r.prestador.cpfCnpj.replace(/[^\d]+/g, '');
                     }
-                    if (r.prestador.inscricaoMunicipal) {
+                    if (r.prestador.inscricaoMunicipal && r.prestador.inscricaoMunicipal != '') {
                         prestadorIncricaoMunicipal = r.prestador.inscricaoMunicipal;
                     }
                 }
@@ -522,74 +524,74 @@ function addSignedXml(object, cert, particularitiesObject) {
                     xmlToBeSigned += `<${particularitiesObject['tags']['tipo']}>` + r.tipo + `</${particularitiesObject['tags']['tipo']}>`;
                 }
                 xmlToBeSigned += `</${particularitiesObject['tags']['identificacaoRps']}>`;
-                if (r.dataEmissao) {
+                if (r.dataEmissao && r.dataEmissao != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['dataEmissao']}>` + r.dataEmissao.replace(/\s/g, 'T') + `</${particularitiesObject['tags']['dataEmissao']}>`;
                 }
-                if (r.naturezaOperacao) {
+                if (r.naturezaOperacao && r.naturezaOperacao != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['naturezaOperacao']}>` + r.naturezaOperacao + `</${particularitiesObject['tags']['naturezaOperacao']}>`;
                 }
                 if (r.regimeEspecialTributacao && r.regimeEspecialTributacao != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['regimeEspecialTributacao']}>` + r.regimeEspecialTributacao + `</${particularitiesObject['tags']['regimeEspecialTributacao']}>`;
                 }
-                if (r.optanteSimplesNacional) {
+                if (r.optanteSimplesNacional && r.optanteSimplesNacional != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['optanteSimplesNacional']}>` + r.optanteSimplesNacional + `</${particularitiesObject['tags']['optanteSimplesNacional']}>`;
                 }
-                if (r.incentivadorCultural) {
+                if (r.incentivadorCultural && r.incentivadorCultural != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['incentivadorCultural']}>` + r.incentivadorCultural + `</${particularitiesObject['tags']['incentivadorCultural']}>`;
                 }
-                if (r.status) {
+                if (r.status && r.status != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['status']}>` + r.status + `</${particularitiesObject['tags']['status']}>`;
                 }
 
                 xmlToBeSigned += `<${particularitiesObject['tags']['servico']}>`;
                 xmlToBeSigned += `<${particularitiesObject['tags']['valores']}>`;
-                if (r.servico.valorServicos) {
+                if (r.servico.valorServicos && r.servico.valorServicos != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorServicos']}>` + r.servico.valorServicos + `</${particularitiesObject['tags']['valorServicos']}>`;
                 }
-                if (r.servico.valorDeducoes) {
+                if (r.servico.valorDeducoes && r.servico.valorDeducoes != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorDeducoes']}>` + r.servico.valorDeducoes + `</${particularitiesObject['tags']['valorDeducoes']}>`;
                 }
-                if (r.servico.valorPis) {
+                if (r.servico.valorPis && r.servico.valorPis != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorPis']}>` + r.servico.valorPis + `</${particularitiesObject['tags']['valorPis']}>`;
                 }
-                if (r.servico.valorCofins) {
+                if (r.servico.valorCofins && r.servico.valorCofins != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorCofins']}>` + r.servico.valorCofins + `</${particularitiesObject['tags']['valorCofins']}>`;
                 }
-                if (r.servico.valorInss) {
+                if (r.servico.valorInss && r.servico.valorInss != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorInss']}>` + r.servico.valorInss + `</${particularitiesObject['tags']['valorInss']}>`;
                 }
-                if (r.servico.valorIr) {
+                if (r.servico.valorIr && r.servico.valorIr != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorIr']}>` + r.servico.valorIr + `</${particularitiesObject['tags']['valorIr']}>`;
                 }
-                if (r.servico.valorCsll) {
+                if (r.servico.valorCsll && r.servico.valorCsll != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorCsll']}>` + r.servico.valorCsll + `</${particularitiesObject['tags']['valorCsll']}>`;
                 }
-                if (r.servico.issRetido) {
+                if (r.servico.issRetido && r.servico.issRetido != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['issRetido']}>` + r.servico.issRetido + `</${particularitiesObject['tags']['issRetido']}>`;
                 }
-                if (r.servico.valorIss) {
+                if (r.servico.valorIss && r.servico.valorIss != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorIss']}>` + r.servico.valorIss + `</${particularitiesObject['tags']['valorIss']}>`;
                 }
-                if (baseCalculoRps) {
-                    xmlToBeSigned += `<${particularitiesObject['tags']['baseCalculo']}>` + baseCalculoRps + `</${particularitiesObject['tags']['baseCalculo']}>`;
+                if (r.servico.baseCalculo && r.servico.baseCalculo != '') {
+                    xmlToBeSigned += `<${particularitiesObject['tags']['baseCalculo']}>` + r.servico.baseCalculo + `</${particularitiesObject['tags']['baseCalculo']}>`;
                 }
-                if (r.servico.aliquota) {
+                if (r.servico.aliquota && r.servico.aliquota != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['aliquota']}>` + r.servico.aliquota + `</${particularitiesObject['tags']['aliquota']}>`;
                 }
-                if (r.servico.valorLiquidoNfse) {
+                if (r.servico.valorLiquidoNfse && r.servico.valorLiquidoNfse != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorLiquidoNfse']}>` + r.servico.valorLiquidoNfse + `</${particularitiesObject['tags']['valorLiquidoNfse']}>`;
                 }
                 xmlToBeSigned += `</${particularitiesObject['tags']['valores']}>`;
-                if (r.servico.itemListaServico) {
+                if (r.servico.itemListaServico && r.servico.itemListaServico != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['itemListaServico']}>` + r.servico.itemListaServico + `</${particularitiesObject['tags']['itemListaServico']}>`;
                 }
                 if (r.servico.codigoTributacaoMunicipio && r.servico.codigoTributacaoMunicipio != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['codigoTributacaoMunicipio']}>` + r.servico.codigoTributacaoMunicipio + `</${particularitiesObject['tags']['codigoTributacaoMunicipio']}>`;
                 }
-                if (r.servico.discriminacao) {
+                if (r.servico.discriminacao && r.servico.discriminacao != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['discriminacao']}>` + r.servico.discriminacao + `</${particularitiesObject['tags']['discriminacao']}>`;
                 }
-                if (r.servico.codigoMunicipio) {
+                if (r.servico.codigoMunicipio && r.servico.codigoMunicipio != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['codigoMunicipio']}>` + r.servico.codigoMunicipio + `</${particularitiesObject['tags']['codigoMunicipio']}>`;
                 }
                 xmlToBeSigned += `</${particularitiesObject['tags']['servico']}>`;
@@ -607,7 +609,7 @@ function addSignedXml(object, cert, particularitiesObject) {
                 if (r.tomador) {
                     xmlToBeSigned += `<${particularitiesObject['tags']['tomador']}>`;
                     xmlToBeSigned += `<${particularitiesObject['tags']['identificacaoTomador']}>`;
-                    if (r.tomador.cpfCnpj) {
+                    if (r.tomador.cpfCnpj && r.tomador.cpfCnpj != '') {
                         xmlToBeSigned += `<${particularitiesObject['tags']['cpfCnpj']}>`;
                         if (r.tomador.cpfCnpj.replace(/[^\d]+/g, '').length === 11) {
                             xmlToBeSigned += `<${particularitiesObject['tags']['cpf']}>` + r.tomador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + `</${particularitiesObject['tags']['cpf']}>`;
@@ -622,27 +624,27 @@ function addSignedXml(object, cert, particularitiesObject) {
                         xmlToBeSigned += `<${particularitiesObject['tags']['inscricaoMunicipal']}>` + r.tomador.inscricaoMunicipal + `</${particularitiesObject['tags']['inscricaoMunicipal']}>`;
                     }
                     xmlToBeSigned += `</${particularitiesObject['tags']['identificacaoTomador']}>`;
-                    if (r.tomador.razaoSocial) {
+                    if (r.tomador.razaoSocial && r.tomador.razaoSocial != '') {
                         xmlToBeSigned += `<${particularitiesObject['tags']['razaoSocial']}>` + r.tomador.razaoSocial + `</${particularitiesObject['tags']['razaoSocial']}>`;
                     }
                     if (r.tomador.endereco) {
                         xmlToBeSigned += `<${particularitiesObject['tags']['endereco']}>`;
-                        if (r.tomador.endereco.endereco) {
+                        if (r.tomador.endereco.endereco && r.tomador.endereco.endereco != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['endereco']}>` + r.tomador.endereco.endereco + `</${particularitiesObject['tags']['endereco']}>`;
                         }
-                        if (r.tomador.endereco.numero) {
+                        if (r.tomador.endereco.numero && r.tomador.endereco.numero != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['numero']}>` + r.tomador.endereco.numero + `</${particularitiesObject['tags']['numero']}>`;
                         }
-                        if (r.tomador.endereco.bairro) {
+                        if (r.tomador.endereco.bairro && r.tomador.endereco.bairro != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['bairro']}>` + r.tomador.endereco.bairro + `</${particularitiesObject['tags']['bairro']}>`;
                         }
-                        if (r.tomador.endereco.codigoMunicipio) {
+                        if (r.tomador.endereco.codigoMunicipio && r.tomador.endereco.codigoMunicipio != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['codigoMunicipio']}>` + r.tomador.endereco.codigoMunicipio + `</${particularitiesObject['tags']['codigoMunicipio']}>`;
                         }
-                        if (r.tomador.endereco.uf) {
+                        if (r.tomador.endereco.uf && r.tomador.endereco.uf != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['uf']}>` + r.tomador.endereco.uf + `</${particularitiesObject['tags']['uf']}>`;
                         }
-                        if (r.tomador.endereco.cep) {
+                        if (r.tomador.endereco.cep && r.tomador.endereco.cep != '') {
                             xmlToBeSigned += `<${particularitiesObject['tags']['cep']}>` + r.tomador.endereco.cep + `</${particularitiesObject['tags']['cep']}>`;
                         }
                         xmlToBeSigned += `</${particularitiesObject['tags']['endereco']}>`;
