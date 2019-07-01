@@ -103,7 +103,6 @@ const createXml = (object, particularitiesObject) => {
                                             }
     
                                             let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
-                                            console.log(xml, 79)
     
                                             if (!validatorResult.valid) {
                                                 console.error(validatorResult);
@@ -152,7 +151,7 @@ const createXml = (object, particularitiesObject) => {
                         xmlNotSigned += `</${particularitiesObject['tags']['prestador']}>`;
                         xmlNotSigned += `<${particularitiesObject['tags']['numeroNfseAlterada'] ? particularitiesObject['tags']['numeroNfseAlterada'] : particularitiesObject['tags']['numeroNfse']}>${object.numeroNfse}</${particularitiesObject['tags']['numeroNfse']}>`;
                         xmlNotSigned += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
-                        console.log(xmlNotSigned, 143);
+                        
                         createSignature(xmlNotSigned, cert, 'CancelarNfseEnvio', true).then(xmlSignature => {
                             if (particularitiesObject['xsds']['cancelarNfse']) {
                                 validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
@@ -232,7 +231,7 @@ const createXml = (object, particularitiesObject) => {
                                     }
                                     let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
-                                    if (particularitiesObject['isSigned']['consultarLoteRps']) { console.log(198);
+                                    if (particularitiesObject['isSigned']['consultarLoteRps']) {
                                         xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
                                     }
 

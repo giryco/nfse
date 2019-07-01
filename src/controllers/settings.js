@@ -72,8 +72,8 @@ const setParticularities = (object, city) => {
                     particularitiesObject['tags']['quantidadeRpsAlterada'] = `${particularitiesObject['tags']['quantidadeRps']} xmlns="http://nfe.sjp.pr.gov.br/tipos_v03.xsd"`;
                     particularitiesObject['tags']['listaRpsAlterada'] = `${particularitiesObject['tags']['listaRps']} xmlns="http://nfe.sjp.pr.gov.br/tipos_v03.xsd"`;
                     particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} Id="_uniqueValue"`;
-                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://nfe.sjp.pr.gov.br"><soapenv:Header/><soapenv:Body><ns1:RecepcionarLoteRpsV3><arg0><![CDATA[<ns2:cabecalho xmlns:ns2="http://nfe.sjp.pr.gov.br/cabecalho_v03.xsd" versao="3"><versaoDados>3</versaoDados></ns2:cabecalho>]]></arg0><arg1><![CDATA[__xml__]]></arg1></ns1:RecepcionarLoteRpsV3></soapenv:Body></soapenv:Envelope>';
-                    // particularitiesObject['isSigned']['infRps'] = true;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://nfe.sjp.pr.gov.br"><soapenv:Header /><soapenv:Body><ns1:RecepcionarLoteRpsV3><arg0><![CDATA[<ns2:cabecalho xmlns:ns2="http://nfe.sjp.pr.gov.br/cabecalho_v03.xsd" versao="3"><versaoDados>3</versaoDados></ns2:cabecalho>]]></arg0><arg1><![CDATA[__xml__]]></arg1></ns1:RecepcionarLoteRpsV3></soapenv:Body></soapenv:Envelope>';
+                    particularitiesObject['isSigned']['isDifferentSignature'] = true;
                 }
 
                 if (object.config.acao === 'consultarLoteRps') {

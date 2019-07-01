@@ -19,7 +19,7 @@ const setRequirements = (object, city) => {
         try {
             const particularitiesObject = settingsControllerAsync(object, city);
             let isGinfes;
-            (city.nfseKeyword === 'ginfes') ? isGinfes = true : isGinfes = false;
+            (city.nfseKeyword === 'ginfes') ? isGinfes = true: isGinfes = false;
             createXml(object, particularitiesObject, numeroLote, isGinfes)
                 .then(res => {
                     resolve(res);
@@ -36,7 +36,7 @@ const setRequirements = (object, city) => {
 const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) => {
     return new Promise((resolve, reject) => {
         const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
+        
         switch (object.config.acao) {
             case 'enviarLoteRps':
                 try {
@@ -83,35 +83,51 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                                 xml += `</${particularitiesObject['tags']['listaRps']}>`;
                                 xml += `</${particularitiesObject['tags']['loteRps']}>`;
                                 xml += `</${particularitiesObject['tags']['enviarLoteRpsEnvio']}>`;
+                                
+                                let isEmptyUri = null;
+                                if (particularitiesObject['isSigned']['isEmptyUri']) {
+                                    isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'];
+                                }
 
-                                createSignature(xml, cert, 'LoteRps').then(xmlSignature => {
-                                    if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                            if (err) {
-                                                console.error(err);
-                                                resolve(err);
-                                            }
+                                let signatureId = null;
+                                if (particularitiesObject['isSigned']['signatureId']) {
+                                    signatureId = particularitiesObject['isSigned']['signatureId'];
+                                } 
 
-                                            let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
+                                let isDifferentSignature = false;
+                                if (particularitiesObject['isSigned']['isDifferentSignature']) {
+                                    isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'];
+                                }
 
-                                            if (!validatorResult.valid) {
-                                                console.error(validatorResult);
-                                                resolve(validatorResult);
-                                            }
+                                createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
+                                    .then(xmlSignature => {
+                                        if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                            validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                                if (err) {
+                                                    console.error(err);
+                                                    resolve(err);
+                                                }
 
-                                            const result = {
-                                                url: particularitiesObject['webserviceUrl'],
-                                                soapEnvelop: xml
-                                            }
-                                            if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
-                                                result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
-                                            }
-                                            resolve(result);
-                                        });
-                                    }
-                                }).catch(err => {
-                                    console.error(err);
-                                });
+                                                let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
+
+                                                if (!validatorResult.valid) {
+                                                    console.error(validatorResult);
+                                                    resolve(validatorResult);
+                                                }
+
+                                                const result = {
+                                                    url: particularitiesObject['webserviceUrl'],
+                                                    soapEnvelop: xml
+                                                }
+                                                if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
+                                                    result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
+                                                }
+                                                resolve(result);
+                                            });
+                                        }
+                                    }).catch(err => {
+                                        console.error(err);
+                                    });
                             })
                     });
                 } catch (error) {
@@ -141,8 +157,8 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                         }
 
                         let xmlNotSigned = `<${particularitiesObject['tags']['cancelarNfseEnvioAlterada'] ? particularitiesObject['tags']['cancelarNfseEnvioAlterada'] : particularitiesObject['tags']['cancelarNfseEnvio']}>`;
-                        if (isGinfes) { console.log(138);
-                            whereToSign = 'NumeroNfse';
+                        if (isGinfes) {
+                            whereToSign = 'CancelarNfseEnvio';
 
                             xmlNotSigned += `<${particularitiesObject['tags']['prestadorAlterada'] ? particularitiesObject['tags']['prestadorAlterada'] : particularitiesObject['tags']['prestador']}>`;
                             if (object.prestador.cpfCnpj) {
@@ -157,7 +173,7 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                             }
                             xmlNotSigned += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
 
-                            xmlNotSigned = xmlNotSigned.replace(regexUnique, uniqueValue); console.log(160);
+                            xmlNotSigned = xmlNotSigned.replace(regexUnique, uniqueValue);
                         } else {
                             xmlNotSigned += `<${particularitiesObject['tags']['pedidoAlterada'] ? particularitiesObject['tags']['pedidoAlterada'] : particularitiesObject['tags']['pedido']}>`;
                             xmlNotSigned += `<${particularitiesObject['tags']['infPedidoCancelamentoAlterada'] ? particularitiesObject['tags']['infPedidoCancelamentoAlterada'] : particularitiesObject['tags']['infPedidoCancelamento']}>`;
@@ -210,7 +226,7 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                             try {
                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
-                                if (particularitiesObject['isSigned']['cancelarNfse']) { console.log(213);
+                                if (particularitiesObject['isSigned']['cancelarNfse']) {
                                     xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
                                 }
 
@@ -777,7 +793,7 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
     })
 }
 
-function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri) {
+function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri, isDifferentSignature = false) {
     return new Promise((resolve, reject) => {
         if (!signatureId) {
             signatureId = null;
@@ -786,7 +802,7 @@ function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUr
         if (!isEmptyUri) {
             isEmptyUri = null;
         }
-        xmlSignatureController.addSignatureToXml(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri)
+        xmlSignatureController.addSignatureToXml(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri, isDifferentSignature)
             .then(xmlSigned => {
                 resolve(xmlSigned);
             })

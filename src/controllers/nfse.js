@@ -36,7 +36,7 @@ const nfse = (newObject) => {
                     request: res.request,
                     response: res.response
                 }
-                console.log(result, 30);
+                
                 resolve(result.response);
             })
             .catch(rej => {
@@ -98,12 +98,13 @@ const findModelByKeyword = (nfseKeyword) => {
 const setModelToSend = (city, model) => {
     return new Promise((resolve, reject) => {
         try {
+            const modelToCheck = {...model};
             // Strange exceptions: start
             if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
-                model.model = 'abrasf2.01';
+                modelToCheck.model = 'abrasf2.01';
             }
             // Strange exceptions: end
-            if (model.model === 'abrasf1.00') {
+            if (modelToCheck.model === 'abrasf1.00') {
                 abrasf100Controller.setRequirements(object, city)
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
@@ -122,7 +123,7 @@ const setModelToSend = (city, model) => {
                     .catch(rej => {
                         console.error(rej);
                     })
-            } else if (model.model === 'abrasf2.01') {
+            } else if (modelToCheck.model === 'abrasf2.01') {
                 abrasf201Controller.setRequirements(object, city)
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)
@@ -141,7 +142,7 @@ const setModelToSend = (city, model) => {
                         reject(rej);
                         console.error(rej);
                     })
-            } else if (model.model === 'saopaulo1.00') {
+            } else if (modelToCheck.model === 'saopaulo1.00') {
                 saopaulo100Controller.setRequirements(object, city)
                     .then(res => {
                         sendNfselController.webServiceRequest(res, object)

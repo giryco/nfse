@@ -74,7 +74,23 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                                     xml += `</${particularitiesObject['tags']['loteRps']}>`;
                                     xml += `</${particularitiesObject['tags']['enviarLoteRpsEnvio']}>`;
 
-                                    createSignature(xml, cert, 'LoteRps')
+                                    let isEmptyUri = null;
+                                    if (particularitiesObject['isSigned']['isEmptyUri']) {
+                                        isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'];
+                                    }
+
+                                    let signatureId = null;
+                                    if (particularitiesObject['isSigned']['signatureId']) {
+                                        signatureId = particularitiesObject['isSigned']['signatureId'];
+                                    }
+                                    
+
+                                    let isDifferentSignature = false;
+                                    if (particularitiesObject['isSigned']['isDifferentSignature']) {
+                                        isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'];
+                                    }
+
+                                    createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
                                         .then(xmlSignature => {
                                             // if (particularitiesObject['xsds']['enviarLoteRps']) {
                                             //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
@@ -131,7 +147,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             let uniqueValue = numeroLote;
                             let regexUnique = new RegExp('_uniqueValue', 'g');
 
-                            
+
                             let xmlNotSigned = `<${particularitiesObject['tags']['pedidoAlterada'] ? particularitiesObject['tags']['pedidoAlterada'] : particularitiesObject['tags']['pedido']}>`;
                             xmlNotSigned += `<${particularitiesObject['tags']['infPedidoCancelamentoAlterada'] ? particularitiesObject['tags']['infPedidoCancelamentoAlterada'] : particularitiesObject['tags']['infPedidoCancelamento']}>`;
                             xmlNotSigned += `<${particularitiesObject['tags']['identificacaoNfseAlterada'] ? particularitiesObject['tags']['identificacaoNfseAlterada'] : particularitiesObject['tags']['identificacaoNfse']}>`;
@@ -171,7 +187,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                                     let xml = `<${particularitiesObject['tags']['cancelarNfseEnvioAlterada'] ? particularitiesObject['tags']['cancelarNfseEnvioAlterada'] : particularitiesObject['tags']['cancelarNfseEnvio']}>`;
                                     xml += xmlNotSigned;
                                     xml += `</${particularitiesObject['tags']['cancelarNfseEnvio']}>`;
-                                    
+
 
                                     xml = particularitiesObject['envelopment'].replace('__xml__', xml);
 
@@ -182,7 +198,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                                         xml = particularitiesObject['envelopment'].replace('__xml__', xml);
                                     } else {
-                                        
+
                                     }
 
                                     const result = {
@@ -696,7 +712,7 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
     })
 }
 
-function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri) {
+function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri, isDifferentSignature = false) {
     return new Promise((resolve, reject) => {
         try {
             if (!signatureId) {
@@ -706,7 +722,7 @@ function createSignature(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUr
             if (!isEmptyUri) {
                 isEmptyUri = null;
             }
-            xmlSignatureController.addSignatureToXml(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri)
+            xmlSignatureController.addSignatureToXml(xmlToBeSigned, cert, xmlElement, signatureId, isEmptyUri, isDifferentSignature)
                 .then(xmlSigned => {
                     resolve(xmlSigned);
                 })
