@@ -129,6 +129,36 @@ nfse.nfse(consultarLoteRps)
 	});
 ```
 
+###Consultar NFSe por RPS
+```
+const nfse = require('nfse');
+
+const consultarNfseRps = {
+    "config": {
+		"diretorioDoCertificado": "/atalho/para/certificado.pfx",
+		"senhaDoCertificado": "su$S3nh@P4r@0C3Rt1fiC4d0",
+		"producaoHomologacao": "homologacao",
+		"codigoMunicipio": "3523909",
+        "acao": "consultarNfsePorRps"
+	},
+	"rps": {
+		"numero": "000000000",
+        "serie": "RPS",
+        "tipo": "1"
+	},
+	"prestador": {
+		"cpfCnpj": "00000000000000",
+        "inscricaoMunicipal": "00000"
+	}
+};
+nfse.nfse(consultarNfseRps)
+	.then(res => {
+		console.log(res);
+	}).catch(err => {
+		console.log(err)
+	});
+```
+
 ###Cancelar NFSE
 ```
 const nfse = require('nfse');

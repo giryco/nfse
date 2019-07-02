@@ -114,7 +114,7 @@ const setParticularities = (object, city) => {
             }
             break;
 
-        case 'riodejaneiro':
+        case 'riodejaneiro': // TO-DO: consultarNfsePorRps is returning an empty string, no error
             try {
                 object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl';
                 particularitiesObject['nfseKeyword'] = 'riodejaneiro';
@@ -130,6 +130,11 @@ const setParticularities = (object, city) => {
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://notacarioca.rio.gov.br/"><soapenv:Header/><soapenv:Body><not:ConsultarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
+                if (object.config.acao === 'consultarNfsePorRps') {
+                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://notacarioca.rio.gov.br/"><soapenv:Header/><soapenv:Body><not:ConsultarNfsePorRpsRequest><not:inputXML>__xml__</not:inputXML></not:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
+                }
                 if (object.config.acao === 'cancelarNfse') {
                     particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
@@ -144,7 +149,8 @@ const setParticularities = (object, city) => {
                 particularitiesObject['soapActions'] = {
                     enviarLoteRps: 'http://notacarioca.rio.gov.br/RecepcionarLoteRps',
                     consultarLoteRps: 'http://notacarioca.rio.gov.br/ConsultarLoteRps',
-                    cancelarNfse: 'http://notacarioca.rio.gov.br/CancelarNfse'
+                    cancelarNfse: 'http://notacarioca.rio.gov.br/CancelarNfse',
+                    consultarNfseRps: 'http://notacarioca.rio.gov.br/ConsultarNfsePorRps'
                 }
             } catch (error) {
                 console.error(error);
@@ -168,6 +174,11 @@ const setParticularities = (object, city) => {
                     particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><not:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></not:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+                }
+                if (object.config.acao === 'consultarNfsePorRps') {
+                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><ws:ConsultarNfsePorRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ws:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'cancelarNfse') {
                     particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
@@ -266,7 +277,7 @@ const setParticularities = (object, city) => {
                 break;
 
         default:
-            console.error();
+            console.error('Sem modelo padrão de NFSe definido para este município');
             break;
     }
 

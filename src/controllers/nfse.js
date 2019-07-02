@@ -114,6 +114,7 @@ const setModelToSend = (city, model) => {
                                     request: res,
                                     response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
                                 };
+                                
                                 resolve(result);
                             })
                             .catch(rejSentXml => {
@@ -156,7 +157,7 @@ const setModelToSend = (city, model) => {
                                 resolve(result);
                             })
                             .catch(rejSentXml => {
-                                console.error(rejSentXml, 97);
+                                console.error(rejSentXml);
                                 reject(rejSentXml);
                             })
                     })
