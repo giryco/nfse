@@ -1,7 +1,7 @@
 const nfse = require('../../..');
 const consultarLoteRpsGinfesItu = {
     "config": {
-		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+		"diretorioDoCertificado": "/home/ofm/resources/pfx/client-itu.pfx",
         "senhaDoCertificado": "brmed2018",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",

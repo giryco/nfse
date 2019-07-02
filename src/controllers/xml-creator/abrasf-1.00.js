@@ -21,13 +21,26 @@ const setRequirements = (object, city) => {
 
             createXml(object, particularitiesObject, numeroLote)
                 .then(res => {
-                    resolve(res);
+                    const result = {
+                        status: 200,
+                        message: res
+                    };
+
+                    resolve(result);
                 })
                 .catch(rej => {
-                    reject(rej);
+                    const result = {
+                        status: 500,
+                        message: rej
+                    };
+                    reject(result);
                 })
         } catch (error) {
-            reject(error);
+            const result = {
+                status: 500,
+                message: error
+            };
+            reject(result);
         }
     })
 }
@@ -83,7 +96,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                                     if (particularitiesObject['isSigned']['signatureId']) {
                                         signatureId = particularitiesObject['isSigned']['signatureId'];
                                     }
-                                    
+
 
                                     let isDifferentSignature = false;
                                     if (particularitiesObject['isSigned']['isDifferentSignature']) {
@@ -136,8 +149,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                 case 'cancelarNfse':
                     try {
-                        const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
                         }, (err, cert) => {
@@ -222,8 +233,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                 case 'consultarLoteRps':
                     try {
-                        const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
                         }, (err, cert) => {
@@ -283,8 +292,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                 case 'consultarNfsePorRps':
                     try {
-                        const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
                         }, (err, cert) => {
@@ -292,57 +299,78 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                                 resolve(err);
                             }
 
-                            let xml = '<ConsultarNfseRpsEnvio xmlns:ns3="http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd">';
-                            xml += '<IdentificacaoRps>';
-                            xml += '<Numero>' + object.identificacaoRps.numero + '</Numero>';
-                            xml += '<Serie>' + object.identificacaoRps.serie + '</Serie>';
-                            xml += '<Tipo>' + object.identificacaoRps.tipo + '</Tipo>';
-                            xml += '</IdentificacaoRps>';
-                            xml += '<Prestador>';
-                            xml += '<Cnpj>' + object.prestador.cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</Cnpj>';
-                            if (object.prestador.inscricaoMunicipal && object.prestador.inscricaoMunicipal != '') {
-                                xml += '<InscricaoMunicipal>' + object.prestador.inscricaoMunicipal + '</InscricaoMunicipal>';
+                            let xmlNotSigned = `<${particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] ? particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] : particularitiesObject['tags']['consultarNfseRpsEnvio']}>`;
+
+                            xmlNotSigned += `<${particularitiesObject['tags']['identificacaoRpsAlterada'] ? particularitiesObject['tags']['identificacaoRpsAlterada'] : particularitiesObject['tags']['identificacaoRps']}>`;
+                            if (object.rps.numero && object.rps.numero != '') {
+                                xmlNotSigned += `<${particularitiesObject['tags']['numeroAlterada'] ? particularitiesObject['tags']['numeroAlterada'] : particularitiesObject['tags']['numero']}>${object.rps.numero}</${particularitiesObject['tags']['numero']}>`;
                             }
-                            xml += '</Prestador>';
-                            xml += '</ConsultarNfseRpsEnvio>';
+                            if (object.rps.serie && object.rps.serie != '') {
+                                xmlNotSigned += `<${particularitiesObject['tags']['serieAlterada'] ? particularitiesObject['tags']['serieAlterada'] : particularitiesObject['tags']['serie']}>${object.rps.serie}</${particularitiesObject['tags']['serie']}>`;
+                            }
+                            if (object.rps.tipo && object.rps.tipo != '') {
+                                xmlNotSigned += `<${particularitiesObject['tags']['tipoAlterada'] ? particularitiesObject['tags']['tipoAlterada'] : particularitiesObject['tags']['tipo']}>${object.rps.tipo}</${particularitiesObject['tags']['tipo']}>`;
+                            }
+                            xmlNotSigned += `</${particularitiesObject['tags']['identificacaoRps']}>`;
 
-                            createSignature(xml, cert, 'ConsultarNfseRpsEnvio', particularitiesObject['isSigned']['signatureId'], true).then(xmlSignature => {
-                                validator.validateXML(xmlSignature, __dirname + '/../../../resources/xsd/ginfes/servico_consultar_nfse_rps_envio_v03.xsd', function (err, validatorResult) {
-                                    if (err) {
-                                        console.error(err);
-                                        resolve(err);
+                            xmlNotSigned += `<${particularitiesObject['tags']['prestadorAlterada'] ? particularitiesObject['tags']['prestadorAlterada'] : particularitiesObject['tags']['prestador']}>`;
+                            xmlNotSigned += `<${particularitiesObject['tags']['cnpjAlterada'] ? particularitiesObject['tags']['cnpjAlterada'] : particularitiesObject['tags']['cnpj']}>${object.prestador.cpfCnpj.replace(/\.|\/|\-|\s/g, '')}</${particularitiesObject['tags']['cnpj']}>`;
+                            if (object.prestador.inscricaoMunicipal && object.prestador.inscricaoMunicipal != '') {
+                                xmlNotSigned += `<${particularitiesObject['tags']['inscricaoMunicipalAlterada'] ? particularitiesObject['tags']['inscricaoMunicipalAlterada'] : particularitiesObject['tags']['inscricaoMunicipal']}>${object.prestador.inscricaoMunicipal}</${particularitiesObject['tags']['inscricaoMunicipal']}>`;
+                            }
+                            xmlNotSigned += `</${particularitiesObject['tags']['prestador']}>`;
+                            xmlNotSigned += `</${particularitiesObject['tags']['consultarNfseRpsEnvio']}>`;
+
+                            let isEmptyUri = null;
+                            if (particularitiesObject['isSigned']['isEmptyUri']) {
+                                isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'];
+                            }
+
+                            let signatureId = null;
+                            if (particularitiesObject['isSigned']['signatureId']) {
+                                signatureId = particularitiesObject['isSigned']['signatureId'];
+                            }
+
+
+                            let isDifferentSignature = false;
+                            if (particularitiesObject['isSigned']['isDifferentSignature']) {
+                                isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'];
+                            }
+
+                            createSignature(xmlNotSigned, cert, 'ConsultarNfseRpsEnvio', signatureId, isEmptyUri, isDifferentSignature)
+                                .then(xmlSignature => {
+                                    if (particularitiesObject['xsds']['consultarNfseRps']) {
+                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarNfseRps'], function (err, validatorResult) {
+                                            if (err) {
+                                                console.error(err);
+                                                resolve(err);
+                                            }
+
+                                            if (!validatorResult.valid) {
+                                                console.error(validatorResult);
+                                                resolve(validatorResult);
+                                            }
+                                        })
                                     }
+                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
-                                    if (!validatorResult.valid) {
-                                        console.error(validatorResult);
-                                        resolve(validatorResult);
+                                    if (particularitiesObject['isSigned']['consultarNfseRps']) {
+                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
                                     }
-
-                                    let xml = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
-                                    xml += '<soap:Body>';
-                                    xml += '<ns1:ConsultarNfsePorRpsV3 xmlns:ns1="' + particularitiesObject['urlXmlns'] + '">';
-                                    xml += '<arg0>';
-                                    xml += '<ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd">';
-                                    xml += '<versaoDados>3</versaoDados>';
-                                    xml += '</ns2:cabecalho>';
-                                    xml += '</arg0>';
-                                    xml += '<arg1>';
-                                    xml += xmlSignature;
-                                    xml += '</arg1>';
-                                    xml += '</ns1:ConsultarNfsePorRpsV3>';
-                                    xml += '</soap:Body>';
-                                    xml += '</soap:Envelope>';
 
                                     const result = {
                                         url: particularitiesObject['webserviceUrl'],
                                         soapEnvelop: xml
                                     }
 
+                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarNfseRps']) {
+                                        result['soapAction'] = particularitiesObject['soapActions']['consultarNfseRps'];
+                                    }
+
                                     resolve(result);
+                                }).catch(err => {
+                                    console.error(err);
                                 });
-                            }).catch(err => {
-                                console.error(err);
-                            });
                         });
                     } catch (error) {
                         reject(error);
@@ -351,8 +379,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                 case 'consultarSituacaoLoteRps':
                     try {
-                        const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
                         }, (err, cert) => {
@@ -416,8 +442,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                 case 'consultarNfse':
                     try {
-                        const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
-
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
                         }, (err, cert) => {
@@ -497,7 +521,18 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                     break;
             }
         } catch (error) {
-            reject(error);
+            let result = {
+                status: 500,
+                message: error
+            }
+            if (error.errno === -2) {
+                result = {
+                    ...result,
+                    message: 'PFX não encontrado'
+                }
+            }
+
+            reject(result);
         }
     })
 }

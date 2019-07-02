@@ -107,7 +107,8 @@ const setModelToSend = (city, model) => {
             if (modelToCheck.model === 'abrasf1.00') {
                 abrasf100Controller.setRequirements(object, city)
                     .then(res => {
-                        sendNfselController.webServiceRequest(res, object)
+                        const objectWithXml = res.message;
+                        sendNfselController.webServiceRequest(objectWithXml, object)
                             .then(resSentXml => {
                                 const result = {
                                     request: res,
@@ -116,12 +117,11 @@ const setModelToSend = (city, model) => {
                                 resolve(result);
                             })
                             .catch(rejSentXml => {
-                                console.error(rejSentXml, 70);
                                 reject(rejSentXml);
                             })
                     })
                     .catch(rej => {
-                        console.error(rej);
+                        reject(rej);
                     })
             } else if (modelToCheck.model === 'abrasf2.01') {
                 abrasf201Controller.setRequirements(object, city)
@@ -145,7 +145,9 @@ const setModelToSend = (city, model) => {
             } else if (modelToCheck.model === 'saopaulo1.00') {
                 saopaulo100Controller.setRequirements(object, city)
                     .then(res => {
-                        sendNfselController.webServiceRequest(res, object)
+                        const objectWithXml = JSON.parse(res.message);
+                        
+                        sendNfselController.webServiceRequest(objectWithXml, object)
                             .then(resSentXml => {
                                 const result = {
                                     request: res,
@@ -163,10 +165,13 @@ const setModelToSend = (city, model) => {
                         console.error(rej);
                     })
             } else {
-                resolve({message: 'Nenhum modelo encontrado'})
+                resolve({
+                    status: 200,
+                    message: 'Nenhum modelo encontrado'
+                })
             }
         } catch (error) {
-            console.error(error);
+            reject(error);
         }
     });
 }

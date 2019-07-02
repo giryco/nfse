@@ -36,6 +36,16 @@ const setParticularities = (object, city) => {
                     particularitiesObject['isSigned']['consultarLoteRps'] = true;
                 }
 
+                if (object.config.acao === 'consultarNfsePorRps') {
+                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    addPrefixesAsync(['ConsultarNfseRpsEnvio', 'Prestador', 'IdentificacaoRps'], 'ns3:', particularitiesObject);
+                    doNotAddPrefixesAsync(['ConsultarNfseRpsEnvio', 'Prestador', 'IdentificacaoRps'], 'ns4:', particularitiesObject);
+                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']}  xmlns:ns3="http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
+                    particularitiesObject['envelopment'] = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns1:ConsultarNfsePorRpsV3 xmlns:ns1="' + particularitiesObject['urlXmlns'] + '"><arg0><ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd"><versaoDados>3</versaoDados></ns2:cabecalho></arg0><arg1>__xml__</arg1></ns1:ConsultarNfsePorRpsV3></soap:Body></soap:Envelope>';
+                    particularitiesObject['isSigned']['consultarNfseRps'] = true;
+                    particularitiesObject['isSigned']['isEmptyUri'] = true;
+                }
+
                 if (object.config.acao === 'cancelarNfse') {
                     particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
                     addPrefixesAsync(['CancelarNfseEnvio', 'Prestador', 'NumeroNfse'], 'ns3:', particularitiesObject);
@@ -48,7 +58,8 @@ const setParticularities = (object, city) => {
 
                 particularitiesObject['xsds'] = {
                     enviarLoteRps: '/../../../resources/xsd/ginfes/servico_enviar_lote_rps_envio_v03.xsd',
-                    consultarLoteRps: '/../../../resources/xsd/ginfes/servico_consultar_lote_rps_envio_v03.xsd'
+                    consultarLoteRps: '/../../../resources/xsd/ginfes/servico_consultar_lote_rps_envio_v03.xsd',
+                    consultarNfseRps: '/../../../resources/xsd/ginfes/servico_consultar_nfse_rps_envio_v03.xsd'
                 }
             } catch (error) {
                 console.error(error);
@@ -196,6 +207,11 @@ const setParticularities = (object, city) => {
                     particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+                }
+                if (object.config.acao === 'consultarNfsePorRps') {
+                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarNfsePorRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'cancelarNfse') {
                     particularitiesObject['tags'] = {...abrasf201Model.abrasf201};

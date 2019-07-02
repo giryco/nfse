@@ -54,7 +54,6 @@ const abrasf100 = {
     tomador: "Tomador",
     identificacaoTomador: "IdentificacaoTomador",
     cpfCnpj: "CpfCnpj",
-    inscricaoMunicipal: "InscricaoMunicipal",
     razaoSocial: "RazaoSocial",
     endereco: "Endereco",
     endereco: "Endereco",
