@@ -1,6 +1,6 @@
 {
   "name": "nfse",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Geração de nota fiscal de serviço",
   "main": "index.js",
   "scripts": {
