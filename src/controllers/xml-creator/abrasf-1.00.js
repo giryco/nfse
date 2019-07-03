@@ -105,19 +105,19 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                                     createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
                                         .then(xmlSignature => {
-                                            // if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                            //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                            //         if (err) {
-                                            //             console.error(err);
-                                            //             return resolve(err);
-                                            //         }
+                                            if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                                    if (err) {
+                                                        console.error(err);
+                                                        return resolve(err);
+                                                    }
 
-                                            //         if (!validatorResult.valid) {
-                                            //             console.error(validatorResult);
-                                            //             return resolve(validatorResult);
-                                            //         }
-                                            //     })
-                                            // }
+                                                    if (!validatorResult.valid) {
+                                                        console.error(validatorResult);
+                                                        return resolve(validatorResult);
+                                                    }
+                                                })
+                                            }
                                             try {
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
@@ -320,7 +320,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             }
                             xmlNotSigned += `</${particularitiesObject['tags']['prestador']}>`;
                             xmlNotSigned += `</${particularitiesObject['tags']['consultarNfseRpsEnvio']}>`;
-
+                            
                             let isEmptyUri = null;
                             if (particularitiesObject['isSigned']['isEmptyUri']) {
                                 isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'];
@@ -330,7 +330,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (particularitiesObject['isSigned']['signatureId']) {
                                 signatureId = particularitiesObject['isSigned']['signatureId'];
                             }
-
 
                             let isDifferentSignature = false;
                             if (particularitiesObject['isSigned']['isDifferentSignature']) {
@@ -366,7 +365,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                                     if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarNfseRps']) {
                                         result['soapAction'] = particularitiesObject['soapActions']['consultarNfseRps'];
                                     }
-
+                                    
                                     resolve(result);
                                 }).catch(err => {
                                     console.error(err);

@@ -36,6 +36,7 @@ function webServiceRequest(xmlData, object) {
                 }
                 request(options, function (error, response, body) {
                     if (error) {
+                        console.log(error, response, body, 39);
                         const result = {
                             message: 'Verifique se o webservice está online',
                             error: error 

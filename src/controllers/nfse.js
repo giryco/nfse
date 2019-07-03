@@ -107,19 +107,29 @@ const setModelToSend = (city, model) => {
             if (modelToCheck.model === 'abrasf1.00') {
                 abrasf100Controller.setRequirements(object, city)
                     .then(res => {
-                        const objectWithXml = res.message;
-                        sendNfselController.webServiceRequest(objectWithXml, object)
-                            .then(resSentXml => {
-                                const result = {
-                                    request: res,
-                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
-                                };
-                                
-                                resolve(result);
-                            })
-                            .catch(rejSentXml => {
-                                reject(rejSentXml);
-                            })
+                        if (res['stack']) {
+                            const result = {
+                                status: 200,
+                                request: res,
+                                response: res['message'].split('[error]')
+                            };
+                            
+                            resolve(result);
+                        } else {
+                            const objectWithXml = res.message;
+                            sendNfselController.webServiceRequest(objectWithXml, object)
+                                .then(resSentXml => {
+                                    const result = {
+                                        request: res,
+                                        response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                    };
+                                    
+                                    resolve(result);
+                                })
+                                .catch(rejSentXml => {
+                                    reject(rejSentXml);
+                                })
+                        }
                     })
                     .catch(rej => {
                         reject(rej);
@@ -127,17 +137,28 @@ const setModelToSend = (city, model) => {
             } else if (modelToCheck.model === 'abrasf2.01') {
                 abrasf201Controller.setRequirements(object, city)
                     .then(res => {
-                        sendNfselController.webServiceRequest(res, object)
-                            .then(resSentXml => {
-                                const result = {
-                                    request: res,
-                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
-                                };
-                                resolve(result);
-                            })
-                            .catch(rejSentXml => {
-                                reject(rejSentXml);
-                            })
+                        if (res['stack']) {
+                            const result = {
+                                status: 200,
+                                request: res,
+                                response: res['message'].split('[error]')
+                            };
+                            
+                            resolve(result);
+                        } else {
+                            sendNfselController.webServiceRequest(res, object)
+                                .then(resSentXml => {
+                                    const result = {
+                                        request: res,
+                                        response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                    };
+                                    console.log(result);
+                                    resolve(result);
+                                })
+                                .catch(rejSentXml => {
+                                    reject(rejSentXml);
+                                })
+                        }
                     })
                     .catch(rej => {
                         reject(rej);
@@ -146,20 +167,30 @@ const setModelToSend = (city, model) => {
             } else if (modelToCheck.model === 'saopaulo1.00') {
                 saopaulo100Controller.setRequirements(object, city)
                     .then(res => {
-                        const objectWithXml = JSON.parse(res.message);
-                        
-                        sendNfselController.webServiceRequest(objectWithXml, object)
-                            .then(resSentXml => {
-                                const result = {
-                                    request: res,
-                                    response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
-                                };
-                                resolve(result);
-                            })
-                            .catch(rejSentXml => {
-                                console.error(rejSentXml);
-                                reject(rejSentXml);
-                            })
+                        if (res['stack']) {
+                            const result = {
+                                status: 200,
+                                request: res,
+                                response: res['message'].split('[error]')
+                            };
+                            
+                            resolve(result);
+                        } else {
+                            const objectWithXml = JSON.parse(res.message);
+                            
+                            sendNfselController.webServiceRequest(objectWithXml, object)
+                                .then(resSentXml => {
+                                    const result = {
+                                        request: res,
+                                        response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                    };
+                                    resolve(result);
+                                })
+                                .catch(rejSentXml => {
+                                    console.error(rejSentXml);
+                                    reject(rejSentXml);
+                                })
+                        }
                     })
                     .catch(rej => {
                         reject(rej);

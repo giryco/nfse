@@ -104,15 +104,13 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                                         if (particularitiesObject['xsds']['enviarLoteRps']) {
                                             validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
                                                 if (err) {
-                                                    console.error(err);
-                                                    resolve(err);
+                                                    return resolve(err);
                                                 }
 
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
                                                 if (!validatorResult.valid) {
-                                                    console.error(validatorResult);
-                                                    resolve(validatorResult);
+                                                    return resolve(validatorResult);
                                                 }
 
                                                 const result = {
@@ -121,7 +119,7 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                                                 }
                                                 if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
                                                     result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
-                                                }
+                                                } console.log(124);
                                                 resolve(result);
                                             });
                                         }
