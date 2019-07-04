@@ -20,21 +20,21 @@ const enviarLoteRpsSaoPaulo = {
         "status": "1",
         "servico": {
             "valorServicos": 105.00,
-			"valorDeducoes": 0.00,
-			"valorPis": 0.00,
-			"valorCofins": 0.00,
-			"valorInss": 0.00,
-			"valorIr": 0.00,
-			"valorCsll": 0.00,
-			"issRetido": 2,
-			"valorIss": 2.10,
-			"baseCalculo": 105.00,
-			"aliquota": 0.05,
-			"valorLiquidoNfse": 105.00,
-			"itemListaServico": "0802",
-			"codigoTributacaoMunicipio": "461840200",
-			"discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
-			"codigoMunicipio": "3523909"
+            "valorDeducoes": 0.00,
+            "valorPis": 0.00,
+            "valorCofins": 0.00,
+            "valorInss": 0.00,
+            "valorIr": 0.00,
+            "valorCsll": 0.00,
+            "issRetido": 2,
+            "valorIss": 2.10,
+            "baseCalculo": 105.00,
+            "aliquota": 0.05,
+            "valorLiquidoNfse": 105.00,
+            "itemListaServico": "0802",
+            "codigoTributacaoMunicipio": "461840200",
+            "discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
+            "codigoMunicipio": "3523909"
         },
         "prestador": {
             "cpfCnpj": "10393366000121",
@@ -60,4 +60,10 @@ const enviarLoteRpsSaoPaulo = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsSaoPaulo);
+nfse.nfse(enviarLoteRpsSaoPaulo)
+    .then(res => {
+        console.log(res);
+    })
+    .catch(rej => {
+        console.log(rej);
+    });

@@ -161,4 +161,10 @@ const enviarLoteRpsCatalao = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsCatalao);
+nfse.nfse(enviarLoteRpsCatalao)
+    .then(res => {
+        console.log(res);
+    })
+    .catch(rej => {
+        console.log(rej);
+    });

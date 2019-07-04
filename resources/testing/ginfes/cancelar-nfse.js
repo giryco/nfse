@@ -1,11 +1,11 @@
 const nfse = require('../../../');
 const cancelarNfseGinfesItu = {
-    "config": {
+	"config": {
 		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
 		"senhaDoCertificado": "brmed2018",
 		"producaoHomologacao": "homologacao",
-        "codigoMunicipio": "3523909",
-        "acao": "cancelarNfse"
+		"codigoMunicipio": "3523909",
+		"acao": "cancelarNfse"
 	},
 	"prestador": {
 		"cpfCnpj": "17845667000198",
@@ -14,4 +14,10 @@ const cancelarNfseGinfesItu = {
 	},
 	"numeroNfse": 417
 };
-nfse.nfse(cancelarNfseGinfesItu);
+nfse.nfse(cancelarNfseGinfesItu)
+	.then(res => {
+		console.log(res);
+	})
+	.catch(rej => {
+		console.log(rej);
+	});

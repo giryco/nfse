@@ -119,7 +119,7 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                                                 }
                                                 if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
                                                     result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
-                                                } console.log(124);
+                                                }
                                                 resolve(result);
                                             });
                                         }

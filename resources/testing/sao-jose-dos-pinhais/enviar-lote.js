@@ -2,14 +2,14 @@ const nfse = require('../../..');
 const enviarLoteRpsSaoJoseDosPinhais = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-sao-jose-dos-pinhais.pfx",
-		"senhaDoCertificado": "Endpr@20!8",
-		"producaoHomologacao": "homologacao",
-		"codigoMunicipio": "4125506",
+        "senhaDoCertificado": "Endpr@20!8",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4125506",
         "acao": "enviarLoteRps"
     },
     "emissor": {
-		"cpfCnpj": "26390085000406",
-		"inscricaoMunicipal": "74250"
+        "cpfCnpj": "26390085000406",
+        "inscricaoMunicipal": "74250"
     },
     "rps": [{
         "tipo": 1,
@@ -60,4 +60,10 @@ const enviarLoteRpsSaoJoseDosPinhais = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsSaoJoseDosPinhais);
+nfse.nfse(enviarLoteRpsSaoJoseDosPinhais)
+    .then(res => {
+        console.log(res);
+    })
+    .catch(rej => {
+        console.log(rej);
+    });

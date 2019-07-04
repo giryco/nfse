@@ -62,4 +62,10 @@ const enviarLoteRpsGinfesItu = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsGinfesItu);
+nfse.nfse(enviarLoteRpsGinfesItu)
+    .then(res => {
+        console.log(res);
+    })
+    .catch(rej => {
+        console.log(rej);
+    });

@@ -60,4 +60,10 @@ const enviarLoteRpsPortoAlegre = {
     }]
 };
 
-nfse.nfse(enviarLoteRpsPortoAlegre);
+nfse.nfse(enviarLoteRpsPortoAlegre)
+    .then(res => {
+        console.log(res);
+    })
+    .catch(rej => {
+        console.log(rej);
+    });

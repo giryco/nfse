@@ -37,7 +37,7 @@ const nfse = (newObject) => {
                     response: res.response
                 }
                 
-                resolve(result.response);
+                resolve(result);
             })
             .catch(rej => {
                 console.error(rej);
@@ -152,7 +152,7 @@ const setModelToSend = (city, model) => {
                                         request: res,
                                         response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
                                     };
-                                    console.log(result);
+                                    
                                     resolve(result);
                                 })
                                 .catch(rejSentXml => {
