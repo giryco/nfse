@@ -186,7 +186,7 @@ const setModelToSend = (city, model) => {
                             
                             resolve(result);
                         } else {
-                            const objectWithXml = JSON.parse(res.message);
+                            const objectWithXml = res.message;
                             
                             sendNfselController.webServiceRequest(objectWithXml, object)
                                 .then(resSentXml => {

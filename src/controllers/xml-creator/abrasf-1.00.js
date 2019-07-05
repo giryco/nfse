@@ -59,6 +59,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
+                            
                             let uniqueValue = numeroLote;
                             let regexUnique = new RegExp('_uniqueValue', 'g');
 
