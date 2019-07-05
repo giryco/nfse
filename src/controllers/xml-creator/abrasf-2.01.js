@@ -22,10 +22,18 @@ const setRequirements = (object, city) => {
             (city.nfseKeyword === 'ginfes') ? isGinfes = true: isGinfes = false;
             createXml(object, particularitiesObject, numeroLote, isGinfes)
                 .then(res => {
-                    resolve(res);
+                    const result = {
+                        status: 200,
+                        message: res
+                    };
+                    resolve(result);
                 })
                 .catch(rej => {
-                    reject(rej);
+                    const result = {
+                        status: 500,
+                        message: rej
+                    };
+                    reject(result);
                 })
         } catch (error) {
             reject(error);
