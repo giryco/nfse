@@ -119,12 +119,21 @@ const setModelToSend = (city, model) => {
                             const objectWithXml = res.message;
                             sendNfselController.webServiceRequest(objectWithXml, object)
                                 .then(resSentXml => {
-                                    const result = {
-                                        request: res,
-                                        response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
-                                    };
+                                    try {
+                                        const result = {
+                                            request: res,
+                                            response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                        };
+                                        resolve(result);
+                                    } catch (error) {
+                                        const result = {
+                                            request: res,
+                                            response: error
+                                        };
+
+                                        reject(result);
+                                    }
                                     
-                                    resolve(result);
                                 })
                                 .catch(rejSentXml => {
                                     reject(rejSentXml);
@@ -146,7 +155,8 @@ const setModelToSend = (city, model) => {
                             
                             resolve(result);
                         } else {
-                            sendNfselController.webServiceRequest(res, object)
+                            const objectWithXml = res.message;
+                            sendNfselController.webServiceRequest(objectWithXml, object)
                                 .then(resSentXml => {
                                     const result = {
                                         request: res,
