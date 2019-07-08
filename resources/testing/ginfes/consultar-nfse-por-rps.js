@@ -1,24 +1,27 @@
 const nfse = require('../../..');
-const consultarLoteRpsGinfesItu = {
+
+const consultarNfseRps = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
         "senhaDoCertificado": "brmed2018",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",
-        "acao": "consultarLoteRps"
+        "acao": "consultarNfsePorRps"
+    },
+    "rps": {
+        "numero": "58076515619",
+        "serie": "RPS",
+        "tipo": "1"
     },
     "prestador": {
         "cpfCnpj": "17845667000198",
-        "inscricaoMunicipal": "25099",
-        "codigoMunicipio": "3523909"
-    },
-    "protocolo": "58076515619"
+        "inscricaoMunicipal": "25099"
+    }
 };
 
-nfse.nfse(consultarLoteRpsGinfesItu)
+nfse.nfse(consultarNfseRps)
     .then(res => {
         console.log(res);
-    })
-    .catch(rej => {
-        console.log(rej);
+    }).catch(err => {
+        console.log(err)
     });

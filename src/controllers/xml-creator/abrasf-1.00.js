@@ -2,6 +2,7 @@
 const fs = require('fs');
 const pem = require('pem');
 const validator = require('xsd-schema-validator');
+// TO-DO: Checar validade do pfx
 
 // Libs
 const XmlSignatureController = require('../../../lib/xml-signature');

@@ -11,6 +11,7 @@ function webServiceRequest(xmlData, object) {
                 const soapAction = xmlData.soapAction;
                 const certificatePath = object.config.diretorioDoCertificado;
                 const certificatePassword = object.config.senhaDoCertificado;
+                const webserviceRetry = object.config.insistirNoWebservice;
                 
                 var options = {
                     method: 'POST',
@@ -38,13 +39,17 @@ function webServiceRequest(xmlData, object) {
                 request(options, function (error, response, body) {
                     if (error) {
                         const result = {
-                            message: 'Verifique se o webservice está online',
+                            message: 'Verifique se o webservice está online: ' + url,
                             error: error 
                         };
                         
                         if (result.error.code === 'ECONNRESET') {
                             setTimeout(() => {
-                                webServiceRequest(xmlEnveloped, url, soapAction, certificatePath, certificatePassword);
+                                if (webserviceRetry) {
+                                    webServiceRequest(xmlEnveloped, url, soapAction, certificatePath, certificatePassword);
+                                } else {
+                                    resolve(result);
+                                }
                             }, 20000)
                         } else {
                             reject(result);
