@@ -3,13 +3,13 @@ const nfse = require('../../..');
 const consultarNfseRps = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-porto-alegre.pfx",
-        "senhaDoCertificado": "Endpoa@20!8",
+        "senhaDoCertificado": "EndRS@20!9",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "4314902",
         "acao": "consultarNfsePorRps"
     },
     "rps": {
-        "numero": "58076515619",
+        "numero": "1562261645075",
         "serie": "RPS",
         "tipo": "1"
     },

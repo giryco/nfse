@@ -11,7 +11,7 @@ const consultarLoteRpsCatalao = {
         "cpfCnpj": "10885840000132",
         "inscricaoMunicipal": "110130"
     },
-    "protocolo": "2019104089"
+    "protocolo": "2019137602"
 };
 nfse.nfse(consultarLoteRpsCatalao)
     .then(res => {

@@ -63,7 +63,7 @@ function webServiceRequest(xmlData, object) {
             }
         })        
     } catch (error) {
-        console.error(error);
+        console.error(error, 66);
     }
 }
 

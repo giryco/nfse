@@ -2,7 +2,7 @@ const nfse = require('../../../');
 const cancelarNfsePortoAlegre = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-porto-alegre.pfx",
-        "senhaDoCertificado": "Endpoa@20!8",
+        "senhaDoCertificado": "EndRS@20!9",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "4314902",
         "acao": "cancelarNfse"

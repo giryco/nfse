@@ -9453,7 +9453,30 @@
 		"latitude" : -18.1656,
 		"longitude" : -47.944,
 		"isCapitalCity" : false,
-        "stateInitials" : "PA",
+        "stateInitials" : "GO",
+		"prefeitura": {
+			"name": "Prefeitura de Catalão",
+			"secretaria": {
+				"name": "Secretaria de Finanças",
+				"endereco": {
+					"endereco": "R. Nassim Agel",
+					"numero": "505",
+					"bairro": "Centro",
+					"complemento": "",
+					"cep": "75701-050"
+				},
+				"contato": {
+					"telefone": [{
+						"name": "Outras cidades",
+						"numero": "(64)3441-5022"
+					}], 
+					"email": [{
+						"name": "Secretaria de Finanças",
+						"descricao": "tesouraria@catalao.go.gov.br"
+					}]
+				}
+			}
+		},
         "nfseKeyword": "catalao"
 	},
 	{
