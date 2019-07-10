@@ -691,8 +691,14 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
                 if (r.status && r.status != '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['status']}>` + r.status + `</${particularitiesObject['tags']['status']}>`;
                 }
-                if (r.rpsSubstituido && r.rpsSubstituido != '') {
-                    xmlToBeSigned += `<${particularitiesObject['tags']['rpsSubstituido']}>` + r.rpsSubstituido + `</${particularitiesObject['tags']['rpsSubstituido']}>`;
+                if (r.rpsSubstituido && r.rpsSubstituido.numero != '') {
+                    xmlToBeSigned += `<${particularitiesObject['tags']['rpsSubstituido']}>`;
+                    xmlToBeSigned += `<${particularitiesObject['tags']['numero']}>` + r.rpsSubstituido.numero + `</${particularitiesObject['tags']['numero']}>`;
+                    xmlToBeSigned += `<${particularitiesObject['tags']['serie']}>` + r.rpsSubstituido.serie + `</${particularitiesObject['tags']['serie']}>`;
+                    if (r.rpsSubstituido.tipo && r.rpsSubstituido.tipo != '') {
+                        xmlToBeSigned += `<${particularitiesObject['tags']['tipo']}>` + r.rpsSubstituido.tipo + `</${particularitiesObject['tags']['tipo']}>`;
+                    }
+                    xmlToBeSigned += `</${particularitiesObject['tags']['rpsSubstituido']}>`;
                 }
 
                 xmlToBeSigned += `<${particularitiesObject['tags']['servico']}>`;
