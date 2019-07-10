@@ -12,7 +12,7 @@ const consultarLoteRpsGinfesItu = {
         "inscricaoMunicipal": "25099",
         "codigoMunicipio": "3523909"
     },
-    "protocolo": "58076515619"
+    "protocolo": "67233339019"
 };
 
 nfse.nfse(consultarLoteRpsGinfesItu)

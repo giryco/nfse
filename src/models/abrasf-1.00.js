@@ -1,4 +1,5 @@
 const abrasf100 = {
+    gerarNfseEnvio: "GerarNfseEnvio",
     consultarLoteRpsEnvio: "ConsultarLoteRpsEnvio",
     enviarLoteRpsEnvio: "EnviarLoteRpsEnvio",
     cancelarNfseEnvio: "CancelarNfseEnvio",
