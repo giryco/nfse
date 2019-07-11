@@ -170,6 +170,14 @@ const setParticularities = (object, city) => {
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><not:RecepcionarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></not:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                     particularitiesObject['isSigned']['infRps'] = true;
                 }
+                if (object.config.acao === 'gerarNfse') {
+                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags']['gerarNfseEnvioAlterada'] = `${particularitiesObject['tags']['gerarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="1.00"`;
+                    particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><not:GerarNfseRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></not:GerarNfseRequest></soapenv:Body></soapenv:Envelope>';
+                    particularitiesObject['isSigned']['infRps'] = true;
+                }
                 if (object.config.acao === 'consultarLoteRps') {
                     particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
