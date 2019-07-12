@@ -111,15 +111,15 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                                     .then(xmlSignature => {
                                         if (particularitiesObject['xsds']['enviarLoteRps']) {
                                             validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                                if (err) {
-                                                    return resolve(err);
-                                                }
+                                                // if (err) {
+                                                //     return resolve(err);
+                                                // }
 
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
-                                                if (!validatorResult.valid) {
-                                                    return resolve(validatorResult);
-                                                }
+                                                // if (!validatorResult.valid) {
+                                                //     return resolve(validatorResult);
+                                                // }
 
                                                 const result = {
                                                     url: particularitiesObject['webserviceUrl'],
@@ -216,19 +216,19 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
                         }
 
                         createSignature(xmlNotSigned, cert, whereToSign, signatureId, true).then(xmlSignature => {
-                            if (particularitiesObject['xsds']['cancelarNfse']) {
-                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
-                                    if (err) {
-                                        console.error(err);
-                                        resolve(err);
-                                    }
+                            // if (particularitiesObject['xsds']['cancelarNfse']) {
+                            //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
+                            //         if (err) {
+                            //             console.error(err);
+                            //             resolve(err);
+                            //         }
 
-                                    if (!validatorResult.valid) {
-                                        console.error(validatorResult);
-                                        resolve(validatorResult);
-                                    }
-                                })
-                            }
+                            //         if (!validatorResult.valid) {
+                            //             console.error(validatorResult);
+                            //             resolve(validatorResult);
+                            //         }
+                            //     })
+                            // }
                             try {
                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
@@ -293,19 +293,19 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
 
                         createSignature(xmlNotSigned, cert, 'ConsultarLoteRpsEnvio')
                             .then(xmlSignature => {
-                                if (particularitiesObject['xsds']['consultarLoteRps']) {
-                                    validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
-                                        if (err) {
-                                            console.error(err);
-                                            resolve(err);
-                                        }
+                                // if (particularitiesObject['xsds']['consultarLoteRps']) {
+                                //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['cancelarNfse'], function (err, validatorResult) {
+                                //         if (err) {
+                                //             console.error(err);
+                                //             resolve(err);
+                                //         }
 
-                                        if (!validatorResult.valid) {
-                                            console.error(validatorResult);
-                                            resolve(validatorResult);
-                                        }
-                                    })
-                                }
+                                //         if (!validatorResult.valid) {
+                                //             console.error(validatorResult);
+                                //             resolve(validatorResult);
+                                //         }
+                                //     })
+                                // }
                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
                                 if (particularitiesObject['isSigned']['consultarLoteRps']) {
@@ -373,19 +373,19 @@ const createXml = (object, particularitiesObject, numeroLote, isGinfes = false) 
 
                         createSignature(xmlNotSigned, cert, 'ConsultarNfseRpsEnvio')
                             .then(xmlSignature => {
-                                if (particularitiesObject['xsds']['consultarNfseRps']) {
-                                    validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarNfseRps'], function (err, validatorResult) {
-                                        if (err) {
-                                            console.error(err);
-                                            resolve(err);
-                                        }
+                                // if (particularitiesObject['xsds']['consultarNfseRps']) {
+                                //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarNfseRps'], function (err, validatorResult) {
+                                //         if (err) {
+                                //             console.error(err);
+                                //             resolve(err);
+                                //         }
 
-                                        if (!validatorResult.valid) {
-                                            console.error(validatorResult);
-                                            resolve(validatorResult);
-                                        }
-                                    })
-                                }
+                                //         if (!validatorResult.valid) {
+                                //             console.error(validatorResult);
+                                //             resolve(validatorResult);
+                                //         }
+                                //     })
+                                // }
                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
                                 if (particularitiesObject['isSigned']['consultarNfseRps']) {

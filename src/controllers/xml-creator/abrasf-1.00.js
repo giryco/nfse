@@ -107,19 +107,19 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                                     createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
                                         .then(xmlSignature => {
-                                            if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                                    if (err) {
-                                                        console.error(err);
-                                                        return resolve(err);
-                                                    }
+                                            // if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                            //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                            //         if (err) {
+                                            //             console.error(err);
+                                            //             return resolve(err);
+                                            //         }
 
-                                                    if (!validatorResult.valid) {
-                                                        console.error(validatorResult);
-                                                        return resolve(validatorResult);
-                                                    }
-                                                })
-                                            }
+                                            //         if (!validatorResult.valid) {
+                                            //             console.error(validatorResult);
+                                            //             return resolve(validatorResult);
+                                            //         }
+                                            //     })
+                                            // }
                                             try {
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
@@ -204,19 +204,19 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                                     createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
                                         .then(xmlSignature => {
-                                            if (particularitiesObject['xsds']['enviarLoteRps']) {
-                                                validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
-                                                    if (err) {
-                                                        console.error(err);
-                                                        return resolve(err);
-                                                    }
+                                            // if (particularitiesObject['xsds']['enviarLoteRps']) {
+                                            //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {
+                                            //         if (err) {
+                                            //             console.error(err);
+                                            //             return resolve(err);
+                                            //         }
 
-                                                    if (!validatorResult.valid) {
-                                                        console.error(validatorResult);
-                                                        return resolve(validatorResult);
-                                                    }
-                                                })
-                                            }
+                                            //         if (!validatorResult.valid) {
+                                            //             console.error(validatorResult);
+                                            //             return resolve(validatorResult);
+                                            //         }
+                                            //     })
+                                            // }
                                             try {
                                                 let xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
 
@@ -351,19 +351,19 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                             createSignature(xmlNotSigned, cert, 'ConsultarLoteRpsEnvio')
                                 .then(xmlSignature => {
-                                    if (particularitiesObject['xsds']['consultarLoteRps']) {
-                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarLoteRps'], function (err, validatorResult) {
-                                            if (err) {
-                                                console.error(err);
-                                                resolve(err);
-                                            }
+                                    // if (particularitiesObject['xsds']['consultarLoteRps']) {
+                                    //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarLoteRps'], function (err, validatorResult) {
+                                    //         if (err) {
+                                    //             console.error(err);
+                                    //             resolve(err);
+                                    //         }
 
-                                            if (!validatorResult.valid) {
-                                                console.error(validatorResult);
-                                                resolve(validatorResult);
-                                            }
-                                        })
-                                    }
+                                    //         if (!validatorResult.valid) {
+                                    //             console.error(validatorResult);
+                                    //             resolve(validatorResult);
+                                    //         }
+                                    //     })
+                                    // }
                                     let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
                                     if (particularitiesObject['isSigned']['consultarLoteRps']) {
@@ -437,19 +437,19 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
 
                             createSignature(xmlNotSigned, cert, 'ConsultarNfseRpsEnvio', signatureId, isEmptyUri, isDifferentSignature)
                                 .then(xmlSignature => {
-                                    if (particularitiesObject['xsds']['consultarNfseRps']) {
-                                        validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarNfseRps'], function (err, validatorResult) {
-                                            if (err) {
-                                                console.error(err);
-                                                resolve(err);
-                                            }
+                                    // if (particularitiesObject['xsds']['consultarNfseRps']) {
+                                    //     validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['consultarNfseRps'], function (err, validatorResult) {
+                                    //         if (err) {
+                                    //             console.error(err);
+                                    //             resolve(err);
+                                    //         }
 
-                                            if (!validatorResult.valid) {
-                                                console.error(validatorResult);
-                                                resolve(validatorResult);
-                                            }
-                                        })
-                                    }
+                                    //         if (!validatorResult.valid) {
+                                    //             console.error(validatorResult);
+                                    //             resolve(validatorResult);
+                                    //         }
+                                    //     })
+                                    // }
                                     let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
 
                                     if (particularitiesObject['isSigned']['consultarNfseRps']) {

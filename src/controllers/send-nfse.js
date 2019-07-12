@@ -3,7 +3,7 @@ const request = require('request');
 const fs = require('fs');
 
 function webServiceRequest(xmlData, object) {
-    try {
+    try { console.log(xmlData, 6);
         return new Promise((resolve, reject) => {
             try {
                 const xmlEnveloped = xmlData.soapEnvelop;
@@ -27,7 +27,7 @@ function webServiceRequest(xmlData, object) {
                     body: xmlEnveloped,
                     pool: {maxSockets: Infinity}
                 };
-    
+
                 if (soapAction) {
                     options.headers = {
                         "Accept": "text/xml",
@@ -40,7 +40,7 @@ function webServiceRequest(xmlData, object) {
                     if (error) {
                         const result = {
                             message: 'Verifique se o webservice está online: ' + url,
-                            error: error 
+                            error: error['message']
                         };
                         
                         if (result.error.code === 'ECONNRESET') {
