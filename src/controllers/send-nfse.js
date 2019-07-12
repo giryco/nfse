@@ -37,6 +37,14 @@ function webServiceRequest(xmlData, object) {
                 }
                 
                 request(options, function (error, response, body) {
+                    if (response.statusCode === 404)  {
+                        const result = {
+                            message: 'Webservice não foi encontrado',
+                            error: response.statusCode + " - " + response.statusMessage
+                        };
+
+                        reject(result);
+                    }
                     if (error) {
                         const result = {
                             message: 'Verifique se o webservice está online: ' + url,
@@ -63,7 +71,7 @@ function webServiceRequest(xmlData, object) {
             }
         })        
     } catch (error) {
-        console.error(error, 66);
+        console.error(error);
     }
 }
 

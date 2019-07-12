@@ -40,7 +40,7 @@ const nfse = (newObject) => {
                 resolve(result);
             })
             .catch(rej => {
-                console.error(rej, 43);
+                console.error(rej);
                 reject(rej);
             })
     })
