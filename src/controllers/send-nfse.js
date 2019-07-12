@@ -3,7 +3,7 @@ const request = require('request');
 const fs = require('fs');
 
 function webServiceRequest(xmlData, object) {
-    try { console.log(xmlData, 6);
+    try {
         return new Promise((resolve, reject) => {
             try {
                 const xmlEnveloped = xmlData.soapEnvelop;
