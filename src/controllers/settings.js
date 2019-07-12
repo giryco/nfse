@@ -275,9 +275,9 @@ const setParticularities = (object, city) => {
                     }
     
                     particularitiesObject['xsds'] = {
-                        enviarLoteRps: '/../../../resources/xsd/saopaulo/nfse_v2_01.xsd',
-                        consultarLoteRps: '/../../../resources/xsd/saopaulo/nfse_v2_01.xsd',
-                        cancelarLoteRps: '/../../../resources/xsd/saopaulo/nfse_v2_01.xsd'
+                        enviarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoEnvioLoteRPS_v01.xsd',
+                        consultarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoConsultaLote_v01.xsd',
+                        cancelarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoCancelamentoNFe_v01.xsd'
                     }
                 } catch (error) {
                     console.error(error);
