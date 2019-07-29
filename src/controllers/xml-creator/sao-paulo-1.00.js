@@ -93,7 +93,7 @@ const createXml = (object, particularitiesObject) => {
                                 });
 
                                 xml += `</${particularitiesObject['tags']['pedidoEnvioLoteRps']}>`;
-
+                                
                                 createSignature(xml, cert, 'PedidoEnvioLoteRPS').then(xmlSignature => {
                                     if (particularitiesObject['xsds']['enviarLoteRps']) {
                                         validator.validateXML(xmlSignature, __dirname + particularitiesObject['xsds']['enviarLoteRps'], function (err, validatorResult) {

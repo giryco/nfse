@@ -37,7 +37,7 @@ function webServiceRequest(xmlData, object) {
                 }
                 
                 request(options, function (error, response, body) {
-                    if (response.statusCode === 404)  {
+                    if (response && response.statusCode === 404)  {
                         const result = {
                             message: 'Webservice não foi encontrado',
                             error: response.statusCode + " - " + response.statusMessage
