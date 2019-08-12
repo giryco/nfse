@@ -1,7 +1,7 @@
 const nfse = require('../../..');
 const enviarLoteRpsNotaCarioca = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
@@ -32,7 +32,7 @@ const enviarLoteRpsNotaCarioca = {
             "aliquota": 0.05,
             "valorLiquidoNfse": 105.00,
             "itemListaServico": "0802",
-            "codigoTributacaoMunicipio": "461840200",
+            "codigoTributacaoMunicipio": "080216",
             "discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
             "codigoMunicipio": "3523909"
         },

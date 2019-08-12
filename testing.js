@@ -185,6 +185,10 @@ const enviarLoteRpsPortoAlegre = {
 
 const enviarLoteRpsCatalao = {
     "config": {
+        "database": "cargox_homol",
+        "owner": "manifesto",
+        "idEmpresa": 1,
+        "idPessoa": 8925,
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-catalao2.pfx",
         "senhaDoCertificado": "502874",
         "producaoHomologacao": "homologacao",
@@ -196,53 +200,55 @@ const enviarLoteRpsCatalao = {
         "inscricaoMunicipal": "110130"
     },
     "rps": [{
+        "numero": 644,
+        "idNotaFiscal": 2317,
         "tipo": 1,
-        "dataEmissao": "2019-03-19",
+        "dataEmissao": "2019-08-02",
         "naturezaOperacao": "1",
         "optanteSimplesNacional": "2",
         "incentivoFiscal": "2",
         "status": "1",
-        "competencia": "2019-03-19",
+        "serie": "0",
+        "competencia": "2019-08-02",
         "servico": {
-            "valorServicos": 105.00,
-            "valorDeducoes": 0.00,
-            "valorPis": 0.00,
-            "valorCofins": 0.00,
-            "valorInss": 0.00,
-            "valorIr": 0.00,
-            "valorCsll": 0.00,
+            "aliquota": 0,
+            "valorIss": 0,
+            "valorIr": 0,
+            "valorCsll": 0,
+            "valorCofins": 0,
+            "valorPis": 0,
+            "valorInss": 0,
+            "valorDeducoes": 0,
+            "valorServicos": 3000000,
             "issRetido": 2,
-            "valorIss": 2.10,
-            "baseCalculo": 105.00,
-            "aliquota": 0.05,
-            "valorLiquidoNfse": 105.00,
-            "itemListaServico": "6311",
-            "codigoTributacaoMunicipio": "6311900",
-            "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
+            "baseCalculo": 3000000,
+            "valorLiquidoNfse": 3000000,
+            "itemListaServico": "103",
+            "codigoTributacaoMunicipio": "10.01.01",
+            "discriminacao": "Teste AR 3",
             "codigoMunicipio": "5205109",
+            "codigoCnae": "6311900",
             "codigoPais": "1058",
-            "exigibilidadeIss": "1"
+            "exigibilidadeIss": "2"
         },
         "prestador": {
             "cpfCnpj": "10885840000132",
-            "codigoMunicipio": "5205109",
             "inscricaoMunicipal": "110130"
         },
         "tomador": {
-            "cpfCnpj": "70523431000118",
-            "inscricaoMunicipal": "0743140200169",
-            "razaoSocial": "ALANA E JOSEFA CONSTRUCOES LTDA",
+            "cnpjCpf": "62087309001351",
+            "razaoSocial": "TRANSYOKI-TRANSPORTES YOKI LTDA",
             "endereco": {
-                "endereco": "Rua Manuel de Autoguia",
-                "numero": "791",
-                "bairro": "TATUAPE",
-                "codigoMunicipio": "3550308",
-                "uf": "SP",
-                "cep": "33130208"
+                "endereco": "AVENIDA IRENE SILVEIRA COSTA",
+                "numero": "0",
+                "bairro": "LIMEIRA",
+                "codigoMunicipio": "3152501",
+                "uf": "MG",
+                "cep": "37550000"
             },
             "contato": {
-                "telefone": "8232211212",
-                "email": "analu-melo@hotmail.com"
+                "telefone": "",
+                "email": ""
             }
         }
     }]
@@ -293,4 +299,4 @@ const cancelarNfseGinfesItu = {
 	"numeroNfse": 417
 };
 
-nfse.nfse(enviarLoteRpsGinfesItu);
+console.log(nfse.nfse(enviarLoteRpsCatalao));

@@ -213,7 +213,7 @@ const setParticularities = (object, city) => {
 
         case 'catalao':
             try {
-                object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'http://200.23.238.210/prodataws/services/NfseWSService?wsdl' : particularitiesObject['webserviceUrl'] = 'http://200.23.238.210:8585/prodataws/services/NfseWSService?wsdl';
+                object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'http://187.111.62.130/prodataws/services/NfseWSService?wsdl' : particularitiesObject['webserviceUrl'] = 'http://187.111.62.130:8585/prodataws/services/NfseWSService?wsdl';
                 particularitiesObject['nfseKeyword'] = 'catalao';
                 if (object.config.acao === 'enviarLoteRps') {
                     particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
