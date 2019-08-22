@@ -1,6 +1,10 @@
 const nfse = require('../../../');
 const enviarLoteRpsCatalao = {
     "config": {
+        "database": "cargox_homol",
+        "owner": "manifesto",
+        "idEmpresa": 1,
+        "idPessoa": 1634,
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-catalao2.pfx",
         "senhaDoCertificado": "502874",
         "producaoHomologacao": "homologacao",
@@ -12,150 +16,57 @@ const enviarLoteRpsCatalao = {
         "inscricaoMunicipal": "110130"
     },
     "rps": [{
+        "numero": 104,
+        "idNotaFiscal": 2530,
         "tipo": 1,
-        "dataEmissao": "2019-03-19",
+        "dataEmissao": "2019-08-14",
         "naturezaOperacao": "1",
         "optanteSimplesNacional": "2",
+        "regimeEspecialTributacao": "3",
         "incentivoFiscal": "2",
         "status": "1",
-        "competencia": "2019-03-19",
+        "serie": "",
+        "competencia": "2019-08-14",
         "servico": {
-            "valorServicos": 105.00,
-            "valorDeducoes": 0.00,
-            "valorPis": 0.00,
-            "valorCofins": 0.00,
-            "valorInss": 0.00,
-            "valorIr": 0.00,
-            "valorCsll": 0.00,
+            "aliquota": 0.00,
+            "valorIss": 0,
+            "valorIr": 0,
+            "valorCsll": 0,
+            "valorCofins": 0,
+            "valorPis": 0,
+            "valorInss": 0,
+            "valorDeducoes": 0,
+            "valorServicos": 100,
             "issRetido": 2,
-            "valorIss": 2.10,
-            "baseCalculo": 105.00,
-            "aliquota": 2,
-            "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1.01",
-            "codigoTributacaoMunicipio": "010101",
-            "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
+            "baseCalculo": 100,
+            "valorLiquidoNfse": 100,
+            "itemListaServico": "17.06",
+            "codigoTributacaoMunicipio": "7319001",
+            "discriminacao": "TESTE",
             "codigoMunicipio": "5205109",
+            "codigoCnae": "6311900",
             "codigoPais": "1058",
-            "exigibilidadeIss": "1"
+            "exigibilidadeIss": "2"
         },
         "prestador": {
             "cpfCnpj": "10885840000132",
-            "codigoMunicipio": "5205109",
             "inscricaoMunicipal": "110130"
         },
         "tomador": {
-            "cpfCnpj": "00712712000214",
-            "razaoSocial": "2M EMPRESA DE TURISMO LTDA",
+            "cpfCnpj": "62087309001351",
+            "razaoSocial": "TRANSYOKI-TRANSPORTES YOKI LTDA",
             "endereco": {
-                "endereco": "RUA VISC DE PIRAJA",
-                "numero": "437",
-                "bairro": "ipanema",
-                "codigoMunicipio": "3304557",
-                "uf": "rj",
-                "cep": "22410003"
+                "endereco": "AVENIDA IRENE SILVEIRA COSTA",
+                "numero": "0",
+                "bairro": "LIMEIRA",
+                "codigoMunicipio": "3152501",
+                "uf": "MG",
+                "cep": "37550000",
+                "codigoPais": "1058"
             },
             "contato": {
-                "telefone": "2125210734",
-                "email": "dekolerj@gmail.com"
-            }
-        }
-    }, {
-        "tipo": 1,
-        "dataEmissao": "2019-03-19",
-        "naturezaOperacao": "1",
-        "optanteSimplesNacional": "2",
-        "incentivoFiscal": "2",
-        "status": "1",
-        "competencia": "2019-03-19",
-        "servico": {
-            "valorServicos": 105.00,
-            "valorDeducoes": 0.00,
-            "valorPis": 0.00,
-            "valorCofins": 0.00,
-            "valorInss": 0.00,
-            "valorIr": 0.00,
-            "valorCsll": 0.00,
-            "issRetido": 2,
-            "valorIss": 2.10,
-            "baseCalculo": 105.00,
-            "aliquota": 2,
-            "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1.01",
-            "codigoTributacaoMunicipio": "010101",
-            "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
-            "codigoMunicipio": "5205109",
-            "codigoPais": "1058",
-            "exigibilidadeIss": "1"
-        },
-        "prestador": {
-            "cpfCnpj": "10885840000132",
-            "codigoMunicipio": "5205109",
-            "inscricaoMunicipal": "110130"
-        },
-        "tomador": {
-            "cpfCnpj": "00712712000214",
-            "razaoSocial": "TESTE 1",
-            "endereco": {
-                "endereco": "RUA VISC DE PIRAJA",
-                "numero": "437",
-                "bairro": "ipanema",
-                "codigoMunicipio": "3304557",
-                "uf": "rj",
-                "cep": "22410003"
-            },
-            "contato": {
-                "telefone": "2125210734",
-                "email": "dekolerj@gmail.com"
-            }
-        }
-    }, {
-        "tipo": 1,
-        "dataEmissao": "2019-03-19",
-        "naturezaOperacao": "1",
-        "optanteSimplesNacional": "2",
-        "incentivoFiscal": "2",
-        "status": "1",
-        "competencia": "2019-03-19",
-        "servico": {
-            "valorServicos": 105.00,
-            "valorDeducoes": 0.00,
-            "valorPis": 0.00,
-            "valorCofins": 0.00,
-            "valorInss": 0.00,
-            "valorIr": 0.00,
-            "valorCsll": 0.00,
-            "issRetido": 2,
-            "valorIss": 2.10,
-            "baseCalculo": 105.00,
-            "aliquota": 2,
-            "valorLiquidoNfse": 105.00,
-            "itemListaServico": "1.01",
-            "codigoTributacaoMunicipio": "010101",
-            "discriminacao": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem na internet.",
-            "codigoMunicipio": "5205109",
-            "codigoPais": "1058",
-            "exigibilidadeIss": "1"
-        },
-        "prestador": {
-            "cpfCnpj": "10885840000132",
-            "codigoMunicipio": "5205109",
-            "inscricaoMunicipal": "110130"
-        },
-        "tomador": {
-            "cpfCnpj": "00712712000214",
-            "razaoSocial": "TESTE 2",
-            "endereco": {
-                "endereco": "RUA VISC DE PIRAJA",
-                "numero": "437",
-                "bairro": "ipanema",
-                "codigoMunicipio": "3304557",
-                "uf": "rj",
-                "cep": "22410003"
-            },
-            "contato": {
-                "telefone": "2125210734",
-                "email": "dekolerj@gmail.com"
+                "telefone": "",
+                "email": ""
             }
         }
     }]
