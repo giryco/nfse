@@ -614,6 +614,7 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
         let xmlToBeSigned = '';
         let xmlToBeSignedArray = [];
         let xmlSignedArray = [];
+        let valorAliquota;
         object.rps.forEach((r, index) => {
             let numeroRps = r.numero ? r.numero : timestamp + index;
             let serieRps = r.serie ? r.serie : 'RPS';
@@ -653,40 +654,42 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
             if (r.servico) {
                 xmlToBeSigned += `<${particularitiesObject['tags']['servicoAlterada'] ? particularitiesObject['tags']['servicoAlterada'] : particularitiesObject['tags']['servico']}>`;
                 xmlToBeSigned += `<${particularitiesObject['tags']['valoresAlterada'] ? particularitiesObject['tags']['valoresAlterada'] : particularitiesObject['tags']['valores']}>`;
-                if (r.servico.valorServicos && r.servico.valorServicos != '') {
+                if (r.servico.valorServicos != null && r.servico.valorServicos !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorServicosAlterada'] ? particularitiesObject['tags']['valorServicosAlterada'] : particularitiesObject['tags']['valorServicos']}>` + r.servico.valorServicos + `</${particularitiesObject['tags']['valorServicos']}>`;
                 }
-                if (r.servico.valorDeducoes && r.servico.valorDeducoes != '') {
+                if (r.servico.valorDeducoes != null && r.servico.valorDeducoes !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorDeducoesAlterada'] ? particularitiesObject['tags']['valorDeducoesAlterada'] : particularitiesObject['tags']['valorDeducoes']}>` + r.servico.valorDeducoes + `</${particularitiesObject['tags']['valorDeducoes']}>`;
                 }
-                if (r.servico.valorPis && r.servico.valorPis != '') {
+                if (r.servico.valorPis != null && r.servico.valorPis !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorPisAlterada'] ? particularitiesObject['tags']['valorPisAlterada'] : particularitiesObject['tags']['valorPis']}>` + r.servico.valorPis + `</${particularitiesObject['tags']['valorPis']}>`;
                 }
-                if (r.servico.valorCofins && r.servico.valorCofins != '') {
+                if (r.servico.valorCofins != null && r.servico.valorCofins !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorCofinsAlterada'] ? particularitiesObject['tags']['valorCofinsAlterada'] : particularitiesObject['tags']['valorCofins']}>` + r.servico.valorCofins + `</${particularitiesObject['tags']['valorCofins']}>`;
                 }
-                if (r.servico.valorInss && r.servico.valorInss != '') {
+                if (r.servico.valorInss != null && r.servico.valorInss !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorInssAlterada'] ? particularitiesObject['tags']['valorInssAlterada'] : particularitiesObject['tags']['valorInss']}>` + r.servico.valorInss + `</${particularitiesObject['tags']['valorInss']}>`;
                 }
-                if (r.servico.valorIr && r.servico.valorIr != '') {
+                if (r.servico.valorIr != null && r.servico.valorIr !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorIrAlterada'] ? particularitiesObject['tags']['valorIrAlterada'] : particularitiesObject['tags']['valorIr']}>` + r.servico.valorIr + `</${particularitiesObject['tags']['valorIr']}>`;
                 }
-                if (r.servico.valorCsll && r.servico.valorCsll != '') {
+                if (r.servico.valorCsll != null && r.servico.valorCsll !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorCsllAlterada'] ? particularitiesObject['tags']['valorCsllAlterada'] : particularitiesObject['tags']['valorCsll']}>` + r.servico.valorCsll + `</${particularitiesObject['tags']['valorCsll']}>`;
                 }
-                if (r.servico.outrasRetencoes && r.servico.outrasRetencoes != '') {
+                if (r.servico.outrasRetencoes != null && r.servico.outrasRetencoes !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorIssAlterada'] ? particularitiesObject['tags']['valorIssAlterada'] : particularitiesObject['tags']['valorIss']}>` + r.servico.valorIss + `</${particularitiesObject['tags']['valorIss']}>`;
                 }
-                if (r.servico.valorIss && r.servico.valorIss != '') {
+                if (r.servico.valorIss != null && r.servico.valorIss !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['valorIssAlterada'] ? particularitiesObject['tags']['valorIssAlterada'] : particularitiesObject['tags']['valorIss']}>` + r.servico.valorIss + `</${particularitiesObject['tags']['valorIss']}>`;
                 }
-                if (r.servico.aliquota && r.servico.aliquota != '') {
+                
+                if (r.servico.aliquota != null && r.servico.aliquota !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['aliquotaAlterada'] ? particularitiesObject['tags']['aliquotaAlterada'] : particularitiesObject['tags']['aliquota']}>` + r.servico.aliquota + `</${particularitiesObject['tags']['aliquota']}>`;
                 }
-                if (r.servico.descontoIncondicionado && r.servico.descontoIncondicionado != '') {
+
+                if (r.servico.descontoIncondicionado != null && r.servico.descontoIncondicionado !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['descontoIncondicionadoAlterada'] ? particularitiesObject['tags']['descontoIncondicionadoAlterada'] : particularitiesObject['tags']['descontoIncondicionado']}>` + r.servico.descontoIncondicionado + `</${particularitiesObject['tags']['descontoIncondicionado']}>`;
                 }
-                if (r.servico.descontoCondicionado && r.servico.descontoCondicionado != '') {
+                if (r.servico.descontoCondicionado != null && r.servico.descontoCondicionado !== '') {
                     xmlToBeSigned += `<${particularitiesObject['tags']['descontoCondicionadoAlterada'] ? particularitiesObject['tags']['descontoCondicionadoAlterada'] : particularitiesObject['tags']['descontoCondicionado']}>` + r.servico.descontoCondicionado + `</${particularitiesObject['tags']['descontoCondicionado']}>`;
                 }
                 xmlToBeSigned += `</${particularitiesObject['tags']['valores']}>`;
@@ -823,6 +826,7 @@ function addSignedXml(object, cert, particularitiesObject, numeroLote) {
         });
 
         if (particularitiesObject['nfseKeyword'] === 'catalao') {
+            // resolve(xmlToBeSignedArray);
             xmlToBeSignedArray.map((rps, index) => {
                 createSignature(rps, cert, 'InfDeclaracaoPrestacaoServico')
                     .then(createdSignatureXml => {

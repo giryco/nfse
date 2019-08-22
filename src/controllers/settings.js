@@ -220,7 +220,8 @@ const setParticularities = (object, city) => {
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="2.01"`;
                     particularitiesObject['tags']['infDeclaracaoPrestacaoServicoAlterada'] = `${particularitiesObject['tags']['infDeclaracaoPrestacaoServico']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
-                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.nfse\"><soapenv:Header/><soapenv:Body><ser:RecepcionarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.nfse\"><soapenv:Header/><soapenv:Body><ser:RecepcionarLoteRpsRequest><nfseCabecMsg></nfseCabecMsg><nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="utf-8"?>__xml__]]></nfseDadosMsg></ser:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+                    // console.log(particularitiesObject['tags'], 224) ;
                 }
                 if (object.config.acao === 'consultarLoteRps') {
                     particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
