@@ -60,7 +60,6 @@ const enviarLoteRpsGinfesItu = {
         }
     }]
 };
-
 const enviarLoteRpsNotaCarioca = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
@@ -82,21 +81,21 @@ const enviarLoteRpsNotaCarioca = {
         "status": "1",
         "servico": {
             "valorServicos": 105.00,
-			"valorDeducoes": 0.00,
-			"valorPis": 0.00,
-			"valorCofins": 0.00,
-			"valorInss": 0.00,
-			"valorIr": 0.00,
-			"valorCsll": 0.00,
-			"issRetido": 2,
-			"valorIss": 2.10,
-			"baseCalculo": 105.00,
-			"aliquota": 0.05,
-			"valorLiquidoNfse": 105.00,
-			"itemListaServico": "0802",
-			"codigoTributacaoMunicipio": "461840200",
-			"discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
-			"codigoMunicipio": "3523909"
+            "valorDeducoes": 0.00,
+            "valorPis": 0.00,
+            "valorCofins": 0.00,
+            "valorInss": 0.00,
+            "valorIr": 0.00,
+            "valorCsll": 0.00,
+            "issRetido": 2,
+            "valorIss": 2.10,
+            "baseCalculo": 105.00,
+            "aliquota": 0.05,
+            "valorLiquidoNfse": 105.00,
+            "itemListaServico": "0802",
+            "codigoTributacaoMunicipio": "461840200",
+            "discriminacao": "Ref. Servico Conforme O.S. Foi feito ajustes nas configuracoes do SITEF.;Foi feito a instalacao do PINPAD.;Foi feito testes de venda com cartao.",
+            "codigoMunicipio": "3523909"
         },
         "prestador": {
             "cpfCnpj": "10393366000121",
@@ -121,7 +120,6 @@ const enviarLoteRpsNotaCarioca = {
         }
     }]
 };
-
 const enviarLoteRpsPortoAlegre = {
     "config": {
         "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-porto-alegre.pfx",
@@ -182,7 +180,6 @@ const enviarLoteRpsPortoAlegre = {
         }
     }]
 };
-
 const enviarLoteRpsCatalao = {
     "config": {
         "database": "cargox_homol",
@@ -253,50 +250,197 @@ const enviarLoteRpsCatalao = {
         }
     }]
 };
-
 const consultarLoteRpsGinfesItu = {
     "config": {
-		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
         "senhaDoCertificado": "brmed2018",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",
         "acao": "consultarLoteRps"
-	},
-	"prestador": {
-		"cpfCnpj": "17845667000198",
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
         "inscricaoMunicipal": "25099"
-	},
+    },
     "protocolo": "9522475"
 };
-
 const consultarLoteRpsNotaCarioca = {
     "config": {
-		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-rio-de-janeiro.pfx",
         "senhaDoCertificado": "12345678",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3304557",
         "acao": "consultarLoteRps"
-	},
-	"prestador": {
-		"cpfCnpj": "10393366000121",
+    },
+    "prestador": {
+        "cpfCnpj": "10393366000121",
         "inscricaoMunicipal": "04386965"
-	},
+    },
     "protocolo": "00000000000000000000000000000000000000000002310676"
 };
-
 const cancelarNfseGinfesItu = {
     "config": {
-		"diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-		"senhaDoCertificado": "brmed2018",
-		"producaoHomologacao": "homologacao",
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
         "codigoMunicipio": "3523909",
         "acao": "cancelarNfse"
-	},
-	"prestador": {
-		"cpfCnpj": "17845667000198",
-		"inscricaoMunicipal": "25099",
-	},
-	"numeroNfse": 417
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    "numeroNfse": 417
 };
+const consultarNfseRpsIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "consultarNfsePorRps"
+    },
+    "rps": {
+        "numero": "4",
+        "serie": "3",
+        "tipo": "1"
+    },
+    "prestador": {
+        "cpfCnpj": "14224669000171",
+        "inscricaoMunicipal": "1003761"
+    }
+};
+const consultarNfseIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "consultarNfse"
+    },
+    "numeroNfse": '700',
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    // "periodoEmissao": {
+    //     "dataInicial": '2021-03-01',
+    //     "dataFinal": '2021-03-10'
+    // }
+};
+const enviarLoteRpsIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "enviarLoteRps"
+    },
+    "emissor": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    "rps": [{
+        "numero": 1,
+        "serie": 3,
+        "tipo": 1,
+        "dataEmissao": "2021-04-21T10:15:00",
+        "naturezaOperacao": 2,
+        "optanteSimplesNacional": 2,
+        "incentivadorCultural": 2,
+        "status": 1,
+        "regimeEspecialTributacao": 1,
+        "servico": {
+            "valorServicos": 105.00,
+            "valorDeducoes": 0.00,
+            "valorPis": 0.00,
+            "valorCofins": 0.00,
+            "valorInss": 0.00,
+            "valorIr": 0.00,
+            "valorCsll": 0.00,
+            "issRetido": 2,
+            "valorIss": 2.10,
+            "baseCalculo": 105.00,
+            "aliquota": 0.0200,
+            "valorLiquidoNfse": 105.00,
+            "itemListaServico": 12,
+            "codigoTributacaoMunicipio": "45217023",
+            "discriminacao": "assessoria ou consultoria de qualquer natureza, não especificada",
+            "codigoMunicipio": 999,
+            "codigoCnae": 2
+        },
+        "prestador": {
+            "cpfCnpj": "17845667000198",
+            "inscricaoMunicipal": "25099",
+        },
+        "tomador": {
+            "cpfCnpj": "38693524000188",
+            "razaoSocial": "Empresa do Recife",
+            "endereco": {
+                "endereco": "R dos Navegantes 123, 321",
+                "numero": "123",
+                "bairro": "Boa Viagem",
+                "complemento": '321',
+                "codigoMunicipio": "261160",
+                "uf": "PE",
+                "cep": "51021010"
+            },
+            "contato": {
+                "telefone": "02122422427",
+                "email": "robertamartins@mtravel.com.br"
+            }
+        }
+    }]
+};
+const consultarSituacaoLoteRpsEnvioIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "consultarSituacaoLoteRps"
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    "protocolo": "2ae9c135-b381-4414-be8e-27e7c50e835a"
+}
+const consultarLoteRpsEnvioIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "consultarLoteRps"
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    "protocolo": "2ae9c135-b381-4414-be8e-27e7c50e835a"
+}
+const cancelarNfseIssnetonline = {
+    "config": {
+        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
+        "senhaDoCertificado": "brmed2018",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "4313409",
+        "acao": "cancelarNfse"
+    },
+    "emissor": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099",
+    },
+    "nfse": {
+        "numero": 15
+    },
+    "codigoMunicipio": 999,
+    "codigoCancelamento": 5
+}
 
-console.log(nfse.nfse(enviarLoteRpsCatalao));
+const func = nfse.nfse(cancelarNfseIssnetonline)
+
+func.then((res) => {
+    console.log(res)
+})

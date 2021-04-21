@@ -5,8 +5,6 @@
         {
             "name": "riodejaneiro"
         }, {
-            "name": "issnetonline"
-        }, {
             "name": "ginfes"
         }, {
             "name": "portoalegre"
@@ -36,4 +34,13 @@
             "name": "saopaulo"
         }
     ]
-}]
+}, {
+    "model": "issnetonline1.00",
+    "filename": "abrasf1.00.xsd",
+    "nfseKeyword": [
+        {
+            "name": "issnetonline"
+        }
+    ]
+}
+]

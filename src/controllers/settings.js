@@ -2,6 +2,7 @@
 const abrasf100Model = require('../models/abrasf-1.00');
 const abrasf201Model = require('../models/abrasf-2.01');
 const saopaulo100Model = require('../models/sao-paulo-1.00');
+const issnetonline100Model = require('../models/issnetonline-1.00');
 
 
 const setParticularities = (object, city) => {
@@ -11,6 +12,64 @@ const setParticularities = (object, city) => {
     };
 
     switch (city.nfseKeyword) {
+
+        case 'issnetonline':
+            try {
+                object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = `https://www.issnetonline.com.br/webserviceabrasf/${city.name.replace(' ', '').toLowerCase()}/servicos.asmx` : particularitiesObject['webserviceUrl'] = 'https://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx';
+                particularitiesObject['nfseKeyword'] = 'issnetonline';
+                particularitiesObject['tags'] = { ...issnetonline100Model.issnetonline100 };
+
+                if (object.config.acao === 'enviarLoteRps') {
+                    particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_enviar_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><RecepcionarLoteRps xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></RecepcionarLoteRps></soap:Body></soap:Envelope>';
+
+                    particularitiesObject['isSigned']['isDifferentSignature'] = true;
+                    particularitiesObject['isSigned']['isEmptyUri'] = true;
+                }
+                if (object.config.acao === 'consultarLoteRps') {
+                    particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_lote_rps_envio.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarLoteRps xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarLoteRps></soap:Body></soap:Envelope>';
+                }
+                if (object.config.acao === 'consultarSituacaoLoteRps') {
+                    particularitiesObject['tags']['consultarSituacaoLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarSituacaoLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_situacao_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultaSituacaoLoteRPS xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultaSituacaoLoteRPS></soap:Body></soap:Envelope>';
+                }
+                if (object.config.acao === 'consultarNfsePorRps') {
+                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarNFSePorRPS xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarNFSePorRPS></soap:Body></soap:Envelope>'
+                }
+                if (object.config.acao === 'consultarNfse') {
+                    particularitiesObject['tags']['consultarNfseEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarNfse xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarNfse></soap:Body></soap:Envelope>'
+                }
+                if (object.config.acao === 'cancelarNfse') {
+                    particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']}  xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><CancelarNfse xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></CancelarNfse></soap:Body></soap:Envelope>';
+
+                    particularitiesObject['isSigned']['cancelarNfse'] = true;
+                    particularitiesObject['isSigned']['isEmptyUri'] = true;
+                }
+                particularitiesObject['xsds'] = {
+                    enviarLoteRps: '/../../../resources/xsd/issnetonline/servico_enviar_lote_rps_envio.xsd',
+                    consultarLoteRps: '/../../../resources/xsd/issnetonline/servico_consulta_lote_envio.xsd'
+                }
+                particularitiesObject['soapActions'] = {
+                    enviarLoteRps: 'http://www.issnetonline.com.br/webservice/nfd/RecepcionarLoteRps',
+                    consultarSituacaoLoteRpsEnvio: 'http://www.issnetonline.com.br/webservice/nfd/ConsultaSituacaoLoteRPS',
+                    consultarLoteRpsEnvio: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarLoteRps',
+                    consultarNfseRps: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarNFSePorRPS',
+                    consultarNfse: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarNfse',
+                    cancelarNfse: 'http://www.issnetonline.com.br/webservice/nfd/CancelarNfse'
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            break;
+
         case 'ginfes':
             try {
                 object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://producao.ginfes.com.br/ServiceGinfesImpl?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.ginfes.com.br/ServiceGinfesImpl?wsdl';
@@ -18,7 +77,7 @@ const setParticularities = (object, city) => {
                 particularitiesObject['nfseKeyword'] = 'ginfes';
 
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     addPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns:ns3="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
@@ -28,7 +87,7 @@ const setParticularities = (object, city) => {
                 }
 
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     addPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']}  xmlns:ns3="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
@@ -37,7 +96,7 @@ const setParticularities = (object, city) => {
                 }
 
                 if (object.config.acao === 'consultarNfsePorRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     addPrefixesAsync(['ConsultarNfseRpsEnvio', 'Prestador', 'IdentificacaoRps'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['ConsultarNfseRpsEnvio', 'Prestador', 'IdentificacaoRps'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']}  xmlns:ns3="http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
@@ -47,7 +106,7 @@ const setParticularities = (object, city) => {
                 }
 
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     addPrefixesAsync(['CancelarNfseEnvio', 'Prestador', 'NumeroNfse'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['CancelarNfseEnvio', 'Prestador', 'NumeroNfse'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns:ns3="http://www.ginfes.com.br/servico_cancelar_nfse_envio" xmlns:ns4="http://www.ginfes.com.br/tipos"`;
@@ -72,7 +131,7 @@ const setParticularities = (object, city) => {
                 particularitiesObject['nfseKeyword'] = 'saojosedospinhais';
 
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};                    
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     // addPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns3:', particularitiesObject);
                     // doNotAddPrefixesAsync(['EnviarLoteRpsEnvio', 'LoteRps'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://nfe.sjp.pr.gov.br/servico_enviar_lote_rps_envio_v03.xsd"`;
@@ -88,7 +147,7 @@ const setParticularities = (object, city) => {
                 }
 
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     addPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['ConsultarLoteRpsEnvio', 'Prestador', 'Protocolo'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']}  xmlns:ns3="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"`;
@@ -97,7 +156,7 @@ const setParticularities = (object, city) => {
                 }
 
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     addPrefixesAsync(['CancelarNfseEnvio', 'Prestador', 'NumeroNfse'], 'ns3:', particularitiesObject);
                     doNotAddPrefixesAsync(['CancelarNfseEnvio', 'Prestador', 'NumeroNfse'], 'ns4:', particularitiesObject);
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns:ns3="http://www.ginfes.com.br/servico_cancelar_nfse_envio" xmlns:ns4="http://www.ginfes.com.br/tipos"`;
@@ -119,24 +178,24 @@ const setParticularities = (object, city) => {
                 object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'https://notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl' : particularitiesObject['webserviceUrl'] = 'https://homologacao.notacarioca.rio.gov.br/WSNacional/nfse.asmx?wsdl';
                 particularitiesObject['nfseKeyword'] = 'riodejaneiro';
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue"`;
                     particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd" Id="_uniqueValue"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:not=\"http://notacarioca.rio.gov.br/\"><soapenv:Header/><soapenv:Body><not:RecepcionarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://notacarioca.rio.gov.br/"><soapenv:Header/><soapenv:Body><not:ConsultarLoteRpsRequest><not:inputXML><![CDATA[__xml__]]></not:inputXML></not:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'consultarNfsePorRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://notacarioca.rio.gov.br/"><soapenv:Header/><soapenv:Body><not:ConsultarNfsePorRpsRequest><not:inputXML>__xml__</not:inputXML></not:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['tags']['pedidoAlterada'] = `${particularitiesObject['tags']['pedido']} xmlns="http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd"`;
                     particularitiesObject['tags']['infPedidoCancelamentoAlterada'] = `${particularitiesObject['tags']['infPedidoCancelamento']} Id="_uniqueValue"`;
@@ -163,7 +222,7 @@ const setParticularities = (object, city) => {
                 particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:not=\"http://ws.bhiss.pbh.gov.br\"><soapenv:Header/><soapenv:Body><not:RecepcionarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"1.00\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></not:RecepcionarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 particularitiesObject['nfseKeyword'] = 'portoalegre';
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="1.00"`;
                     particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
@@ -171,7 +230,7 @@ const setParticularities = (object, city) => {
                     particularitiesObject['isSigned']['infRps'] = true;
                 }
                 if (object.config.acao === 'gerarNfse') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['gerarNfseEnvioAlterada'] = `${particularitiesObject['tags']['gerarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="1.00"`;
                     particularitiesObject['tags']['infRpsAlterada'] = `${particularitiesObject['tags']['infRps']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
@@ -179,17 +238,17 @@ const setParticularities = (object, city) => {
                     particularitiesObject['isSigned']['infRps'] = true;
                 }
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:not="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><not:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></not:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'consultarNfsePorRps') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.bhiss.pbh.gov.br"><soapenv:Header/><soapenv:Body><ws:ConsultarNfsePorRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ws:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags'] = {...abrasf100Model.abrasf100};
+                    particularitiesObject['tags'] = { ...abrasf100Model.abrasf100 };
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['pedidoAlterada'] = `${particularitiesObject['tags']['pedido']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['infPedidoCancelamentoAlterada'] = `${particularitiesObject['tags']['infPedidoCancelamento']} Id="Cancela__uniqueValue"`;
@@ -216,7 +275,7 @@ const setParticularities = (object, city) => {
                 object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'http://187.111.62.130/prodataws/services/NfseWSService?wsdl' : particularitiesObject['webserviceUrl'] = 'http://187.111.62.130:8585/prodataws/services/NfseWSService?wsdl';
                 particularitiesObject['nfseKeyword'] = 'catalao';
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="2.01"`;
                     particularitiesObject['tags']['infDeclaracaoPrestacaoServicoAlterada'] = `${particularitiesObject['tags']['infDeclaracaoPrestacaoServico']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
@@ -224,17 +283,17 @@ const setParticularities = (object, city) => {
                     // console.log(particularitiesObject['tags'], 224) ;
                 }
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'consultarNfsePorRps') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarNfsePorRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarNfsePorRpsRequest></soapenv:Body></soapenv:Envelope>';
                 }
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags'] = {...abrasf201Model.abrasf201};
+                    particularitiesObject['tags'] = { ...abrasf201Model.abrasf201 };
                     particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['pedidoAlterada'] = `${particularitiesObject['tags']['pedido']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
                     particularitiesObject['tags']['infPedidoCancelamentoAlterada'] = `${particularitiesObject['tags']['infPedidoCancelamento']}`;
@@ -251,39 +310,39 @@ const setParticularities = (object, city) => {
             }
             break;
 
-            case 'saopaulo':
-                try {
-                    object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'http://200.23.238.210/prodataws/services/NfseWSService?wsdl' : particularitiesObject['webserviceUrl'] = 'http://200.23.238.210:8585/prodataws/services/NfseWSService?wsdl';
-                    particularitiesObject['nfseKeyword'] = 'saopaulo';
-                    if (object.config.acao === 'enviarLoteRps') {
-                        particularitiesObject['tags'] = {...saopaulo100Model.saopaulo100};
-                        particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
-                        particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="2.01"`;
-                        particularitiesObject['tags']['infDeclaracaoPrestacaoServicoAlterada'] = `${particularitiesObject['tags']['infDeclaracaoPrestacaoServico']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
-                        particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.prefeitura.sp.gov.br/nfe"><soapenv:Header/><soapenv:Body><nfe:EnvioLoteRPSRequest><nfe:VersaoSchema>1.00</nfe:VersaoSchema><nfe:MensagemXML>__xml__</nfe:MensagemXML></nfe:EnvioLoteRPSRequest></soapenv:Body></soapenv:Envelope>';
-                    }
-                    if (object.config.acao === 'consultarLoteRps') {
-                        particularitiesObject['tags'] = {...saopaulo100Model.saopaulo100};
-                        particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
-                        particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
-                    }
-                    if (object.config.acao === 'cancelarNfse') {
-                        particularitiesObject['tags'] = {...saopaulo100Model.saopaulo100};
-                        particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
-                        particularitiesObject['tags']['pedidoAlterada'] = `${particularitiesObject['tags']['pedido']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
-                        particularitiesObject['tags']['infPedidoCancelamentoAlterada'] = `${particularitiesObject['tags']['infPedidoCancelamento']}`;
-                        particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:CancelarNfseRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:CancelarNfseRequest></soapenv:Body></soapenv:Envelope>';
-                    }
-    
-                    particularitiesObject['xsds'] = {
-                        enviarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoEnvioLoteRPS_v01.xsd',
-                        consultarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoConsultaLote_v01.xsd',
-                        cancelarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoCancelamentoNFe_v01.xsd'
-                    }
-                } catch (error) {
-                    console.error(error);
+        case 'saopaulo':
+            try {
+                object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = 'http://200.23.238.210/prodataws/services/NfseWSService?wsdl' : particularitiesObject['webserviceUrl'] = 'http://200.23.238.210:8585/prodataws/services/NfseWSService?wsdl';
+                particularitiesObject['nfseKeyword'] = 'saopaulo';
+                if (object.config.acao === 'enviarLoteRps') {
+                    particularitiesObject['tags'] = { ...saopaulo100Model.saopaulo100 };
+                    particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['tags']['loteRpsAlterada'] = `${particularitiesObject['tags']['loteRps']} Id="_uniqueValue" versao="2.01"`;
+                    particularitiesObject['tags']['infDeclaracaoPrestacaoServicoAlterada'] = `${particularitiesObject['tags']['infDeclaracaoPrestacaoServico']} xmlns="http://www.abrasf.org.br/nfse.xsd" Id="_uniqueValue"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfe="http://www.prefeitura.sp.gov.br/nfe"><soapenv:Header/><soapenv:Body><nfe:EnvioLoteRPSRequest><nfe:VersaoSchema>1.00</nfe:VersaoSchema><nfe:MensagemXML>__xml__</nfe:MensagemXML></nfe:EnvioLoteRPSRequest></soapenv:Body></soapenv:Envelope>';
                 }
-                break;
+                if (object.config.acao === 'consultarLoteRps') {
+                    particularitiesObject['tags'] = { ...saopaulo100Model.saopaulo100 };
+                    particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:ConsultarLoteRpsRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:ConsultarLoteRpsRequest></soapenv:Body></soapenv:Envelope>';
+                }
+                if (object.config.acao === 'cancelarNfse') {
+                    particularitiesObject['tags'] = { ...saopaulo100Model.saopaulo100 };
+                    particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['tags']['pedidoAlterada'] = `${particularitiesObject['tags']['pedido']} xmlns="http://www.abrasf.org.br/nfse.xsd"`;
+                    particularitiesObject['tags']['infPedidoCancelamentoAlterada'] = `${particularitiesObject['tags']['infPedidoCancelamento']}`;
+                    particularitiesObject['envelopment'] = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.nfse"><soapenv:Header/><soapenv:Body><ser:CancelarNfseRequest><nfseCabecMsg><![CDATA[<cabecalho xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"2.01\"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg><nfseDadosMsg><![CDATA[__xml__]]></nfseDadosMsg></ser:CancelarNfseRequest></soapenv:Body></soapenv:Envelope>';
+                }
+
+                particularitiesObject['xsds'] = {
+                    enviarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoEnvioLoteRPS_v01.xsd',
+                    consultarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoConsultaLote_v01.xsd',
+                    cancelarLoteRps: '/../../../resources/xsd/sao-paulo/PedidoCancelamentoNFe_v01.xsd'
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            break;
 
         default:
             console.error('Sem modelo padrão de NFSe definido para este município');
@@ -305,7 +364,7 @@ const addPrefixes = (tagsArray, prefix, particularitiesObject) => {
             });
         }
     }
-    
+
     return tagsArray;
 }
 
@@ -317,7 +376,7 @@ const doNotAddPrefixes = (tagsArray, prefix, particularitiesObject) => {
             let checkTagToCompare = 0;
 
             tagsArray.forEach(tagToCompare => {
-                (tag.split(':').length > 1) ? checkTag = tag.split(':')[1]: checkTag = tag;
+                (tag.split(':').length > 1) ? checkTag = tag.split(':')[1] : checkTag = tag;
                 if (checkTag != tagToCompare) {
                     checkTagToCompare++;
                 }
@@ -328,7 +387,7 @@ const doNotAddPrefixes = (tagsArray, prefix, particularitiesObject) => {
             }
         }
     }
-    
+
     return tagsArray;
 }
 

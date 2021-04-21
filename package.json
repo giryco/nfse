@@ -4,7 +4,8 @@
   "description": "Geração de nota fiscal de serviço",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon testing.js"
   },
   "keywords": [
     "nfse",
@@ -16,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
+    "nodemon": "^2.0.7",
     "pem": "^1.14.2",
     "request": "^2.88.0",
     "xml-crypto": "^1.4.0",
