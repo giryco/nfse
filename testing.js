@@ -422,8 +422,8 @@ const consultarLoteRpsEnvioIssnetonline = {
 }
 const cancelarNfseIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "./17305078_out.pfx",
+        "senhaDoCertificado": "sete1505",
         "producaoHomologacao": "homologacao",
         "codigoMunicipio": "4313409",
         "acao": "cancelarNfse"

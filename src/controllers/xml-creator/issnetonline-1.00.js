@@ -273,31 +273,30 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             }
                             let xml = '<?xml version="1.0" encoding="utf-8"?>';
 
-                            xml += `<CancelarNfseEnvio xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd">`;
-                            xml += `<InfPedidoCancelamento>`;
+                            xml += `<p1:CancelarNfseEnvio xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd">`;
+                            xml += `<Pedido>`;
+                            xml += `<tc:InfPedidoCancelamento>`;
 
                             xml += createIdentificacaoNfseXml(object.nfse, object.emissor, object.codigoMunicipio)
                             xml += `<tc:CodigoCancelamento>${object.codigoCancelamento}</tc:CodigoCancelamento>`
 
-                            xml += `</InfPedidoCancelamento>`;
-                            xml += `</CancelarNfseEnvio>`
+                            xml += `</tc:InfPedidoCancelamento>`;
+                            xml += `</Pedido>`;
+                            xml += `</p1:CancelarNfseEnvio>`
 
                             let isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'] || null
                             let signatureId = particularitiesObject['isSigned']['signatureId'] || null
                             let isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'] || null
 
-                            createSignature(xml, cert, 'InfPedidoCancelamento', signatureId, isEmptyUri, isDifferentSignature)
+                            console.log('xml\n', xml)
+                            createSignature(xml, cert, 'tc:InfPedidoCancelamento', signatureId, isEmptyUri, isDifferentSignature)
                                 .then(xmlSignature => {
 
 
                                     if (particularitiesObject['isSigned']['cancelarNfse']) {
                                         xml = xmlSignature;
                                     }
-                                    xml = xml.replace("<CancelarNfseEnvio xmlns", "<p1:CancelarNfseEnvio xmlns")
-                                    xml = xml.replace("<InfPedidoCancelamento>", "<Pedido><InfPedidoCancelamento>")
-                                    xml = xml.replaceAll("InfPedidoCancelamento", "tc:InfPedidoCancelamento")
-                                    xml = xml.replace("</CancelarNfseEnvio>", "</Pedido></p1:CancelarNfseEnvio>")
-                                    console.log('xml\n', xml)
+
                                     xml = formatXml(xml)
                                     xml = replaceXml(particularitiesObject, xml)
 
