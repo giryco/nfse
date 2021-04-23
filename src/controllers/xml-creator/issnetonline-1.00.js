@@ -52,144 +52,149 @@ const formatXml = (xml) => {
 const replaceXml = (obj, xml) => {
     return obj['envelopment'].replace('__xml__', xml);
 }
-const createIdentificacaoRpsXml = (rps, tag = null) => {
+const createIdentificacaoRpsXml = (tags, rps, tc = false) => {
     if (rps) {
-        let xml = `<${tag || IdentificacaoRps}>`;
+        let tag = tc ? tags['tcIdentificacaoRps'] : tags['IdentificacaoRps']
+        let xml = `<${tag}>`;
         if (rps.numero && rps.numero != '') {
-            xml += `<tc:Numero>${rps.numero}</tc:Numero>`;
+            xml += `<${tags['tcNumero']}>${rps.numero}</${tags['tcNumero']}>`;
         }
         if (rps.serie && rps.serie != '') {
-            xml += `<tc:Serie>${rps.serie}</tc:Serie>`;
+            xml += `<${tags['tcSerie']}>${rps.serie}</${tags['tcSerie']}>`;
         }
         if (rps.tipo && rps.tipo != '') {
-            xml += `<tc:Tipo>${rps.tipo}</tc:Tipo>`;
+            xml += `<${tags['tcTipo']}>${rps.tipo}</${tags['tcTipo']}>`;
         }
-        xml += `</${tag || IdentificacaoRps}>`;
+        xml += `</${tag}>`;
         return xml
     }
     return ''
 }
-const createPrestadorXml = (prestador, tag = null) => {
+const createPrestadorXml = (tags, prestador, tc = false) => {
     if (prestador) {
-        let xml = `<${tag || 'Prestador'}>`;
-        xml += createCpfCnpjXml(prestador.cpfCnpj);
-        xml += createInscricaoMunicipalXml(prestador.inscricaoMunicipal)
-        xml += `</${tag || 'Prestador'}>`;
+        let tag = tc ? tags['tcPrestador'] : tags['Prestador']
+        let xml = `<${tag}>`;
+        xml += createCpfCnpjXml(tags, prestador.cpfCnpj);
+        xml += createInscricaoMunicipalXml(tags, prestador.inscricaoMunicipal)
+        xml += `</${tag}>`;
         return xml
     }
     return ''
 }
-const createTomadorXml = (tomador) => {
+const createTomadorXml = (tags, tomador, tc = false) => {
     if (tomador) {
-        let xml = '<Tomador>';
-        xml += createCpfCnpjXml(tomador.cpfCnpj)
-        xml += createInscricaoMunicipalXml(tomador.inscricaoMunicipal)
-        xml += '</Tomador>';
+        let tag = tc ? tags['tcTomador'] : tags['Tomador']
+        let xml = `<${tag}>`;
+        xml += createCpfCnpjXml(tags, tomador.cpfCnpj)
+        xml += createInscricaoMunicipalXml(tags, tomador.inscricaoMunicipal)
+        xml += `</${tag}>`;
         return xml
     }
     return ''
 }
-const createTomadorCompletoXml = (tomador) => {
+const createTomadorCompletoXml = (tags, tomador, tc = false) => {
     if (tomador) {
-        let xml = '<tc:Tomador>'
-        xml += '<tc:IdentificacaoTomador>';
-        xml += tomador.cpfCnpj ? createCpfCnpjXml(tomador.cpfCnpj) : ''
-        xml += '</tc:IdentificacaoTomador>'
-        xml += tomador.razaoSocial ? `<tc:RazaoSocial>${tomador.razaoSocial}</tc:RazaoSocial>` : ''
-        xml += createEnderecoXml(tomador.endereco)
-        xml += '</tc:Tomador>';
+        let tag = tc ? tags['tcTomador'] : tags['Tomador']
+        let xml = `<${tag}>`;
+        xml += `<${tags['tcIdentificacaoTomador']}>`;
+        xml += tomador.cpfCnpj ? createCpfCnpjXml(tags, tomador.cpfCnpj) : ''
+        xml += `</${tags['tcIdentificacaoTomador']}>`
+        xml += tomador.razaoSocial ? `<${tags['tcRazaoSocial']}>${tomador.razaoSocial}</${tags['tcRazaoSocial']}>` : ''
+        xml += createEnderecoXml(tags, tomador.endereco, true)
+        xml += `</${tag}>`;
         return xml
     }
     return ''
 }
-const createEnderecoXml = (endereco) => {
+const createEnderecoXml = (tags, endereco, tc = false) => {
     if (endereco) {
-        let xml = '<tc:Endereco>'
-        xml += `<tc:Endereco>${endereco.endereco}</tc:Endereco>`
-        xml += `<tc:Numero>${endereco.numero}</tc:Numero>`
-        xml += `<tc:Complemento>${endereco.complemento}</tc:Complemento>`
-        xml += `<tc:Bairro>${endereco.bairro}</tc:Bairro>`
-        xml += `<tc:Cidade>${endereco.codigoMunicipio}</tc:Cidade>`
-        xml += `<tc:Estado>${endereco.uf.toUpperCase()}</tc:Estado>`
-        xml += `<tc:Cep>${endereco.cep}</tc:Cep>`
-        xml += '</tc:Endereco>'
+        let tag = tc ? tags['tcEndereco'] : tags['Endereco']
+        let xml = `<${tag}>`;
+        xml += `<${tags['tcEndereco']}>${endereco.endereco}</${tags['tcEndereco']}>`
+        xml += `<${tags['tcNumero']}>${endereco.numero}</${tags['tcNumero']}>`
+        xml += `<${tags['tcComplemento']}>${endereco.complemento || ''}</${tags['tcComplemento']}>`
+        xml += `<${tags['tcBairro']}>${endereco.bairro}</${tags['tcBairro']}>`
+        xml += `<${tags['tcCidade']}>${endereco.codigoMunicipio}</${tags['tcCidade']}>`
+        xml += `<${tags['tcEstado']}>${endereco.uf.toUpperCase()}</${tags['tcEstado']}>`
+        xml += `<${tags['tcCep']}>${endereco.cep}</${tags['tcCep']}>`
+        xml += `</${tag}>`;
         return xml
     }
     return ''
 }
-const createInscricaoMunicipalXml = (inscricaoMunicipal) => {
+const createInscricaoMunicipalXml = (tags, inscricaoMunicipal) => {
     if (inscricaoMunicipal && inscricaoMunicipal != '') {
-        return `<tc:InscricaoMunicipal>${inscricaoMunicipal}</tc:InscricaoMunicipal>`;
+        return `<${tags['tcInscricaoMunicipal']}>${inscricaoMunicipal}</${tags['tcInscricaoMunicipal']}>`;
     }
     return ''
 }
-const createCpfCnpjXml = (cpfCnpj) => {
+const createCpfCnpjXml = (tags, cpfCnpj) => {
     if (cpfCnpj) {
-        let xml = '<tc:CpfCnpj>';
+        let xml = `<${tags['tcCpfCnpj']}>`;
         if (cpfCnpj.replace(/\.|\/|\-|\s/g, '').length === 11) {
-            xml += '<tc:Cpf>' + cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</tc:Cpf>';
+            xml += `<${tags['tcCpf']}>${cpfCnpj.replace(/\.|\/|\-|\s/g, '')}</${tags['tcCpf']}>`;
         }
         if (cpfCnpj.replace(/\.|\/|\-|\s/g, '').length === 14) {
-            xml += '<tc:Cnpj>' + cpfCnpj.replace(/\.|\/|\-|\s/g, '') + '</tc:Cnpj>';
+            xml += `<${tags['tcCnpj']}>${cpfCnpj.replace(/\.|\/|\-|\s/g, '')}</${tags['tcCnpj']}>`
         }
-        xml += '</tc:CpfCnpj>';
+        xml += `</${tags['tcCpfCnpj']}>`;
         return xml
     }
     return ''
 }
-const createPeriodoEmissaoXml = (periodoEmissao) => {
+const createPeriodoEmissaoXml = (tags, periodoEmissao) => {
     if (periodoEmissao && periodoEmissao.dataInicial && periodoEmissao.dataFinal) {
-        let xml = '<PeriodoEmissao>';
-        xml += `<DataInicial>${periodoEmissao.dataInicial}</DataInicial>`;
-        xml += `<DataFinal>${periodoEmissao.dataFinal}</DataFinal>`;
-        xml += '</PeriodoEmissao>';
+        let xml = `<${tags['periodoEmissao']}>`;
+        xml += `<${tags['dataInicial']}>${periodoEmissao.dataInicial}</${tags['dataInicial']}>`;
+        xml += `<${tags['dataFinal']}>${periodoEmissao.dataFinal}</${tags['dataFinal']}>`;
+        xml += `</${tags['periodoEmissao']}>`;
         return xml
     }
     return ''
 }
-const generateRpsXml = (rps) => {
-    let xml = '<tc:Rps><tc:InfRps>'
-    xml += createIdentificacaoRpsXml(rps, 'tc:IdentificacaoRps')
-    xml += `<tc:DataEmissao>${rps.dataEmissao}</tc:DataEmissao>`
-    xml += `<tc:NaturezaOperacao>${rps.naturezaOperacao}</tc:NaturezaOperacao>`
-    xml += `<tc:OptanteSimplesNacional>${rps.optanteSimplesNacional}</tc:OptanteSimplesNacional>`
-    xml += `<tc:IncentivadorCultural>${rps.incentivadorCultural}</tc:IncentivadorCultural>`
-    xml += `<tc:Status>${rps.status}</tc:Status>`
-    xml += `<tc:RegimeEspecialTributacao>${rps.regimeEspecialTributacao}</tc:RegimeEspecialTributacao>`
-    xml += '<tc:Servico><tc:Valores>'
-    xml += `<tc:ValorServicos>${rps.servico.valorServicos || 0}</tc:ValorServicos>`
-    xml += `<tc:ValorPis>${rps.servico.valorPis || 0}</tc:ValorPis>`
-    xml += `<tc:ValorCofins>${rps.servico.valorCofins || 0}</tc:ValorCofins>`
-    xml += `<tc:ValorInss>${rps.servico.valorInss || 0}</tc:ValorInss>`
-    xml += `<tc:ValorIr>${rps.servico.valorIr || 0}</tc:ValorIr>`
-    xml += `<tc:ValorCsll>${rps.servico.valorCsll || 0}</tc:ValorCsll>`
-    xml += `<tc:IssRetido>${rps.servico.issRetido || 0}</tc:IssRetido>`
-    xml += `<tc:ValorIss>${rps.servico.valorIss || 0}</tc:ValorIss>`
-    xml += `<tc:BaseCalculo>${rps.servico.baseCalculo || 0}</tc:BaseCalculo>`
-    xml += `<tc:Aliquota>${rps.servico.aliquota || 0}</tc:Aliquota>`
-    xml += `<tc:ValorLiquidoNfse>${rps.servico.valorLiquidoNfse || 0}</tc:ValorLiquidoNfse>`
-    xml += `<tc:DescontoIncondicionado>${rps.servico.descontoIncondicionado || 0}</tc:DescontoIncondicionado>`
-    xml += `<tc:DescontoCondicionado>${rps.servico.descontoCondicionado || 0}</tc:DescontoCondicionado>`
-    xml += `</tc:Valores>`
-    xml += `<tc:ItemListaServico>${rps.servico.itemListaServico}</tc:ItemListaServico>`
-    xml += `<tc:CodigoCnae>${rps.servico.codigoCnae}</tc:CodigoCnae>`
-    xml += `<tc:CodigoTributacaoMunicipio>${rps.servico.codigoTributacaoMunicipio}</tc:CodigoTributacaoMunicipio>`
-    xml += `<tc:Discriminacao>${rps.servico.discriminacao}</tc:Discriminacao>`
-    xml += `<tc:MunicipioPrestacaoServico>${rps.servico.codigoMunicipio}</tc:MunicipioPrestacaoServico>`
-    xml += '</tc:Servico>'
-    xml += createPrestadorXml(rps.prestador, 'tc:Prestador')
-    xml += createTomadorCompletoXml(rps.tomador)
-    xml += '</tc:InfRps></tc:Rps>'
+const generateRpsXml = (tags, rps) => {
+    let xml = `<${tags['tcRps']}><${tags['tcInfRps']}>`
+    xml += createIdentificacaoRpsXml(tags, rps, true)
+    xml += `<${tags['tcDataEmissao']}>${rps.dataEmissao}</${tags['tcDataEmissao']}>`
+    xml += `<${tags['tcNaturezaOperacao']}>${rps.naturezaOperacao}</${tags['tcNaturezaOperacao']}>`
+    xml += `<${tags['tcOptanteSimplesNacional']}>${rps.optanteSimplesNacional}</${tags['tcOptanteSimplesNacional']}>`
+    xml += `<${tags['tcIncentivadorCultural']}>${rps.incentivadorCultural}</${tags['tcIncentivadorCultural']}>`
+    xml += `<${tags['tcStatus']}>${rps.status}</${tags['tcStatus']}>`
+    xml += `<${tags['tcRegimeEspecialTributacao']}>${rps.regimeEspecialTributacao}</${tags['tcRegimeEspecialTributacao']}>`
+    xml += `<${tags['tcServico']}><${tags['tcValores']}>`
+    xml += `<${tags['tcValorServicos']}>${rps.servico.valorServicos || 0}</${tags['tcValorServicos']}>`
+    xml += `<${tags['tcValorPis']}>${rps.servico.valorPis || 0}</${tags['tcValorPis']}>`
+    xml += `<${tags['tcValorCofins']}>${rps.servico.valorCofins || 0}</${tags['tcValorCofins']}>`
+    xml += `<${tags['tcValorInss']}>${rps.servico.valorInss || 0}</${tags['tcValorInss']}>`
+    xml += `<${tags['tcValorIr']}>${rps.servico.valorIr || 0}</${tags['tcValorIr']}>`
+    xml += `<${tags['tcValorCsll']}>${rps.servico.valorCsll || 0}</${tags['tcValorCsll']}>`
+    xml += `<${tags['tcIssRetido']}>${rps.servico.issRetido || 0}</${tags['tcIssRetido']}>`
+    xml += `<${tags['tcValorIss']}>${rps.servico.valorIss || 0}</${tags['tcValorIss']}>`
+    xml += `<${tags['tcBaseCalculo']}>${rps.servico.baseCalculo || 0}</${tags['tcBaseCalculo']}>`
+    xml += `<${tags['tcAliquota']}>${rps.servico.aliquota || 0}</${tags['tcAliquota']}>`
+    xml += `<${tags['tcValorLiquidoNfse']}>${rps.servico.valorLiquidoNfse || 0}</${tags['tcValorLiquidoNfse']}>`
+    xml += `<${tags['tcDescontoIncondicionado']}>${rps.servico.descontoIncondicionado || 0}</${tags['tcDescontoIncondicionado']}>`
+    xml += `<${tags['tcDescontoCondicionado']}>${rps.servico.descontoCondicionado || 0}</${tags['tcDescontoCondicionado']}>`
+    xml += `</${tags['tcValores']}>`
+    xml += `<${tags['tcItemListaServico']}>${rps.servico.itemListaServico}</${tags['tcItemListaServico']}>`
+    xml += `<${tags['tcCodigoCnae']}>${rps.servico.codigoCnae}</${tags['tcCodigoCnae']}>`
+    xml += `<${tags['tcCodigoTributacaoMunicipio']}>${rps.servico.codigoTributacaoMunicipio}</${tags['tcCodigoTributacaoMunicipio']}>`
+    xml += `<${tags['tcDiscriminacao']}>${rps.servico.discriminacao}</${tags['tcDiscriminacao']}>`
+    xml += `<${tags['tcMunicipioPrestacaoServico']}>${rps.servico.codigoMunicipio}</${tags['tcMunicipioPrestacaoServico']}>`
+    xml += `</${tags['tcServico']}>`
+    xml += createPrestadorXml(tags, rps.prestador, true)
+    xml += createTomadorCompletoXml(tags, rps.tomador, true)
+    xml += `</${tags['tcInfRps']}></${tags['tcRps']}>`
     return xml
 }
-const createIdentificacaoNfseXml = (nfse, emissor, codigoMunicipio) => {
+const createIdentificacaoNfseXml = (tags, nfse, emissor, codigoMunicipio) => {
     if (nfse) {
-        let xml = `<tc:IdentificacaoNfse>`;
-        xml += nfse.numero && nfse.numero != '' ? `<tc:Numero>${nfse.numero}</tc:Numero>` : ''
-        xml += emissor && emissor.cpfCnpj ? `<tc:Cnpj>${emissor.cpfCnpj}</tc:Cnpj>` : ''
-        xml += emissor && emissor.inscricaoMunicipal ? `<tc:InscricaoMunicipal>${emissor.inscricaoMunicipal}</tc:InscricaoMunicipal>` : ''
-        xml += codigoMunicipio && codigoMunicipio != '' ? `<tc:CodigoMunicipio>${codigoMunicipio}</tc:CodigoMunicipio>` : ''
-        xml += `</tc:IdentificacaoNfse>`;
+        let xml = `<${tags['tcIdentificacaoNfse']}>`;
+        xml += nfse.numero && nfse.numero != '' ? `<${tags['tcNumero']}>${nfse.numero}</${tags['tcNumero']}>` : ''
+        xml += emissor && emissor.cpfCnpj ? `<${tags['tcCnpj']}>${emissor.cpfCnpj}</${tags['tcCnpj']}>` : ''
+        xml += emissor && emissor.inscricaoMunicipal ? `<${tags['tcInscricaoMunicipal']}>${emissor.inscricaoMunicipal}</${tags['tcInscricaoMunicipal']}>` : ''
+        xml += codigoMunicipio && codigoMunicipio != '' ? `<${tags['tcCodigoMunicipio']}>${codigoMunicipio}</${tags['tcCodigoMunicipio']}>` : ''
+        xml += `</${tags['tcIdentificacaoNfse']}>`;
         return xml
     }
     return ''
@@ -201,67 +206,10 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
             const pfx = fs.readFileSync(object.config.diretorioDoCertificado);
 
             const result = { url: particularitiesObject['webserviceUrl'] }
+            let tags = particularitiesObject['tags']
+            let xml = '<?xml version="1.0" encoding="utf-8"?>';
+
             switch (object.config.acao) {
-                case 'enviarLoteRps':
-                    try {
-                        pem.readPkcs12(pfx, {
-                            p12Password: object.config.senhaDoCertificado
-                        }, (err, cert) => {
-                            if (err) {
-                                resolve(err);
-                            }
-
-                            let xml = '<?xml version="1.0" encoding="utf-8"?>';
-
-                            xml += `<${particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] ? particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] : particularitiesObject['tags']['enviarLoteRpsEnvio']}>`;
-                            xml += `<LoteRps>`;
-                            if (numeroLote) {
-                                xml += `<tc:NumeroLote>` + numeroLote + `</tc:NumeroLote>`;
-                            }
-                            xml += createCpfCnpjXml(object.emissor.cpfCnpj)
-                            xml += createInscricaoMunicipalXml(object.emissor.inscricaoMunicipal)
-
-                            xml += `<tc:QuantidadeRps>${object.rps.length}</tc:QuantidadeRps>`;
-
-                            xml += '<tc:ListaRps>'
-
-                            object.rps.forEach(rps => {
-                                xml += generateRpsXml(rps)
-                            })
-
-                            xml += '</tc:ListaRps>'
-                            xml += `</LoteRps>`;
-                            xml += `</${particularitiesObject['tags']['enviarLoteRpsEnvio']}>`
-
-
-                            let isEmptyUri = null || particularitiesObject['isSigned']['isEmptyUri']
-                            let signatureId = null || particularitiesObject['isSigned']['signatureId']
-                            let isDifferentSignature = null || particularitiesObject['isSigned']['isDifferentSignature']
-
-                            createSignature(xml, cert, 'LoteRps', signatureId, isEmptyUri, isDifferentSignature)
-                                .then(xmlSignature => {
-
-                                    try {
-                                        xmlSignature = formatXml(xmlSignature)
-                                        let xml = replaceXml(particularitiesObject, xmlSignature)
-
-                                        result.soapEnvelop = xml
-                                        if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
-                                            result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
-                                        }
-
-                                        resolve(result);
-                                    } catch (error) {
-                                        console.error(error);
-                                    }
-                                }).catch(err => {
-                                    console.error(err);
-                                });
-                        })
-                    } catch (error) {
-                        reject(error);
-                    }
-                    break;
 
                 case 'cancelarNfse':
                     try {
@@ -271,25 +219,23 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
-                            let xml = '<?xml version="1.0" encoding="utf-8"?>';
+                            xml += `<${tags['cancelarNfseAlterada'] ? tags['cancelarNfseAlterada'] : tags['cancelarNfse']}>`;
+                            xml += `<${tags['Pedido']}>`;
+                            xml += `<${tags['tcInfPedidoCancelamento']}>`;
 
-                            xml += `<p1:CancelarNfseEnvio xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd">`;
-                            xml += `<Pedido>`;
-                            xml += `<tc:InfPedidoCancelamento>`;
+                            xml += createIdentificacaoNfseXml(tags, object.nfse, object.emissor, object.codigoMunicipio)
+                            xml += `<${tags['tcCodigoCancelamento']}>${object.codigoCancelamento}</${tags['tcCodigoCancelamento']}>`
+                            xml += object.motivoCancelamento ? `<${tags['tcMotivoCancelamentoNfse']}>${object.motivoCancelamento}</${tags['tcMotivoCancelamentoNfse']}>` : ''
 
-                            xml += createIdentificacaoNfseXml(object.nfse, object.emissor, object.codigoMunicipio)
-                            xml += `<tc:CodigoCancelamento>${object.codigoCancelamento}</tc:CodigoCancelamento>`
-
-                            xml += `</tc:InfPedidoCancelamento>`;
-                            xml += `</Pedido>`;
-                            xml += `</p1:CancelarNfseEnvio>`
-
+                            xml += `</${tags['tcInfPedidoCancelamento']}>`;
+                            xml += `</${tags['Pedido']}>`;
+                            xml += `</${tags['cancelarNfse']}>`
+                            console.log(xml);
                             let isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'] || null
                             let signatureId = particularitiesObject['isSigned']['signatureId'] || null
                             let isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'] || null
 
-                            console.log('xml\n', xml)
-                            createSignature(xml, cert, 'tc:InfPedidoCancelamento', signatureId, isEmptyUri, isDifferentSignature)
+                            createSignature(xml, cert, tags['tcInfPedidoCancelamento'], signatureId, isEmptyUri, isDifferentSignature)
                                 .then(xmlSignature => {
 
 
@@ -316,6 +262,51 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                     }
                     break;
 
+                case 'consultarDadosCadastrais':
+                    try {
+                        pem.readPkcs12(pfx, {
+                            p12Password: object.config.senhaDoCertificado
+                        }, (err, cert) => {
+                            if (err) {
+                                resolve(err);
+                            }
+                            xml += `<${tags['consultarDadosCadastraisAlterada'] ? tags['consultarDadosCadastraisAlterada'] : tags['consultarDadosCadastrais']}>`;
+
+                            xml += createPrestadorXml(tags, object.prestador)
+
+                            xml += `</${tags['consultarDadosCadastrais']}>`
+
+                            let isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'] || null
+                            let signatureId = particularitiesObject['isSigned']['signatureId'] || null
+                            let isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'] || null
+
+                            createSignature(xml, cert, tags['Prestador'], signatureId, isEmptyUri, isDifferentSignature)
+                                .then(xmlSignature => {
+
+                                    try {
+                                        xmlNotSigned = formatXml(xml)
+                                        xmlSignature = formatXml(xmlSignature)
+
+                                        xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarDadosCadastrais'] ? xmlSignature : xmlNotSigned)
+
+                                        result.soapEnvelop = xml
+                                        if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarDadosCadastrais']) {
+                                            result['soapAction'] = particularitiesObject['soapActions']['consultarDadosCadastrais'];
+                                        }
+
+                                        resolve(result);
+                                    } catch (error) {
+                                        console.error(error);
+                                    }
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                        })
+                    } catch (error) {
+                        reject(error);
+                    }
+                    break;
+
                 case 'consultarLoteRps':
                     try {
                         pem.readPkcs12(pfx, {
@@ -324,28 +315,68 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
-                            let xmlNotSigned = '<?xml version="1.0" encoding="utf-8"?>';
+                            xml += `<${tags['consultarLoteRpsAlterada'] ? tags['consultarLoteRpsAlterada'] : tags['consultarLoteRps']}>`;
 
-                            xmlNotSigned += `<${particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] ? particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] : particularitiesObject['tags']['consultarLoteRpsEnvio']}>`;
-                            xmlNotSigned += createPrestadorXml(object.prestador)
-                            xmlNotSigned += `<Protocolo>${object.protocolo}</Protocolo>`;
-                            xmlNotSigned += `</${particularitiesObject['tags']['consultarLoteRpsEnvio']}>`;
+                            xml += createPrestadorXml(tags, object.prestador)
 
-                            createSignature(xmlNotSigned, cert, 'ConsultarLoteRpsEnvio')
+                            xml += `<${tags['Protocolo']}>${object.protocolo}</${tags['Protocolo']}>`;
+                            xml += `</${tags['consultarLoteRps']}>`;
+
+                            createSignature(xml, cert, tags['consultarLoteRps'])
                                 .then(xmlSignature => {
-                                    xmlNotSigned = formatXml(xmlNotSigned)
+                                    xmlNotSigned = formatXml(xml)
                                     xmlSignature = formatXml(xmlSignature)
 
-                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
-
-                                    if (particularitiesObject['isSigned']['consultarLoteRpsEnvio']) {
-                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
-                                    }
+                                    xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarLoteRps'] ? xmlSignature : xmlNotSigned)
 
                                     result.soapEnvelop = xml
-                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarLoteRpsEnvio']) {
-                                        result['soapAction'] = particularitiesObject['soapActions']['consultarLoteRpsEnvio'];
+                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarLoteRps']) {
+                                        result['soapAction'] = particularitiesObject['soapActions']['consultarLoteRps'];
                                     }
+
+                                    resolve(result);
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                        });
+                    } catch (error) {
+                        reject(error);
+                    }
+                    break;
+
+                case 'consultarNfse':
+                    try {
+                        pem.readPkcs12(pfx, {
+                            p12Password: object.config.senhaDoCertificado
+                        }, (err, cert) => {
+                            if (err) {
+                                resolve(err);
+                            }
+                            xml += `<${tags['consultarNfseAlterada'] ? tags['consultarNfseAlterada'] : tags['consultarNfse']}>`;
+
+                            xml += createPrestadorXml(tags, object.prestador)
+
+                            if (object.numeroNfse) {
+                                xml += `<${tags['NumeroNfse']}>${object.numeroNfse}</${tags['NumeroNfse']}>`;
+                            }
+                            xml += createPeriodoEmissaoXml(tags, object.periodoEmissao)
+                            xml += createTomadorXml(tags, object.tomador)
+                            xml += `</${tags['consultarNfse']}>`;
+
+                            let isEmptyUri = null || particularitiesObject['isSigned']['isEmptyUri']
+                            let signatureId = null || particularitiesObject['isSigned']['signatureId']
+                            let isDifferentSignature = null || particularitiesObject['isSigned']['isDifferentSignature']
+
+                            createSignature(xml, cert, tags['Prestador'], signatureId, isEmptyUri, isDifferentSignature)
+                                .then(xmlSignature => {
+
+                                    xmlNotSigned = formatXml(xml)
+                                    xmlSignature = formatXml(xmlSignature)
+
+                                    xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarNfse'] ? xmlSignature : xmlNotSigned)
+
+                                    result.soapEnvelop = xml
+                                    result.soapAction = null || particularitiesObject['soapActions']['consultarNfse'];
 
                                     resolve(result);
                                 }).catch(err => {
@@ -365,29 +396,24 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
-                            let xmlNotSigned = '<?xml version="1.0" encoding="utf-8"?>';
+                            xml += `<${tags['consultarNfseRpsAlterada'] ? tags['consultarNfseRpsAlterada'] : tags['consultarNfseRps']}>`;
 
-                            xmlNotSigned += `<${particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] ? particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] : particularitiesObject['tags']['consultarNfseRpsEnvio']}>`;
+                            xml += createIdentificacaoRpsXml(tags, object.rps, false)
+                            xml += createPrestadorXml(tags, object.prestador)
 
-                            xmlNotSigned += createIdentificacaoRpsXml(object.rps)
-                            xmlNotSigned += createPrestadorXml(object.prestador)
-                            xmlNotSigned += '</ConsultarNfseRpsEnvio>';
+                            xml += `</${tags['consultarNfseRps']}>`;
 
                             let isEmptyUri = null || particularitiesObject['isSigned']['isEmptyUri']
                             let signatureId = null || particularitiesObject['isSigned']['signatureId']
                             let isDifferentSignature = null || particularitiesObject['isSigned']['isDifferentSignature']
-
-                            createSignature(xmlNotSigned, cert, 'ConsultarNfseRpsEnvio', signatureId, isEmptyUri, isDifferentSignature)
+                            console.log(xml);
+                            createSignature(xml, cert, tags['consultarNfseRps'], signatureId, isEmptyUri, isDifferentSignature)
                                 .then(xmlSignature => {
 
-                                    xmlNotSigned = formatXml(xmlNotSigned)
+                                    xmlNotSigned = formatXml(xml)
                                     xmlSignature = formatXml(xmlSignature)
 
-                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
-
-                                    if (particularitiesObject['isSigned']['consultarNfseRps']) {
-                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
-                                    }
+                                    xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarNfseRps'] ? xmlSignature : xmlNotSigned)
 
                                     result.soapEnvelop = xml
                                     if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarNfseRps']) {
@@ -412,27 +438,21 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
-                            let xmlNotSigned = '<?xml version="1.0" encoding="utf-8"?>';
+                            xml += `<${tags['consultarSituacaoLoteRpsAlterada'] ? tags['consultarSituacaoLoteRpsAlterada'] : tags['consultarSituacaoLoteRps']}>`;
+                            xml += createPrestadorXml(tags, object.prestador)
+                            xml += `<${tags['Protocolo']}>${object.protocolo}</${tags['Protocolo']}>`;
+                            xml += `</${tags['consultarSituacaoLoteRps']}>`;
 
-                            xmlNotSigned += `<${particularitiesObject['tags']['consultarSituacaoLoteRpsEnvioAlterada'] ? particularitiesObject['tags']['consultarSituacaoLoteRpsEnvioAlterada'] : particularitiesObject['tags']['consultarSituacaoLoteRpsEnvio']}>`;
-                            xmlNotSigned += createPrestadorXml(object.prestador)
-                            xmlNotSigned += `<Protocolo>${object.protocolo}</Protocolo>`;
-                            xmlNotSigned += `</${particularitiesObject['tags']['consultarSituacaoLoteRpsEnvio']}>`;
-
-                            createSignature(xmlNotSigned, cert, 'ConsultarSituacaoLoteRpsEnvio')
+                            createSignature(xml, cert, tags['consultarSituacaoLoteRps'])
                                 .then(xmlSignature => {
-                                    xmlNotSigned = formatXml(xmlNotSigned)
+                                    xmlNotSigned = formatXml(xml)
                                     xmlSignature = formatXml(xmlSignature)
 
-                                    let xml = particularitiesObject['envelopment'].replace('__xml__', xmlNotSigned);
-
-                                    if (particularitiesObject['isSigned']['consultarSituacaoLoteRpsEnvio']) {
-                                        xml = particularitiesObject['envelopment'].replace('__xml__', xmlSignature);
-                                    }
+                                    xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarSituacaoLoteRps'] ? xmlSignature : xmlNotSigned)
 
                                     result.soapEnvelop = xml
-                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarSituacaoLoteRpsEnvio']) {
-                                        result['soapAction'] = particularitiesObject['soapActions']['consultarSituacaoLoteRpsEnvio'];
+                                    if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarSituacaoLoteRps']) {
+                                        result['soapAction'] = particularitiesObject['soapActions']['consultarSituacaoLoteRps'];
                                     }
 
                                     resolve(result);
@@ -445,7 +465,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                     }
                     break;
 
-                case 'consultarNfse':
+                case 'consultarUrlVisualizacaoNfse':
                     try {
                         pem.readPkcs12(pfx, {
                             p12Password: object.config.senhaDoCertificado
@@ -453,38 +473,151 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                             if (err) {
                                 resolve(err);
                             }
-                            let xmlNotSigned = '<?xml version="1.0" encoding="utf-8"?>';
-                            xmlNotSigned += `<${particularitiesObject['tags']['consultarNfseEnvioAlterada'] ? particularitiesObject['tags']['consultarNfseEnvioAlterada'] : particularitiesObject['tags']['consultarNfseEnvio']}>`;
 
-                            xmlNotSigned += createPrestadorXml(object.prestador)
+                            let xml = '<?xml version="1.0" encoding="utf-8"?>';
 
-                            if (object.numeroNfse) {
-                                xmlNotSigned += '<NumeroNfse>' + object.numeroNfse + '</NumeroNfse>';
+                            xml += `<${tags['consultarUrlVisualizacaoNfseAlterada'] ? tags['consultarUrlVisualizacaoNfseAlterada'] : tags['consultarUrlVisualizacaoNfse']}>`;
+
+                            xml += createPrestadorXml(tags, object.prestador)
+                            xml += `<${tags['Numero']}>${object.numero}</${tags['Numero']}>`
+                            xml += `<${tags['CodigoTributacaoMunicipio']}>${object.codigoTributacaoMunicipio}</${tags['CodigoTributacaoMunicipio']}>`
+
+                            xml += `</${tags['consultarUrlVisualizacaoNfse']}>`
+
+                            let isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'] || null
+                            let signatureId = particularitiesObject['isSigned']['signatureId'] || null
+                            let isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'] || null
+
+                            createSignature(xml, cert, tags['Prestador'], signatureId, isEmptyUri, isDifferentSignature)
+                                .then(xmlSignature => {
+                                    try {
+                                        xmlNotSigned = formatXml(xml)
+                                        xmlSignature = formatXml(xmlSignature)
+
+                                        xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarUrlVisualizacaoNfse'] ? xmlSignature : xmlNotSigned)
+
+                                        result.soapEnvelop = xml
+                                        if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarUrlVisualizacaoNfse']) {
+                                            result['soapAction'] = particularitiesObject['soapActions']['consultarUrlVisualizacaoNfse'];
+                                        }
+
+                                        resolve(result);
+                                    } catch (error) {
+                                        console.error(error);
+                                    }
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                        })
+                    } catch (error) {
+                        reject(error);
+                    }
+                    break;
+
+                case 'consultarUrlVisualizacaoNfseSerie':
+                    try {
+                        pem.readPkcs12(pfx, {
+                            p12Password: object.config.senhaDoCertificado
+                        }, (err, cert) => {
+                            if (err) {
+                                resolve(err);
                             }
-                            xmlNotSigned += createPeriodoEmissaoXml(object.periodoEmissao)
-                            xmlNotSigned += createTomadorXml(object.tomador)
-                            xmlNotSigned += '</ConsultarNfseEnvio>';
+
+                            xml += `<${tags['consultarUrlVisualizacaoNfseSerieAlterada'] ? tags['consultarUrlVisualizacaoNfseSerieAlterada'] : tags['consultarUrlVisualizacaoNfseSerie']}>`;
+
+                            xml += createPrestadorXml(tags, object.prestador)
+                            xml += `<${tags['Numero']}>${object.numero}</${tags['Numero']}>`
+                            xml += `<${tags['CodigoTributacaoMunicipio']}>${object.codigoTributacaoMunicipio}</${tags['CodigoTributacaoMunicipio']}>`
+                            xml += `<${tags['CodigoSerie']}>${object.codigoSerie}</${tags['CodigoSerie']}>`
+
+                            xml += `</${tags['consultarUrlVisualizacaoNfseSerie']}>`
+
+                            let isEmptyUri = particularitiesObject['isSigned']['isEmptyUri'] || null
+                            let signatureId = particularitiesObject['isSigned']['signatureId'] || null
+                            let isDifferentSignature = particularitiesObject['isSigned']['isDifferentSignature'] || null
+
+                            createSignature(xml, cert, tags['Prestador'], signatureId, isEmptyUri, isDifferentSignature)
+                                .then(xmlSignature => {
+                                    try {
+                                        xmlNotSigned = formatXml(xml)
+                                        xmlSignature = formatXml(xmlSignature)
+
+                                        xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['consultarUrlVisualizacaoNfseSerie'] ? xmlSignature : xmlNotSigned)
+
+                                        result.soapEnvelop = xml
+                                        if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['consultarUrlVisualizacaoNfseSerie']) {
+                                            result['soapAction'] = particularitiesObject['soapActions']['consultarUrlVisualizacaoNfseSerie'];
+                                        }
+
+                                        resolve(result);
+                                    } catch (error) {
+                                        console.error(error);
+                                    }
+                                }).catch(err => {
+                                    console.error(err);
+                                });
+                        })
+                    } catch (error) {
+                        reject(error);
+                    }
+                    break;
+
+                case 'enviarLoteRps':
+                    try {
+                        pem.readPkcs12(pfx, {
+                            p12Password: object.config.senhaDoCertificado
+                        }, (err, cert) => {
+                            if (err) {
+                                resolve(err);
+                            }
+
+                            xml += `<${tags['enviarLoteRpsAlterada'] ? tags['enviarLoteRpsAlterada'] : tags['enviarLoteRps']}>`;
+                            xml += `<${tags['loteRpsAlterada'] ? tags['loteRpsAlterada'] : tags['loteRps']}>`;
+
+                            if (numeroLote) {
+                                xml += `<${tags['tcNumeroLoteAlterada'] ? tags['tcNumeroLoteAlterada'] : tags['tcNumeroLote']}>${numeroLote}</${tags['tcNumeroLote']}>`;
+                            }
+                            xml += createCpfCnpjXml(tags, object.emissor.cpfCnpj)
+                            xml += createInscricaoMunicipalXml(tags, object.emissor.inscricaoMunicipal)
+
+                            xml += `<${tags['tcQuantidadeRpsAlterada'] ? tags['tcQuantidadeRpsAlterada'] : tags['tcQuantidadeRps']}>${object.rps.length}</${tags['tcQuantidadeRps']}>`;
+
+                            xml += `<${tags['tcListaRpsAlterada'] ? tags['tcListaRpsAlterada'] : tags['tcListaRps']}>`
+
+                            object.rps.forEach(rps => {
+                                xml += generateRpsXml(tags, rps)
+                            })
+
+                            xml += `</${tags['tcListaRps']}>`
+                            xml += `</${tags['loteRps']}>`;
+                            xml += `</${tags['enviarLoteRps']}>`
 
                             let isEmptyUri = null || particularitiesObject['isSigned']['isEmptyUri']
                             let signatureId = null || particularitiesObject['isSigned']['signatureId']
                             let isDifferentSignature = null || particularitiesObject['isSigned']['isDifferentSignature']
 
-                            createSignature(xmlNotSigned, cert, 'ConsultarNfseEnvio', signatureId, isEmptyUri, isDifferentSignature)
+                            createSignature(xml, cert, tags['loteRps'], signatureId, isEmptyUri, isDifferentSignature)
                                 .then(xmlSignature => {
 
-                                    xmlNotSigned = formatXml(xmlNotSigned)
-                                    xmlSignature = formatXml(xmlSignature)
+                                    try {
+                                        xmlNotSigned = formatXml(xml)
+                                        xmlSignature = formatXml(xmlSignature)
 
-                                    xml = (particularitiesObject['isSigned']['consultarNfse'] ? replaceXml(particularitiesObject, xmlSignature) : replaceXml(particularitiesObject, xmlNotSigned))
+                                        xml = replaceXml(particularitiesObject, particularitiesObject['isSigned']['enviarLoteRps'] ? xmlSignature : xmlNotSigned)
 
-                                    result.soapEnvelop = xml
-                                    result.soapAction = null || particularitiesObject['soapActions']['consultarNfse'];
+                                        result.soapEnvelop = xml
+                                        if (particularitiesObject['soapActions'] && particularitiesObject['soapActions']['enviarLoteRps']) {
+                                            result['soapAction'] = particularitiesObject['soapActions']['enviarLoteRps'];
+                                        }
 
-                                    resolve(result);
+                                        resolve(result);
+                                    } catch (error) {
+                                        console.error(error);
+                                    }
                                 }).catch(err => {
                                     console.error(err);
                                 });
-                        });
+                        })
                     } catch (error) {
                         reject(error);
                     }
@@ -495,7 +628,7 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                 status: 500,
                 message: error
             }
-            if (error.errno === -2) {
+            if (error.errno === -2 || error.errno === -4058) {
                 result = {
                     ...result,
                     message: 'PFX não encontrado'

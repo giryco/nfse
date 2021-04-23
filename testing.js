@@ -294,10 +294,10 @@ const cancelarNfseGinfesItu = {
 };
 const consultarNfseRpsIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "consultarNfsePorRps"
     },
     "rps": {
@@ -306,16 +306,16 @@ const consultarNfseRpsIssnetonline = {
         "tipo": "1"
     },
     "prestador": {
-        "cpfCnpj": "14224669000171",
-        "inscricaoMunicipal": "1003761"
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099"
     }
 };
 const consultarNfseIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "consultarNfse"
     },
     "numeroNfse": '700',
@@ -330,10 +330,10 @@ const consultarNfseIssnetonline = {
 };
 const enviarLoteRpsIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "enviarLoteRps"
     },
     "emissor": {
@@ -394,38 +394,38 @@ const enviarLoteRpsIssnetonline = {
 };
 const consultarSituacaoLoteRpsEnvioIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "consultarSituacaoLoteRps"
     },
     "prestador": {
         "cpfCnpj": "17845667000198",
         "inscricaoMunicipal": "25099",
     },
-    "protocolo": "2ae9c135-b381-4414-be8e-27e7c50e835a"
+    "protocolo": "..."
 }
 const consultarLoteRpsEnvioIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "/home/ofm/Downloads/pfx/client-itu.pfx",
-        "senhaDoCertificado": "brmed2018",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "consultarLoteRps"
     },
     "prestador": {
         "cpfCnpj": "17845667000198",
         "inscricaoMunicipal": "25099",
     },
-    "protocolo": "2ae9c135-b381-4414-be8e-27e7c50e835a"
+    "protocolo": "..."
 }
 const cancelarNfseIssnetonline = {
     "config": {
-        "diretorioDoCertificado": "./17305078_out.pfx",
-        "senhaDoCertificado": "sete1505",
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
         "producaoHomologacao": "homologacao",
-        "codigoMunicipio": "4313409",
+        "codigoMunicipio": "3523909",
         "acao": "cancelarNfse"
     },
     "emissor": {
@@ -436,11 +436,52 @@ const cancelarNfseIssnetonline = {
         "numero": 15
     },
     "codigoMunicipio": 999,
-    "codigoCancelamento": 5
+    "codigoCancelamento": 5,
+    "motivoCancelamento": 'nota fiscal cancelada por motivo de ...'
+}
+const consultarDadosCadastrais = {
+    "config": {
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3523909",
+        "acao": "consultarDadosCadastrais"
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099"
+    }
+}
+const consultarUrlVisualizacaoNfse = {
+    "config": {
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3523909",
+        "acao": "consultarUrlVisualizacaoNfse"
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099"
+    },
+    "numero": 200,
+    "codigoTributacaoMunicipio": 2
+}
+const consultarUrlVisualizacaoNfseSerie = {
+    "config": {
+        "diretorioDoCertificado": "/path/to/certificate.pfx",
+        "senhaDoCertificado": "p4ssw0rd",
+        "producaoHomologacao": "homologacao",
+        "codigoMunicipio": "3523909",
+        "acao": "consultarUrlVisualizacaoNfse"
+    },
+    "prestador": {
+        "cpfCnpj": "17845667000198",
+        "inscricaoMunicipal": "25099"
+    },
+    "numero": 200,
+    "codigoTributacaoMunicipio": 2,
+    "codigoSerie": 3
 }
 
-const func = nfse.nfse(cancelarNfseIssnetonline)
-
-func.then((res) => {
-    console.log(res)
-})
+nfse.nfse(consultarNfseRpsIssnetonline).then((res) => { console.log('\n\n\n consultarNfseRpsIssnetonline \n\n', res.response) })

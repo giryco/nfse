@@ -18,52 +18,71 @@ const setParticularities = (object, city) => {
                 object.config.producaoHomologacao === 'producao' ? particularitiesObject['webserviceUrl'] = `https://www.issnetonline.com.br/webserviceabrasf/${city.name.replace(' ', '').toLowerCase()}/servicos.asmx` : particularitiesObject['webserviceUrl'] = 'https://www.issnetonline.com.br/webserviceabrasf/homologacao/servicos.asmx';
                 particularitiesObject['nfseKeyword'] = 'issnetonline';
                 particularitiesObject['tags'] = { ...issnetonline100Model.issnetonline100 };
+                let tags = particularitiesObject['tags']
 
                 if (object.config.acao === 'enviarLoteRps') {
-                    particularitiesObject['tags']['enviarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['enviarLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_enviar_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+                    tags['enviarLoteRpsAlterada'] = `${tags['enviarLoteRps']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_enviar_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
 
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><RecepcionarLoteRps xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></RecepcionarLoteRps></soap:Body></soap:Envelope>';
 
                     particularitiesObject['isSigned']['isDifferentSignature'] = true;
                     particularitiesObject['isSigned']['isEmptyUri'] = true;
+                    particularitiesObject['isSigned']['enviarLoteRps'] = true;
                 }
                 if (object.config.acao === 'consultarLoteRps') {
-                    particularitiesObject['tags']['consultarLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_lote_rps_envio.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+                    tags['consultarLoteRpsAlterada'] = `${tags['consultarLoteRps']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_lote_rps_envio.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
 
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarLoteRps xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarLoteRps></soap:Body></soap:Envelope>';
                 }
                 if (object.config.acao === 'consultarSituacaoLoteRps') {
-                    particularitiesObject['tags']['consultarSituacaoLoteRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarSituacaoLoteRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_situacao_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+                    tags['consultarSituacaoLoteRpsAlterada'] = `${tags['consultarSituacaoLoteRps']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_situacao_lote_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
 
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultaSituacaoLoteRPS xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultaSituacaoLoteRPS></soap:Body></soap:Envelope>';
                 }
                 if (object.config.acao === 'consultarNfsePorRps') {
-                    particularitiesObject['tags']['consultarNfseRpsEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseRpsEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
+                    tags['consultarNfseRpsAlterada'] = `${tags['consultarNfseRps']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_rps_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarNFSePorRPS xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarNFSePorRPS></soap:Body></soap:Envelope>'
                 }
                 if (object.config.acao === 'consultarNfse') {
-                    particularitiesObject['tags']['consultarNfseEnvioAlterada'] = `${particularitiesObject['tags']['consultarNfseEnvio']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+                    tags['consultarNfseAlterada'] = `${tags['consultarNfse']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarNfse xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarNfse></soap:Body></soap:Envelope>'
                 }
                 if (object.config.acao === 'cancelarNfse') {
-                    particularitiesObject['tags']['cancelarNfseEnvioAlterada'] = `${particularitiesObject['tags']['cancelarNfseEnvio']}  xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
+                    tags['cancelarNfseAlterada'] = `${tags['cancelarNfse']}  xmlns:p1="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_cancelar_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"`;
 
                     particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><CancelarNfse xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></CancelarNfse></soap:Body></soap:Envelope>';
 
                     particularitiesObject['isSigned']['cancelarNfse'] = true;
                     particularitiesObject['isSigned']['isEmptyUri'] = true;
                 }
-                particularitiesObject['xsds'] = {
-                    enviarLoteRps: '/../../../resources/xsd/issnetonline/servico_enviar_lote_rps_envio.xsd',
-                    consultarLoteRps: '/../../../resources/xsd/issnetonline/servico_consulta_lote_envio.xsd'
+                if (object.config.acao === 'consultarDadosCadastrais') {
+                    tags['consultarDadosCadastraisAlterada'] = `${tags['consultarDadosCadastrais']}  xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd" xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_dados_cadastrais_envio.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarDadosCadastrais xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarDadosCadastrais></soap:Body></soap:Envelope>';
+
+                    particularitiesObject['isSigned']['consultarDadosCadastrais'] = true;
+                    particularitiesObject['isSigned']['isEmptyUri'] = true;
+                }
+                if (object.config.acao === 'consultarUrlVisualizacaoNfse') {
+                    tags['consultarUrlVisualizacaoNfseAlterada'] = `${tags['consultarUrlVisualizacaoNfse']} xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_url_visualizacao_nfse_envio.xsd" xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarUrlVisualizacaoNfse xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarUrlVisualizacaoNfse></soap:Body></soap:Envelope>';
+                }
+                if (object.config.acao === 'consultarUrlVisualizacaoNfseSerie') {
+                    tags['consultarUrlVisualizacaoNfseSerieAlterada'] = `${tags['consultarUrlVisualizacaoNfseSerie']} xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_url_visualizacao_nfse_serie_envio.xsd`;
+
+                    particularitiesObject['envelopment'] = '<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ConsultarUrlVisualizacaoNfseSerie xmlns="http://www.issnetonline.com.br/webservice/nfd"><xml>__xml__</xml></ConsultarUrlVisualizacaoNfseSerie></soap:Body></soap:Envelope>';
                 }
                 particularitiesObject['soapActions'] = {
-                    enviarLoteRps: 'http://www.issnetonline.com.br/webservice/nfd/RecepcionarLoteRps',
-                    consultarSituacaoLoteRpsEnvio: 'http://www.issnetonline.com.br/webservice/nfd/ConsultaSituacaoLoteRPS',
-                    consultarLoteRpsEnvio: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarLoteRps',
-                    consultarNfseRps: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarNFSePorRPS',
+                    cancelarNfse: 'http://www.issnetonline.com.br/webservice/nfd/CancelarNfse',
+                    consultarDadosCadastrais: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarDadosCadastrais',
+                    consultarLoteRps: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarLoteRps',
                     consultarNfse: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarNfse',
-                    cancelarNfse: 'http://www.issnetonline.com.br/webservice/nfd/CancelarNfse'
+                    consultarNfseRps: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarNFSePorRPS',
+                    consultarSituacaoLoteRps: 'http://www.issnetonline.com.br/webservice/nfd/ConsultaSituacaoLoteRPS',
+                    consultarUrlVisualizacaoNfse: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarUrlVisualizacaoNfse',
+                    consultarUrlVisualizacaoNfseSerie: 'http://www.issnetonline.com.br/webservice/nfd/ConsultarUrlVisualizacaoNfseSerie',
+                    enviarLoteRps: 'http://www.issnetonline.com.br/webservice/nfd/RecepcionarLoteRps',
                 }
             } catch (error) {
                 console.error(error);
