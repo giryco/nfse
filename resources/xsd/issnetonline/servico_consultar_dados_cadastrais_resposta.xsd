@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            xmlns:ts="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd" 
+            xmlns:tc="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd" 
+            targetNamespace="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_dados_cadastrais_resposta.xsd"
+            xmlns="http://www.issnetonline.com.br/webserviceabrasf/vsd/servico_consultar_dados_cadastrais_resposta.xsd" 
+            attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xsd:import schemaLocation="tipos_simples.xsd" namespace="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_simples.xsd"/>
+  <xsd:import schemaLocation="tipos_complexos.xsd" namespace="http://www.issnetonline.com.br/webserviceabrasf/vsd/tipos_complexos.xsd"/>
+  <xsd:element name="ConsultarDadosCadastraisResposta">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element name="IdentificacaoPrestador" type="tc:tcIdentificacaoPrestador" minOccurs="1" maxOccurs="1" />
+          <xsd:element name="RazaoSocial" type="ts:tsRazaoSocial" minOccurs="1" maxOccurs="1" />
+          <xsd:element name="ListaCnae" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Cnae" type="tc:tcCnae" minOccurs="1" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="ListaAtividade" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Atividade" type="tc:tcAtividade" minOccurs="1" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="ListaNaturezaOperacao" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="NaturezaOperacao" type="tc:tcNaturezaOperacao" minOccurs="1" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="ListaSimplesNacional" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="SimplesNacional" type="tc:tcSimplesNacional" minOccurs="0" maxOccurs="1" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="ListaMei" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Mei" type="tc:tcMei" minOccurs="0" maxOccurs="1" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="PermiteDeducao" type="ts:tsSimNao" minOccurs="1" maxOccurs="1" />
+          <xsd:element name="PermiteDescontoIncondicionado" type="ts:tsSimNao" minOccurs="1" maxOccurs="1" />
+          <xsd:element name="PermiteDescontoCondicionado" type="ts:tsSimNao" minOccurs="1" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:element name="ListaMensagemRetorno" minOccurs="1" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="MensagemRetorno" type="tc:tcMensagemRetorno" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

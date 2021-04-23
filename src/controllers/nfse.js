@@ -18,6 +18,7 @@ const abrasf201Controller = require('./xml-creator/abrasf-2.01');
 const abrasf202Controller = require('./xml-creator/abrasf-2.02');
 const abrasf204Controller = require('./xml-creator/abrasf-2.04');
 const saopaulo100Controller = require('./xml-creator/sao-paulo-1.00');
+const issnetonline100Controller = require('./xml-creator/issnetonline-1.00');
 const sendNfselController = require('./send-nfse');
 
 /**
@@ -36,7 +37,7 @@ const nfse = (newObject) => {
                     request: res.request,
                     response: res.response
                 }
-                
+
                 resolve(result);
             })
             .catch(rej => {
@@ -98,7 +99,7 @@ const findModelByKeyword = (nfseKeyword) => {
 const setModelToSend = (city, model) => {
     return new Promise((resolve, reject) => {
         try {
-            const modelToCheck = {...model};
+            const modelToCheck = { ...model };
             // Strange exceptions: start
             if (object.config.acao === 'cancelarNfse' && city.nfseKeyword === 'ginfes') {
                 modelToCheck.model = 'abrasf2.01';
@@ -113,7 +114,6 @@ const setModelToSend = (city, model) => {
                                 request: res,
                                 response: res['message'].split('[error]')
                             };
-                            
                             resolve(result);
                         } else {
                             const objectWithXml = res.message;
@@ -133,7 +133,46 @@ const setModelToSend = (city, model) => {
 
                                         reject(result);
                                     }
-                                    
+
+                                })
+                                .catch(rejSentXml => {
+                                    reject(rejSentXml);
+                                })
+                        }
+                    })
+                    .catch(rej => {
+                        reject(rej);
+                    })
+
+            } else if (modelToCheck.model === 'issnetonline1.00') {
+                issnetonline100Controller.setRequirements(object, city)
+                    .then(res => {
+                        if (res['stack']) {
+                            const result = {
+                                status: 200,
+                                request: res,
+                                response: res['message'].split('[error]')
+                            };
+                            resolve(result);
+                        } else {
+                            const objectWithXml = res.message;
+                            sendNfselController.webServiceRequest(objectWithXml, object)
+                                .then(resSentXml => {
+                                    try {
+                                        const result = {
+                                            request: res,
+                                            response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
+                                        };
+                                        resolve(result);
+                                    } catch (error) {
+                                        const result = {
+                                            request: res,
+                                            response: error
+                                        };
+
+                                        reject(result);
+                                    }
+
                                 })
                                 .catch(rejSentXml => {
                                     reject(rejSentXml);
@@ -152,7 +191,7 @@ const setModelToSend = (city, model) => {
                                 request: res,
                                 response: res['message'].split('[error]')
                             };
-                            
+
                             resolve(result);
                         } else {
                             const objectWithXml = res.message;
@@ -162,7 +201,7 @@ const setModelToSend = (city, model) => {
                                         request: res,
                                         response: resSentXml.body.replace(regexLT, '<').replace(regexGT, '>').replace(regexQuot, '"')
                                     };
-                                    
+
                                     resolve(result);
                                 })
                                 .catch(rejSentXml => {
@@ -183,11 +222,11 @@ const setModelToSend = (city, model) => {
                                 request: res,
                                 response: res['message'].split('[error]')
                             };
-                            
+
                             resolve(result);
                         } else {
                             const objectWithXml = res.message;
-                            
+
                             sendNfselController.webServiceRequest(objectWithXml, object)
                                 .then(resSentXml => {
                                     const result = {

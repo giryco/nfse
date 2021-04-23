@@ -388,7 +388,6 @@ const createXml = async (object, particularitiesObject, numeroLote) => {
                     }
                     break;
 
-
                 case 'consultarNfsePorRps':
                     try {
                         pem.readPkcs12(pfx, {

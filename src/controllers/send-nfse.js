@@ -12,7 +12,6 @@ function webServiceRequest(xmlData, object) {
                 const certificatePath = object.config.diretorioDoCertificado;
                 const certificatePassword = object.config.senhaDoCertificado;
                 const webserviceRetry = object.config.insistirNoWebservice;
-                
                 var options = {
                     method: 'POST',
                     url: url,
@@ -25,9 +24,8 @@ function webServiceRequest(xmlData, object) {
                         "Content-Type": "text/xml;charset=UTF-8"
                     },
                     body: xmlEnveloped,
-                    pool: {maxSockets: Infinity}
+                    pool: { maxSockets: Infinity }
                 };
-
                 if (soapAction) {
                     options.headers = {
                         "Accept": "text/xml",
@@ -35,9 +33,9 @@ function webServiceRequest(xmlData, object) {
                         "SOAPAction": soapAction,
                     }
                 }
-                
+
                 request(options, function (error, response, body) {
-                    if (response && response.statusCode === 404)  {
+                    if (response && response.statusCode === 404) {
                         const result = {
                             message: 'Webservice não foi encontrado',
                             error: response.statusCode + " - " + response.statusMessage
@@ -50,7 +48,7 @@ function webServiceRequest(xmlData, object) {
                             message: 'Verifique se o webservice está online: ' + url,
                             error: error['message']
                         };
-                        
+
                         if (result.error.code === 'ECONNRESET') {
                             setTimeout(() => {
                                 if (webserviceRetry) {
@@ -69,12 +67,12 @@ function webServiceRequest(xmlData, object) {
                 console.error(error);
                 reject(error);
             }
-        })        
+        })
     } catch (error) {
         console.error(error);
     }
 }
 
 module.exports = {
-    webServiceRequest   
+    webServiceRequest
 }

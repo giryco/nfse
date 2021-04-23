@@ -27343,7 +27343,8 @@
 		"latitude" : -29.6875,
 		"longitude" : -51.1328,
 		"isCapitalCity" : false,
-		"stateInitials" : "RS"
+		"stateInitials" : "RS",
+		"nfseKeyword": "issnetonline"
 	},
 	{
 		"cityCode" : 4211652,
@@ -31743,7 +31744,7 @@
 				}
 			}
 		},
-        "nfseKeyword": "portoalegre"
+    "nfseKeyword": "portoalegre"
 	},
 	{
 		"cityCode" : 5106778,
